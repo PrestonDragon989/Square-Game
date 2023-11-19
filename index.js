@@ -105,13 +105,13 @@ class Game {
         //Get Mouse Position
         this.canvas.addEventListener('mousemove', (event) => {
             this.rect = this.canvas.getBoundingClientRect();
-            this.mouseX = event.clientX - this.rect.left;
-            this.mouseY = event.clientY - this.rect.top;
+            this.mouseX = event.offsetX;
+            this.mouseY = event.offsetY;
         });
 
         //Left Click Detection
         this.canvas.addEventListener('click', (event) => {
-            this.player.basicShoot(event.clientX, event.clientY);
+            this.player.basicShoot(event.offsetX, event.offsetY);
             console.log(event.clientX, event.clientY);
         });
 
