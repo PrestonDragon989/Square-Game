@@ -1,5 +1,5 @@
-//Getting Utils
-import Utils from './utils.js';
+//Utils
+import Utils from './utils.mjs';
 
 //Collision Handling
 class Collision {

@@ -1,4 +1,9 @@
 class Utils {
+    constructor() {
+        this.utils = true;
+        this.isThis = "This is, in fact, the Utils Class!"
+    }
+    
     getVector(pointA, pointB) {
         //Getting Vector Info
         vectorX = pointB[0] - pointA[0];
@@ -18,4 +23,4 @@ class Utils {
 }
 
 //Exporting Utils to All of the Good boys and girls of this world who need it <3
-export { Utils };
+export default Utils;

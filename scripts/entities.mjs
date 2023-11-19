@@ -1,5 +1,5 @@
-//Getting Utils
-import Utils from './utils.js';
+//Utils
+import Utils from './utils.mjs';
 
 //Entities
 class Player {
@@ -7,9 +7,6 @@ class Player {
         //Getting Context and Canvas
         this.c = c;
         this.canvas = canvas;
-
-        //Utils
-        this.utils = new Utils();
         
         //Getting Coordinates
         this.x = x;
