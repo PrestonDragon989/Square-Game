@@ -135,13 +135,14 @@ class Game {
 
         //Left Click Detection
         this.canvas.addEventListener('click', (event) => {
-            if (!this.gamePaused) this.player.basicShoot(event.offsetX, event.offsetY);
+            if (!this.gamePaused) this.player.playerLeftShoot(event.offsetX, event.offsetY);
             console.log(event.clientX, event.clientY);
         });
 
         //Right Click Detection
         this.canvas.addEventListener('contextmenu', (event) => {
             event.preventDefault();
+            if (!this.gamePaused) this.player.playerRightShoot(event.offsetX, event.offsetY);
             console.log(event.clientX, event.clientY);
         });
     }

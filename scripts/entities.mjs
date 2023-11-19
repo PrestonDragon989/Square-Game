@@ -54,6 +54,13 @@ class Player {
         //Bullets Active
         this.bullets = [];
 
+        //Current Weapon
+        this.currentWeapon = {
+            //Current Weapon
+            leftShoot: "basicShoot",
+            rightShoot: "mediumShotgun"
+        };
+
         //Player Keys
         this.keysPressed = {
             //WASD Movement
@@ -67,10 +74,6 @@ class Player {
             right: false,
             up: false,
             down: false,
-
-            //Current Weapon
-            leftShoot: "basicShoot",
-            rightShoot: "mediumShotgun"
         };
     }
 
@@ -109,6 +112,21 @@ class Player {
 
         // Adding bullet to the bullet list
         this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed, damage: this.utils.randint(15, 20)});
+    }
+
+    //Player Shoot
+    playerLeftShoot(mouseX, mouseY) {
+        if (this.currentWeapon.leftShoot === "basicShoot") this.basicShoot(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "quickShoot") this.quickShoot(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "slowShoot") this.slowShoot(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "sniperShoot") this.sniperShoot(mouseX, mouseY)
+    }
+
+    playerRightShoot(mouseX, mouseY) {
+        if (this.currentWeapon.leftShoot === "mediumShotgun") this.mediumShotgun(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "bigShotgun") this.bigShotgun(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "hugeShotgun") this.hugeShotgun(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "smallShotgun") this.hugeShotgun(mouseX, mouseY)
     }
 
     // Bullet movement function
