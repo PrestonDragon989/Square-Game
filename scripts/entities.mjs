@@ -1,5 +1,6 @@
-//Utils
+//Utils & Vectors
 import Utils from './utils.mjs';
+import Vector2 from "./vector.mjs";
 
 //Entities
 class Player {
@@ -7,6 +8,9 @@ class Player {
         //Getting Context and Canvas
         this.c = c;
         this.canvas = canvas;
+
+        //Getting Utils
+        this.utils = new Utils();
         
         //Getting Coordinates
         this.x = x;
@@ -31,12 +35,18 @@ class Player {
         this.bulletImg = new Image();
         this.bulletImg.src = "images/entities/player/player-square.png";
 
+        //Bullet Sizes
+        this.largeBulletSize = 20;
+        this.bigBulletSize = 15;
+        this.mediumBulletSize = 10;
+        this.smallBulletSize = 5;
+
         //Bullet Speeds
-        this.fast_shoot_speed = 15;
-        this.medium_fast_shoot_speed = 13;
-        this.normal_shoot_speed = 10;
-        this.medium_slow_shoot_speed = 7;
-        this.slow_shoot_speed = 5;
+        this.fastShootSpeed = 15;
+        this.mediumFastShootSpeed = 13;
+        this.normalShootSpeed = 10;
+        this.mediumSlowShootSpeed = 7;
+        this.slowShootSpeed = 5;
 
         //Shoot Speeds
 
@@ -56,7 +66,11 @@ class Player {
             left: false,
             right: false,
             up: false,
-            down: false
+            down: false,
+
+            //Current Weapon
+            leftShoot: "basicShoot",
+            rightShoot: "mediumShotgun"
         };
     }
 
@@ -65,12 +79,36 @@ class Player {
         if (this.keysPressed.ALeft || this.keysPressed.left) this.x -= this.speed;
         if (this.keysPressed.DRight || this.keysPressed.right) this.x += this.speed;
         if (this.keysPressed.WUp || this.keysPressed.up) this.y -= this.speed;
-        if (this.keysPressed.SDown || this.keysPressed.down) this.y += this.speed;
-        
+        if (this.keysPressed.SDown || this.keysPressed.down) this.y += this.speed; 
     }
 
     //Shoot Functions
-    basic_shoot(mouse_pos) {
+    basicShoot(mousePos) {
+        //Getting Player Center, mouseclick Coords
+        let playerCenterX = this.x + 25
+        let playerCenterY = this.y + 25
+
+        let mouseClickX = mousePos[0]
+        let mouseClickY = mousePos[1]
+
+        //Redining Into Librarys for Ease of use in the code
+        const player_pos = { x: playerCenterX, y: playerCenterY};
+        const mouse_pos = { x: mouseClickX, y: mouseClickY };
+
+        // Making bullet Dimensions 
+        const bullet_rect = {
+            x: player_pos.x,
+            y: player_pos.y,
+            width: this.mediumBulletSize,
+            height: this.mediumBulletSize
+        };
+
+        // Getting bullet location
+        const bullet_vector = new Vector2(mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
+        bullet_vector.normalize();
+
+    // Adding bullet to the bullet list
+    this.bullets.push({ rect: bullet_rect, vector: bullet_vector, color: this.bullet_color });
 
     }
 

@@ -1,7 +1,8 @@
-//Imports (Player, Enemy, Collision, Utils)
+//Imports (Player, Enemy, Collision, Utils, Vector Math)
 import { Player, Enemy } from "./scripts/entities.mjs";
 import { Collision } from "./scripts/collision.mjs";
 import Utils from './scripts/utils.mjs';
+import Vector2 from "./vector.mjs";
 
 // Class Game, to handle all main game features
 class Game {

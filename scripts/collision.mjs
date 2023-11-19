@@ -1,5 +1,6 @@
-//Utils
+//Utils & Vectors
 import Utils from './utils.mjs';
+import Vector2 from "./vector.mjs";
 
 //Collision Handling
 class Collision {
