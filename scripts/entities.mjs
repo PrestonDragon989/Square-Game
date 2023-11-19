@@ -27,6 +27,23 @@ class Player {
         //Player Speed
         this.speed = 5;
 
+        //Bullet Image
+        this.bulletImg = new Image();
+        this.bulletImg.src = "images/entities/player/bullet.png";
+
+        //Bullet Speeds
+        this.fast_shoot_speed = 15;
+        this.medium_fast_shoot_speed = 13;
+        this.normal_shoot_speed = 10;
+        this.medium_slow_shoot_speed = 7;
+        this.slow_shoot_speed = 5;
+
+        //Shoot Speeds
+
+
+        //Bullets Active
+        this.bullets = [];
+
         //Player Keys
         this.keysPressed = {
             //WASD Movement
@@ -52,8 +69,14 @@ class Player {
         
     }
 
+    //Shoot Functions
+    basic_shoot(mouse_pos) {
+
+    }
+
     render() {
         //Player Bullets
+        forEach
 
         //Player
         this.c.drawImage(this.img, this.x, this.y, this.width, this.height);
