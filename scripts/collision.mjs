@@ -1,3 +1,6 @@
+//Getting Utils
+import Utils from './utils.js';
+
 //Collision Handling
 class Collision {
     constructor(Player) {

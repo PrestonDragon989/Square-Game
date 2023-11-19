@@ -1,3 +1,5 @@
+//Getting Utils
+import Utils from './utils.js';
 
 //Entities
 class Player {
