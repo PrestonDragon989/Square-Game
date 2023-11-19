@@ -6,7 +6,7 @@ import Utils from './scripts/utils.mjs';
 // Class Game, to handle all main game features
 class Game {
     constructor() {
-        // Create drawing variables (Our Game Canvas, Context, and Resolution)
+        // Create drawing variales (Our Game Canvas, Context, and Resolution)
         this.canvas = document.getElementById("game-canvas");
         this.c = this.canvas.getContext("2d");
 
