@@ -42,11 +42,11 @@ class Player {
         this.smallBulletSize = 5;
 
         //Bullet Speeds
-        this.fastShootSpeed = 15;
-        this.mediumFastShootSpeed = 13;
-        this.normalShootSpeed = 10;
-        this.mediumSlowShootSpeed = 7;
-        this.slowShootSpeed = 5;
+        this.fastBulletSpeed = 20;
+        this.mediumFastBulletSpeed = 15;
+        this.mediumBulletSpeed = 10;
+        this.mediumSlowBulletSpeed = 7;
+        this.slowBulletSpeed = 5;
 
         //Shoot Speeds
 
@@ -83,20 +83,20 @@ class Player {
     }
 
     //Shoot Functions
-    basicShoot(mousePos) {
+    basicShoot(mouseX, mouseY) {
         //Getting Player Center, mouseclick Coords
         let playerCenterX = this.x + 25
         let playerCenterY = this.y + 25
 
-        let mouseClickX = mousePos[0]
-        let mouseClickY = mousePos[1]
+        let mouseClickX = mouseX
+        let mouseClickY = mouseY
 
         //Redining Into Librarys for Ease of use in the code
         const player_pos = { x: playerCenterX, y: playerCenterY};
         const mouse_pos = { x: mouseClickX, y: mouseClickY };
 
         // Making bullet Dimensions 
-        const bullet_rect = {
+        const bulletDimensions = {
             x: player_pos.x,
             y: player_pos.y,
             width: this.mediumBulletSize,
@@ -107,14 +107,27 @@ class Player {
         const bullet_vector = new Vector2(mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
         bullet_vector.normalize();
 
-    // Adding bullet to the bullet list
-    this.bullets.push({ rect: bullet_rect, vector: bullet_vector, color: this.bullet_color });
-
+        // Adding bullet to the bullet list
+        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed});
     }
+
+    // Bullet movement function
+    bulletMovement() {
+        if (this.bullets.length <= 0) return;
+    
+        for (const bullet of this.bullets) {
+            bullet.rect.x += bullet.vector.x * bullet.velocity;
+            bullet.rect.y += bullet.vector.y * bullet.velocity;
+        }
+  }
 
     render() {
         //Player Bullets
-        
+        if (this.bullets.length > 0) {
+            this.bullets.forEach((bullet) => {
+                this.c.drawImage(this.bulletImg, bullet.rect.x, bullet.rect.y, bullet.rect.width, bullet.rect.height);
+            });
+        }
 
         //Player
         this.c.drawImage(this.img, this.x, this.y, this.width, this.height);

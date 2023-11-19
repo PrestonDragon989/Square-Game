@@ -2,7 +2,7 @@
 import { Player, Enemy } from "./scripts/entities.mjs";
 import { Collision } from "./scripts/collision.mjs";
 import Utils from './scripts/utils.mjs';
-import Vector2 from "./vector.mjs";
+import Vector2 from "./scripts/vector.mjs";
 
 // Class Game, to handle all main game features
 class Game {
@@ -111,6 +111,7 @@ class Game {
 
         //Left Click Detection
         this.canvas.addEventListener('click', (event) => {
+            this.player.basicShoot(event.clientX, event.clientY);
             console.log(event.clientX, event.clientY);
         });
 
@@ -124,10 +125,13 @@ class Game {
     // Game Logic
     update() {
         //Player Move
-        this.player.handleInput()
+        this.player.handleInput();
+
+        //Bullet Update
+        this.player.bulletMovement();
         
         //Player Collison
-        this.collision.playerCollision(this.canvas);
+        this.collision.wallCollision(this.canvas);
 }
 
     // Rendering Function to handle All rendering Needs
