@@ -37,17 +37,17 @@ class Game {
     handleInput() {
         // Keydown event
         window.addEventListener("keydown", (event) => {
-            switch (event.keyCode) {
-                case 65:
+            switch (event.key) {
+                case "a":
                     this.player.keysPressed.ALeft = true;
                     break;
-                case 68:
+                case "d":
                     this.player.keysPressed.DRight = true;
                     break;
-                case 87:
+                case "w":
                     this.player.keysPressed.WUp = true;
                     break;
-                case 83:
+                case "s":
                     this.player.keysPressed.SDown = true;
                     break;
             }
@@ -55,17 +55,17 @@ class Game {
 
         // Keyup event
         window.addEventListener("keyup", (event) => {
-            switch (event.keyCode) {
-                case 65:
+            switch (event.key) {
+                case "a":
                     this.player.keysPressed.ALeft = false;
                     break;
-                case 68:
+                case "d":
                     this.player.keysPressed.DRight = false;
                     break;
-                case 87:
+                case "w":
                     this.player.keysPressed.WUp = false;
                     break;
-                case 83:
+                case "s":
                     this.player.keysPressed.SDown = false;
                     break;
             }
