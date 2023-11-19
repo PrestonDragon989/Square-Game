@@ -29,7 +29,7 @@ class Player {
 
         //Bullet Image
         this.bulletImg = new Image();
-        this.bulletImg.src = "images/entities/player/bullet.png";
+        this.bulletImg.src = "images/entities/player/player-square.png";
 
         //Bullet Speeds
         this.fast_shoot_speed = 15;
@@ -76,7 +76,7 @@ class Player {
 
     render() {
         //Player Bullets
-        forEach
+        
 
         //Player
         this.c.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -125,6 +125,7 @@ class Enemy {
     
     //Easy Functions for Enemies
     randomSpawn(width, height, spawnAway) {
+        let x, y;
         //Validating Spawn Location
         while (true) {
             x = this.utils.randint(0, this.canvas.width - width)
@@ -136,13 +137,13 @@ class Enemy {
     }
 
     render() {
-        if (this.basicEnemies != []){
+        if (this.basicEnemies.length !== 0){
             //Rendering Each enemy in the Array
             this.basicEnemies.forEach(enemy => {
 
             });
         }
-        if (this.bossEnemies != []){
+        if (this.bossEnemies.length !== 0){
             //Rendering Each Boss in the Array
             this.bossEnemies.forEach(boss => {
 
