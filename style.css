@@ -4,6 +4,9 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-align: center;
     color: rgb(200, 200, 200);
+
+    /* Stoppint Text Highlight */
+    user-select: none;
 }
 
 /* Canvas/Game Screen Styling */

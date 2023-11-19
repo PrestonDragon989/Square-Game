@@ -21,7 +21,7 @@ class Game {
 
         // Creating Player Instance, and movement
         this.player = new Player(this.c, this.canvas, 100, 100);
-        this.handleInput();
+        if (this.canvas) this.handleInput();
 
         //Creating Enemy Instance
         this.enemy = new Enemy(this.canvas, this.c, this.player);
@@ -38,6 +38,7 @@ class Game {
         // Keydown event
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
+                //WASD Movement Keys
                 case "a":
                     this.player.keysPressed.ALeft = true;
                     break;
@@ -50,12 +51,27 @@ class Game {
                 case "s":
                     this.player.keysPressed.SDown = true;
                     break;
+
+                //Arrow Moement Keys
+                case "ArrowLeft":
+                    this.player.keysPressed.left = true;
+                    break;
+                case "ArrowRight":
+                    this.player.keysPressed.right = true;
+                    break;
+                case "ArrowUp":
+                    this.player.keysPressed.up = true;
+                    break;
+                case "ArrowDown":
+                    this.player.keysPressed.down = true;
+                    break;
             }
         });
 
         // Keyup event
         window.addEventListener("keyup", (event) => {
             switch (event.key) {
+                //WASD Movement Keys
                 case "a":
                     this.player.keysPressed.ALeft = false;
                     break;
@@ -68,7 +84,39 @@ class Game {
                 case "s":
                     this.player.keysPressed.SDown = false;
                     break;
+
+                //Arrow Moement Keys
+                case "ArrowLeft":
+                    this.player.keysPressed.left = false;
+                    break;
+                case "ArrowRight":
+                    this.player.keysPressed.right = false;
+                    break;
+                case "ArrowUp":
+                    this.player.keysPressed.up = false;
+                    break;
+                case "ArrowDown":
+                    this.player.keysPressed.down = false;
+                    break;
             }
+        });
+
+        //Get Mouse Position
+        this.canvas.addEventListener('mousemove', (event) => {
+            this.rect = this.canvas.getBoundingClientRect();
+            this.mouseX = event.clientX - this.rect.left;
+            this.mouseY = event.clientY - this.rect.top;
+        });
+
+        //Left Click Detection
+        this.canvas.addEventListener('click', (event) => {
+            console.log(event.clientX, event.clientY);
+        });
+
+        //Right Click Detection
+        this.canvas.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+            console.log(event.clientX, event.clientY);
         });
     }
 

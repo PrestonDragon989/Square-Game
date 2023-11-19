@@ -29,19 +29,26 @@ class Player {
 
         //Player Keys
         this.keysPressed = {
+            //WASD Movement
             ALeft: false,
             DRight: false,
             WUp: false,
             SDown: false,
+
+            //Arrow Keys Movement
+            left: false,
+            right: false,
+            up: false,
+            down: false
         };
     }
 
     //Handling Player Inputs
     handleInput() {
-        if (this.keysPressed.ALeft) this.x -= this.speed;
-        if (this.keysPressed.DRight) this.x += this.speed;
-        if (this.keysPressed.WUp) this.y -= this.speed;
-        if (this.keysPressed.SDown) this.y += this.speed;
+        if (this.keysPressed.ALeft || this.keysPressed.left) this.x -= this.speed;
+        if (this.keysPressed.DRight || this.keysPressed.right) this.x += this.speed;
+        if (this.keysPressed.WUp || this.keysPressed.up) this.y -= this.speed;
+        if (this.keysPressed.SDown || this.keysPressed.down) this.y += this.speed;
         
     }
 
