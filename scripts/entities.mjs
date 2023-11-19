@@ -48,8 +48,18 @@ class Player {
         this.mediumSlowBulletSpeed = 7;
         this.slowBulletSpeed = 5;
 
-        //Shoot Speeds
+        //Shoot Clocks
+        this.basicShootClock = 200;
+        this.quickShootClock = 100;
+        this.slowShootClock = 500;
+        this.sniperShootClock = 2000;
 
+        this.mediumShotgunClock = 1500;
+        this.bigShotgunClock = 1000;
+        this.hugeShotgunClock = 2000;
+        this.smallShotgunClock = 1000
+
+        this.lastShotTime = 0;
 
         //Bullets Active
         this.bullets = [];
@@ -112,21 +122,43 @@ class Player {
 
         // Adding bullet to the bullet list
         this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed, damage: this.utils.randint(15, 20)});
+
+        //Updating last shot time
+        this.lastShotTime = Date.now();
+    }
+    leftShootClock(mouseX, mouseY) {
+        //Getting Current Weapon's Shoot Clock
+        let shootClock;
+        if (this.currentWeapon.leftShoot === "basicShoot") shootClock = this.basicShootClock;
+        else if (this.currentWeapon.leftShoot === "quickShoot") shootClock = this.quickShootClock;
+        else if (this.currentWeapon.leftShoot === "slowShoot") shootClock = this.slowShootClock;
+        else if (this.currentWeapon.leftShoot === "sniperShoot") shootClock = this.sniperShootClock;
+
+        //Checking Elapsed Time
+        const timeElapsed = Date.now() - this.lastShotTime;
+
+        // Only allow shooting if at least 1000 milliseconds (1 second) have passed since the last shot
+        if (timeElapsed >= shootClock) {
+            if (this.currentWeapon.leftShoot === "basicShoot") this.basicShoot(mouseX, mouseY)
+            else if (this.currentWeapon.leftShoot === "quickShoot") this.quickShoot(mouseX, mouseY)
+            else if (this.currentWeapon.leftShoot === "slowShoot") this.slowShoot(mouseX, mouseY)
+            else if (this.currentWeapon.leftShoot === "sniperShoot") this.sniperShoot(mouseX, mouseY)
+        } else {
+            console.log("Wait before shooting again!");
+            // You can add an alert or some visual indication here
+        }
     }
 
     //Player Shoot
     playerLeftShoot(mouseX, mouseY) {
-        if (this.currentWeapon.leftShoot === "basicShoot") this.basicShoot(mouseX, mouseY)
-        else if (this.currentWeapon.leftShoot === "quickShoot") this.quickShoot(mouseX, mouseY)
-        else if (this.currentWeapon.leftShoot === "slowShoot") this.slowShoot(mouseX, mouseY)
-        else if (this.currentWeapon.leftShoot === "sniperShoot") this.sniperShoot(mouseX, mouseY)
+        this.leftShootClock(mouseX, mouseY)
     }
 
     playerRightShoot(mouseX, mouseY) {
         if (this.currentWeapon.leftShoot === "mediumShotgun") this.mediumShotgun(mouseX, mouseY)
         else if (this.currentWeapon.leftShoot === "bigShotgun") this.bigShotgun(mouseX, mouseY)
         else if (this.currentWeapon.leftShoot === "hugeShotgun") this.hugeShotgun(mouseX, mouseY)
-        else if (this.currentWeapon.leftShoot === "smallShotgun") this.hugeShotgun(mouseX, mouseY)
+        else if (this.currentWeapon.leftShoot === "smallShotgun") this.smallShotgun(mouseX, mouseY)
     }
 
     // Bullet movement function
