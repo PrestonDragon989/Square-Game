@@ -121,3 +121,6 @@ class Enemy {
         }
     }
 }
+
+//Exporting the Player Class & Enemy Class to Game
+export { Player, Enemy };

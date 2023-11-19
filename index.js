@@ -1,3 +1,8 @@
+//Imports (Player, Enemy, Collision, Utils)
+import { Player, Enemy } from "./scripts/entities.mjs";
+import { Collision } from "./scripts/collisions.mjs";
+import { Utils } from "./scripts/utils.mjs";
+
 // Class Game, to handle all main game features
 class Game {
     constructor() {

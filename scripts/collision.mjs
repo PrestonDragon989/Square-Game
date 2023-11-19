@@ -16,3 +16,6 @@ class Collision {
         if (this.player.y > canvas.height - this.player.height) this.player.y = canvas.height - this.player.height;
     }
 }
+
+//Exporting To the Game Class
+export { Collision };
