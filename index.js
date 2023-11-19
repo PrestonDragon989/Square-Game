@@ -20,6 +20,12 @@ class Game {
         //Utils
         this.utils = new Utils();
 
+        //Pause Icon Info
+        this.pauseIcon = new Image();
+        this.pauseIcon.src = "images/misc/pause-icon.png";
+        this.pauseIconSize = 100;
+        this.gamePaused = false;
+
         // Creating Player Instance, and movement
         this.player = new Player(this.c, this.canvas, 100, 100);
         if (this.canvas) this.handleInput();
@@ -66,6 +72,24 @@ class Game {
                 case "ArrowDown":
                     this.player.keysPressed.down = true;
                     break;
+
+                //Pause Button
+                case "Escape":
+                    if (!this.gamePaused) {
+                    this.gamePaused = true;
+                    break;
+                    } else {
+                        this.gamePaused = false;
+                        break;
+                    }
+                case "p":
+                    if (!this.gamePaused) {
+                    this.gamePaused = true;
+                    break;
+                    } else {
+                        this.gamePaused = false;
+                        break;
+                    }
             }
         });
 
@@ -111,7 +135,7 @@ class Game {
 
         //Left Click Detection
         this.canvas.addEventListener('click', (event) => {
-            this.player.basicShoot(event.offsetX, event.offsetY);
+            if (!this.gamePaused) this.player.basicShoot(event.offsetX, event.offsetY);
             console.log(event.clientX, event.clientY);
         });
 
@@ -124,6 +148,12 @@ class Game {
 
     // Game Logic
     update() {
+        //Game Paused 
+        if (this.gamePaused) {
+            this.c.drawImage(this.pauseIcon, this.canvas.width / 2 - this.pauseIconSize / 2, this.canvas.height / 2 - this.pauseIconSize / 2, this.pauseIconSize, this.pauseIconSize);
+            return;
+        }
+        
         //Player Move
         this.player.handleInput();
 
