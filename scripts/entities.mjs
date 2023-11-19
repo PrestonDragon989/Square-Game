@@ -108,7 +108,7 @@ class Player {
         bullet_vector.normalize();
 
         // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed});
+        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed, damage: this.utils.randint(15, 20)});
     }
 
     // Bullet movement function
