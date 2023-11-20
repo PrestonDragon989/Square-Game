@@ -22,8 +22,8 @@ class Collision {
         //Checking Player Bullet Collisions
         if (this.player.bullets.length > 0) {
             this.player.bullets.forEach(bullet => {
-                if (bullet.rect.x < 0 || bullet.rect.x > canvas.width - bullet.rect.width ||
-                    bullet.rect.y < 0 || bullet.rect.y > canvas.height - bullet.rect.height) {
+                if (bullet.rect.x < -20 || bullet.rect.x > canvas.width - bullet.rect.width + 20 ||
+                    bullet.rect.y < -20 || bullet.rect.y > canvas.height - bullet.rect.height + 20) {
                     // Remove the bullet from the array
                     this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
                 }
