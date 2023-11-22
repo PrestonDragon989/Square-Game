@@ -16,6 +16,13 @@ class Vector2 {
       this.x /= magnitude;
       this.y /= magnitude;
     }
+
+    rotate(angle) {
+      const newX = this.x * Math.cos(angle) - this.y * Math.sin(angle);
+      const newY = this.x * Math.sin(angle) + this.y * Math.cos(angle);
+      this.x = newX;
+      this.y = newY;
+  }
 }
 
 //As much as I hate these dream killing mathematics, we need them. -some book IG

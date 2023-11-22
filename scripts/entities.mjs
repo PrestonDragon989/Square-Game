@@ -272,6 +272,47 @@ class Player {
         } 
     }
 
+    shotgunShoot(mouseX, mouseY, spread, damage, bulletSpeed, bulletSize, numberOfBullets) {
+            // Getting Player Center, mouse click Coords
+        let playerCenterX = this.x + 25;
+        let playerCenterY = this.y + 25;
+
+        // Redining Into Libraries for Ease of use in the code
+        const player_pos = { x: playerCenterX, y: playerCenterY };
+        const mouse_pos = { x: mouseX, y: mouseY };
+
+        // Calculate the angle between player and mouse
+        const angleToMouse = Math.atan2(mouse_pos.y - player_pos.y, mouse_pos.x - player_pos.x);
+
+        // Loop through the specified number of bullets
+        for (let i = 0; i < numberOfBullets; i++) {
+            // Calculate the angle within the specified range
+            const angle = angleToMouse + this.utils.randomFloat(-spread / 2, spread / 2);
+
+            // Making bullet Dimensions
+            const bulletDimensions = {
+                x: player_pos.x,
+                y: player_pos.y,
+                width: bulletSize,
+                height: bulletSize,
+            };
+
+            // Rotate the bullet vector based on the calculated angle
+            let bullet_vector = new Vector2(Math.cos(angle), Math.sin(angle));
+
+            // Adding bullet to the bullet list
+            this.bullets.push({
+                rect: bulletDimensions,
+                vector: bullet_vector,
+                velocity: bulletSpeed,
+                damage: this.utils.randint(damage.min, damage.max),
+            });
+        }
+
+        // Updating last shot time
+        this.lastShotTime = Date.now();
+    }
+
     rightShootClock(mouseX, mouseY) {
         //Getting Current Weapon's Shoot Clock
         let shootClock;
@@ -284,7 +325,7 @@ class Player {
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) {
-            if (this.currentWeapon.rightShoot === "mediumShotgun") this.mediumShotgun(mouseX, mouseY);
+            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 100, this.utils.randint(5,10), this.slowBulletSpeed, this.smallBulletSize, this.utils.randint(6, 9));
             else if (this.currentWeapon.rightShoot === "bigShotgun") this.bigShotgun(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.hugeShotgun(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "smallShotgun") this.smallShotgun(mouseX, mouseY);
