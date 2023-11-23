@@ -273,7 +273,7 @@ class Player {
     }
 
     shotgunShoot(mouseX, mouseY, spread, damage, bulletSpeed, bulletSize, numberOfBullets) {
-            // Getting Player Center, mouse click Coords
+        // Getting Player Center, mouse click Coords
         let playerCenterX = this.x + 25;
         let playerCenterY = this.y + 25;
 
@@ -284,10 +284,23 @@ class Player {
         // Calculate the angle between player and mouse
         const angleToMouse = Math.atan2(mouse_pos.y - player_pos.y, mouse_pos.x - player_pos.x);
 
+        // Calculate the angle increment for each bullet
+        const angleIncrement = spread / numberOfBullets;
+
+        console.log("Angle to Mouse:", angleToMouse);
+        console.log("Angle Increment:", angleIncrement);
+
+        if (isNaN(angleToMouse) || isNaN(angleIncrement)) {
+            console.error("Invalid angle values. Aborting shotgunShoot.");
+            return;
+        }
+
         // Loop through the specified number of bullets
         for (let i = 0; i < numberOfBullets; i++) {
-            // Calculate the angle within the specified range
-            const angle = angleToMouse + this.utils.randomFloat(-spread / 2, spread / 2);
+            // Calculate the angle for the current bullet
+            const angle = angleToMouse - spread / 2 + i * angleIncrement;
+
+            console.log("Bullet Angle:", angle);
 
             // Making bullet Dimensions
             const bulletDimensions = {
@@ -297,8 +310,8 @@ class Player {
                 height: bulletSize,
             };
 
-            // Rotate the bullet vector based on the calculated angle
-            let bullet_vector = new Vector2(Math.cos(angle), Math.sin(angle));
+            // Convert polar coordinates to Cartesian coordinates
+            const bullet_vector = new Vector2(Math.cos(angle), Math.sin(angle));
 
             // Adding bullet to the bullet list
             this.bullets.push({
@@ -312,6 +325,8 @@ class Player {
         // Updating last shot time
         this.lastShotTime = Date.now();
     }
+    
+    
 
     rightShootClock(mouseX, mouseY) {
         //Getting Current Weapon's Shoot Clock
@@ -325,7 +340,7 @@ class Player {
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) {
-            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 100, this.utils.randint(5,10), this.slowBulletSpeed, this.smallBulletSize, this.utils.randint(6, 9));
+            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 90, { min: 5, max: 10 }, this.fastBulletSpeed, this.largeBulletSize, this.utils.randint(6, 9));
             else if (this.currentWeapon.rightShoot === "bigShotgun") this.bigShotgun(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.hugeShotgun(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "smallShotgun") this.smallShotgun(mouseX, mouseY);
@@ -354,7 +369,7 @@ class Player {
     render() {
         //Player Bullets
         if (this.bullets.length > 0) {
-            this.bullets.forEach((bullet) => {
+            this.bullets.forEach((bullet, index) => {
                 this.c.drawImage(this.bulletImg, bullet.rect.x, bullet.rect.y, bullet.rect.width, bullet.rect.height);
             });
         }
