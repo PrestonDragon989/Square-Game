@@ -98,8 +98,8 @@ class Player {
         if (this.keysPressed.SDown || this.keysPressed.down) this.y += this.speed; 
     }
 
-    //Shoot Functions
-    basicShoot(mouseX, mouseY) {
+    //Shoot Function
+    basicShoot(mouseX, mouseY, bulletSize, bulletSpeed, minDamage, maxDamage) {
         //Getting Player Center, mouseclick Coords
         let playerCenterX = this.x + 25
         let playerCenterY = this.y + 25
@@ -115,8 +115,8 @@ class Player {
         const bulletDimensions = {
             x: player_pos.x,
             y: player_pos.y,
-            width: this.mediumBulletSize,
-            height: this.mediumBulletSize
+            width: bulletSize,
+            height: bulletSize
         };
 
         // Getting bullet location
@@ -124,103 +124,12 @@ class Player {
         bullet_vector.normalize();
 
         // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed, damage: this.utils.randint(10, 15)});
+        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: this.utils.randint(minDamage, maxDamage)});
 
         //Updating last shot time
         this.lastShotTime = Date.now();
     }
     
-    quickShoot(mouseX, mouseY) {
-        //Getting Player Center, mouseclick Coords
-        let playerCenterX = this.x + 25
-        let playerCenterY = this.y + 25
-
-        let mouseClickX = mouseX
-        let mouseClickY = mouseY
-
-        //Redining Into Librarys for Ease of use in the code
-        const player_pos = { x: playerCenterX, y: playerCenterY};
-        const mouse_pos = { x: mouseClickX, y: mouseClickY };
-
-        // Making bullet Dimensions 
-        const bulletDimensions = {
-            x: player_pos.x,
-            y: player_pos.y,
-            width: this.smallBulletSize,
-            height: this.smallBulletSize
-        };
-
-        // Getting bullet location
-        const bullet_vector = new Vector2(mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
-        bullet_vector.normalize();
-
-        // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed, damage: this.utils.randint(5, 10)});
-
-        //Updating last shot time
-        this.lastShotTime = Date.now();
-    }
-
-    slowShoot(mouseX, mouseY) {
-        //Getting Player Center, mouseclick Coords
-        let playerCenterX = this.x + 25
-        let playerCenterY = this.y + 25
-
-        let mouseClickX = mouseX
-        let mouseClickY = mouseY
-
-        //Redining Into Librarys for Ease of use in the code
-        const player_pos = { x: playerCenterX, y: playerCenterY};
-        const mouse_pos = { x: mouseClickX, y: mouseClickY };
-
-        // Making bullet Dimensions 
-        const bulletDimensions = {
-            x: player_pos.x,
-            y: player_pos.y,
-            width: this.bigBulletSize,
-            height: this.bigBulletSize
-        };
-
-        // Getting bullet location
-        const bullet_vector = new Vector2(mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
-        bullet_vector.normalize();
-
-        // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumFastBulletSpeed, damage: this.utils.randint(14, 20)});
-
-        //Updating last shot time
-        this.lastShotTime = Date.now();
-    }
-    sniperShoot(mouseX, mouseY) {
-        //Getting Player Center, mouseclick Coords
-        let playerCenterX = this.x + 25
-        let playerCenterY = this.y + 25
-
-        let mouseClickX = mouseX
-        let mouseClickY = mouseY
-
-        //Redining Into Librarys for Ease of use in the code
-        const player_pos = { x: playerCenterX, y: playerCenterY};
-        const mouse_pos = { x: mouseClickX, y: mouseClickY };
-
-        // Making bullet Dimensions 
-        const bulletDimensions = {
-            x: player_pos.x,
-            y: player_pos.y,
-            width: this.largeBulletSize,
-            height: this.largeBulletSize
-        };
-
-        // Getting bullet location
-        const bullet_vector = new Vector2(mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
-        bullet_vector.normalize();
-
-        // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.extremelyFastBulletSpeed, damage: this.utils.randint(40, 50)});
-
-        //Updating last shot time
-        this.lastShotTime = Date.now();
-    }
     leftShootClock(mouseX, mouseY) {
         //Getting Current Weapon's Shoot Clock
         let shootClock;
@@ -234,10 +143,10 @@ class Player {
 
         // Only allow shooting if at least 1000 milliseconds (1 second) have passed since the last shot
         if (timeElapsed >= shootClock) {
-            if (this.currentWeapon.leftShoot === "basicShoot") this.basicShoot(mouseX, mouseY);
-            else if (this.currentWeapon.leftShoot === "quickShoot") this.quickShoot(mouseX, mouseY);
-            else if (this.currentWeapon.leftShoot === "slowShoot") this.slowShoot(mouseX, mouseY);
-            else if (this.currentWeapon.leftShoot === "sniperShoot") this.sniperShoot(mouseX, mouseY);
+            if (this.currentWeapon.leftShoot === "basicShoot") this.basicShoot(mouseX, mouseY, this.mediumBulletSize, this.mediumBulletSpeed, 10, 15);
+            else if (this.currentWeapon.leftShoot === "quickShoot") this.basicShoot(mouseX, mouseY, this.smallBulletSize, this.mediumBulletSpeed, 5, 10);
+            else if (this.currentWeapon.leftShoot === "slowShoot") this.basicShoot(mouseX, mouseY, this.bigBulletSize, this.mediumFastBulletSpeed, 17, 23);
+            else if (this.currentWeapon.leftShoot === "sniperShoot") this.basicShoot(mouseX, mouseY, this.largeBulletSize, this.extremelyFastBulletSpeed, 50, 60);
         } 
     }
 
@@ -292,7 +201,7 @@ class Player {
         }
 
         // Updating last shot time
-        this.lastShotTime = Date.now();
+        this.lastShotgunTime = Date.now();
     }
     
     
@@ -306,9 +215,9 @@ class Player {
         else if (this.currentWeapon.rightShoot === "smallShotgun") shootClock = this.smallShotgunClock;
 
         //Checking Elapsed Time
-        const timeElapsed = Date.now() - this.lastShotgunTime;
+        const shotgunTimeElapsed = Date.now() - this.lastShotgunTime;
 
-        if (timeElapsed >= shootClock) {
+        if (shotgunTimeElapsed >= shootClock) {
             if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 90, { min: 5, max: 10 }, this.fastBulletSpeed, this.largeBulletSize, this.utils.randint(6, 9));
             else if (this.currentWeapon.rightShoot === "bigShotgun") this.bigShotgun(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.hugeShotgun(mouseX, mouseY);
