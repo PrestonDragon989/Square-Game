@@ -33,7 +33,7 @@ class Player {
 
         //Bullet Image
         this.bulletImg = new Image();
-        this.bulletImg.src = "images/entities/player/player-square.png";
+        this.bulletImg.src = "images/entities/player/player-bullet.png";
 
         //Bullet Sizes
         this.largeBulletSize = 20;
@@ -99,37 +99,6 @@ class Player {
     }
 
     //Shoot Functions
-    basicShoot(mouseX, mouseY) {
-        //Getting Player Center, mouseclick Coords
-        let playerCenterX = this.x + 25
-        let playerCenterY = this.y + 25
-
-        let mouseClickX = mouseX
-        let mouseClickY = mouseY
-
-        //Redining Into Librarys for Ease of use in the code
-        const player_pos = { x: playerCenterX, y: playerCenterY};
-        const mouse_pos = { x: mouseClickX, y: mouseClickY };
-
-        // Making bullet Dimensions 
-        const bulletDimensions = {
-            x: player_pos.x,
-            y: player_pos.y,
-            width: this.mediumBulletSize,
-            height: this.mediumBulletSize
-        };
-
-        // Getting bullet location
-        const bullet_vector = new Vector2(mouse_pos.x - player_pos.x, mouse_pos.y - player_pos.y);
-        bullet_vector.normalize();
-
-        // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: this.mediumBulletSpeed, damage: this.utils.randint(15, 20)});
-
-        //Updating last shot time
-        this.lastShotTime = Date.now();
-    }
-
     basicShoot(mouseX, mouseY) {
         //Getting Player Center, mouseclick Coords
         let playerCenterX = this.x + 25
