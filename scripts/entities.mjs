@@ -72,8 +72,8 @@ class Player {
         //Current Weapon
         this.currentWeapon = {
             //Current Weapon
-            leftShoot: "sniperShoot",
-            rightShoot: "smallShotgun"
+            leftShoot: "basicShoot",
+            rightShoot: "mediumShotgun"
         };
 
         //Player Keys
