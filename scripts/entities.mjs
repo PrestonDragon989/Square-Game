@@ -58,7 +58,7 @@ class Player {
         this.sniperShootClock = 2000;
 
         this.mediumShotgunClock = 1700;
-        this.bigShotgunClock = 1700;
+        this.bigShotgunClock = 2500;
         this.hugeShotgunClock = 2000;
         this.smallShotgunClock = 1350
         this.bazookaShootClock = 3500;
@@ -73,7 +73,7 @@ class Player {
         this.currentWeapon = {
             //Current Weapon
             leftShoot: "sniperShoot",
-            rightShoot: "bazooka"
+            rightShoot: "bigShotgun"
         };
 
         //Player Keys
@@ -223,7 +223,7 @@ class Player {
 
         if (timeElapsed >= shootClock) {
             if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 50, { min: 5, max: 10 }, this.fastBulletSpeed, this.largeBulletSize, this.utils.randint(6, 9));
-            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY, 100, {min: 4, max: 9}, this.slowBulletSpeed, this.mediumBulletSize, this.utils.randint(15, 19));
+            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY, 90, {min: 4, max: 9}, this.mediumSlowBulletSpeed, this.mediumBulletSize, this.utils.randint(8, 12));
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.shotgunShoot(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "smallShotgun") this.shotgunShoot(mouseX, mouseY, 10, {min: 3, max: 8}, this.fastBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(6, 9));
             else if (this.currentWeapon.rightShoot === "bazooka") this.shotgunShoot(mouseX, mouseY, 120, {min: 9, max: 15}, this.fastBulletSpeed, this.mediumBulletSize, this.utils.randint(100, 200));
@@ -276,26 +276,10 @@ class Enemy {
         //Player
         this.player = Player;
 
-        //Enemy Images
-        this.basicRedEnemyImg = {
-            //Red Enemies
-            "small-red": "images/entities/enemies/basicRedEnemies/small-red-enemy.png",
-            "medium-red": "images/entities/enemies/basicRedEnemies/medium-red-enemy.png",
-            "complex-red": "images/entities/enemies/basicRedEnemies/complex-red-enemy.png",
+        //Getting Enemies JSON File
+        this.basicEnemyData = this.utils.getJson("gameData/basicEnemies.json");
 
-            //Maroon Enemies
-            "small-maroon": "images/entities/enemies/basicRedEnemies/small-maroon-enemy.png",
-            "medium-maroon": "images/entities/enemies/basicRedEnemies/medium-maroon-enemy.png",
-            "complex-maroon": "images/entities/enemies/basicRedEnemies/complex-maroon-enemy.png",
-                        
-            //Dark Red Enemies
-            "small-darkRed": "images/entities/enemies/basicRedEnemies/small-dark-enemy.png",
-            "medium-darkRed": "images/entities/enemies/basicRedEnemies/medium-dark-enemy.png",
-            "complex-darkRed": "images/entities/enemies/basicRedEnemies/complex-dark-enemy.png",
-        };
-        this.bossEnemyImg = {
-            "purple-summoner": "images/entities/enemies/bosses/purple-summoner.png",
-        };
+        console.log(this.basicEnemyData);
 
         //Current Enemies
         this.basicEnemies = [];
