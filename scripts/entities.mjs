@@ -61,6 +61,7 @@ class Player {
         this.bigShotgunClock = 1700;
         this.hugeShotgunClock = 2000;
         this.smallShotgunClock = 1350
+        this.bazookaShootClock = 3500;
 
         this.lastShotTime = 0;
         this.lastShotgunTime = 0;
@@ -72,7 +73,7 @@ class Player {
         this.currentWeapon = {
             //Current Weapon
             leftShoot: "sniperShoot",
-            rightShoot: "smallShotgun"
+            rightShoot: "bazooka"
         };
 
         //Player Keys
@@ -215,15 +216,17 @@ class Player {
         else if (this.currentWeapon.rightShoot === "bigShotgun") shootClock = this.bigShotgunClock;
         else if (this.currentWeapon.rightShoot === "hugeShotgun") shootClock = this.hugeShotgunClock
         else if (this.currentWeapon.rightShoot === "smallShotgun") shootClock = this.smallShotgunClock;
+        else if (this.currentWeapon.rightShoot === "bazooka") shootClock = this.bazookaShootClock;
 
         //Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) {
             if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 50, { min: 5, max: 10 }, this.fastBulletSpeed, this.largeBulletSize, this.utils.randint(6, 9));
-            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY);
+            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY, 100, {min: 4, max: 9}, this.slowBulletSpeed, this.mediumBulletSize, this.utils.randint(15, 19));
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.shotgunShoot(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "smallShotgun") this.shotgunShoot(mouseX, mouseY, 10, {min: 3, max: 8}, this.fastBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(6, 9));
+            else if (this.currentWeapon.rightShoot === "bazooka") this.shotgunShoot(mouseX, mouseY, 120, {min: 9, max: 15}, this.fastBulletSpeed, this.mediumBulletSize, this.utils.randint(100, 200));
         } 
     }
 
