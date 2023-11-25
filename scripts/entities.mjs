@@ -39,6 +39,7 @@ class Player {
         this.largeBulletSize = 20;
         this.bigBulletSize = 18;
         this.mediumBulletSize = 13;
+        this.mediumSmallBulletSize = 11;
         this.smallBulletSize = 9;
 
         //Bullet Speeds
@@ -56,10 +57,10 @@ class Player {
         this.slowShootClock = 500;
         this.sniperShootClock = 2000;
 
-        this.mediumShotgunClock = 1250;
+        this.mediumShotgunClock = 1700;
         this.bigShotgunClock = 1700;
         this.hugeShotgunClock = 2000;
-        this.smallShotgunClock = 1000
+        this.smallShotgunClock = 1350
 
         this.lastShotTime = 0;
         this.lastShotgunTime = 0;
@@ -71,7 +72,7 @@ class Player {
         this.currentWeapon = {
             //Current Weapon
             leftShoot: "sniperShoot",
-            rightShoot: "mediumShotgun"
+            rightShoot: "smallShotgun"
         };
 
         //Player Keys
@@ -156,18 +157,18 @@ class Player {
         let playerCenterX = this.x + 25;
         let playerCenterY = this.y + 25;
 
-        // Redining Into Libraries for Ease of use in the code
+        // Redefining Into Libraries for Ease of use in the code
         const player_pos = { x: playerCenterX, y: playerCenterY };
         const mouse_pos = { x: mouseX, y: mouseY };
 
         // Calculate the angle between player and mouse
         const angleToMouse = Math.atan2(mouse_pos.y - player_pos.y, mouse_pos.x - player_pos.x);
 
-        // Calculate the angle increment for each bullet
-        const angleIncrement = spread / numberOfBullets;
+        // Convert spread from degrees to radians
+        const spreadRadians = spread * (Math.PI / 180);
 
-        console.log("Angle to Mouse:", angleToMouse);
-        console.log("Angle Increment:", angleIncrement);
+        // Calculate the angle increment based on the number of bullets
+        const angleIncrement = spreadRadians / (numberOfBullets - 1);
 
         if (isNaN(angleToMouse) || isNaN(angleIncrement)) {
             console.error("Invalid angle values. Aborting shotgunShoot.");
@@ -177,7 +178,7 @@ class Player {
         // Loop through the specified number of bullets
         for (let i = 0; i < numberOfBullets; i++) {
             // Calculate the angle for the current bullet
-            const angle = angleToMouse - spread / 2 + i * angleIncrement;
+            const angle = angleToMouse - spreadRadians / 2 + i * angleIncrement;
 
             console.log("Bullet Angle:", angle);
 
@@ -220,9 +221,9 @@ class Player {
 
         if (timeElapsed >= shootClock) {
             if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 50, { min: 5, max: 10 }, this.fastBulletSpeed, this.largeBulletSize, this.utils.randint(6, 9));
-            else if (this.currentWeapon.rightShoot === "bigShotgun") this.bigShotgun(mouseX, mouseY);
-            else if (this.currentWeapon.rightShoot === "hugeShotgun") this.hugeShotgun(mouseX, mouseY);
-            else if (this.currentWeapon.rightShoot === "smallShotgun") this.smallShotgun(mouseX, mouseY);
+            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY);
+            else if (this.currentWeapon.rightShoot === "hugeShotgun") this.shotgunShoot(mouseX, mouseY);
+            else if (this.currentWeapon.rightShoot === "smallShotgun") this.shotgunShoot(mouseX, mouseY, 10, {min: 3, max: 8}, this.fastBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(6, 9));
         } 
     }
 
