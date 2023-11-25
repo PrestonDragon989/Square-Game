@@ -73,7 +73,7 @@ class Player {
         this.currentWeapon = {
             //Current Weapon
             leftShoot: "sniperShoot",
-            rightShoot: "bigShotgun"
+            rightShoot: "bazooka"
         };
 
         //Player Keys

@@ -8,7 +8,7 @@
             "width": 50,
             "height": 50
         },
-        "damage": {"min": 10, "max": 20},
+        "contactDamage": {"min": 10, "max": 20},
         "speed": {"min": 2, "max": 3}
     },
     "mediumRedEnemy": {
@@ -32,7 +32,34 @@
             "width": 100,
             "height": 100
         },
-        "damage": {"min": 40, "max": 30},
+        "contactDamage": {"min": 40, "max": 30},
         "speed": {"min": 4, "max": 6}
+    },
+
+    "basicGreenEnemy": {
+        "image": "images/entities/enemies/basicGreenEnemies/basic-green-enemy.png",
+        "HP": {"min": 60, "max": 90},
+        "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 50,
+            "height": 50
+        },
+        "contactDamage": {"min": 7, "max": 12},
+        "shootDamage": {"min": 12, "max": 18},
+        "speed": {"min": 2, "max": 3}
+    },
+    "mediumGreenEnemy": {
+        "image": "images/entities/enemies/basicGreenEnemies/medium-green-enemy.png",
+        "HP": {"min": 100, "max": 140},
+        "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 75,
+            "height": 75
+        },
+        "contactDamage": {"min": 10, "max": 26},
+        "shootDamage": {"min": 16, "max": 23},
+        "speed": {"min": 3, "max": 4}
     }
 }
