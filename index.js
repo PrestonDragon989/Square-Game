@@ -196,26 +196,26 @@ class Game {
         });
     }
     devCheckCommand() {
-        if (this.devCommand === "stop" || this.devCommand == "end") {this.devMode = false; this.player.img.src = "images/entities/player/player-square.png";}
-        else if (this.devCommand === "list") alert("You can enter in a command by Pressing /.\nYou can see this list again by typing in the command \"list\".\nHere is a list of commands you can do:\n\n  -1. End / Stop (Ends Dev Mode)\n  -2. List (Shows a List of Commands)\n  -3. Weapon (Changes a weapon you have (Left or Right))\n  -4. Health (Adds or Subtracts Health from the Player)");
-        else if (this.devCommand === "weapon" || this.devCommand === "weapons") {
+        if (this.devCommand.toLocaleLowerCase() === "stop" || this.devCommand.toLocaleLowerCase() == "end") {this.devMode = false; this.player.img.src = "images/entities/player/player-square.png";}
+        else if (this.devCommand.toLocaleLowerCase() === "list") alert("You can enter in a command by Pressing /.\nYou can see this list again by typing in the command \"list\".\nHere is a list of commands you can do:\n\n  -1. End / Stop (Ends Dev Mode)\n  -2. List (Shows a List of Commands)\n  -3. Weapon (Changes a weapon you have (Left or Right))\n  -4. Health (Adds or Subtracts Health from the Player)");
+        else if (this.devCommand.toLocaleLowerCase() === "weapon" || this.devCommand.toLocaleLowerCase() === "weapons") {
             let changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\".");
             if (changeWeapon === "list") {
                 alert("Here is a list of all the weapons:\n\n  Left Weapons\n  1. basicShoot\n  2. quickShoot\n  3. slowShoot\n  4. sniperShoot\n\n Right Weapons\n  1. mediumShotgun\n  2. bigShotgun\n  3. hugeShotgun\n  4. smallShotgun\n  5. bazooka");
-                changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\".");
-                if (changeWeapon === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to:")
+                changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\". Warning, this is Case sensitive.");
+                if (changeWeapon.toLocaleLowerCase() === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to. Warning, this is Case sensitive.")
                     if (changeWeapon != "") this.player.currentWeapon.leftShoot = changeWeapon;
                 } else {
                 changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
                 if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
             }
-            } else if (changeWeapon === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to:")
+            } else if (changeWeapon.toLocaleLowerCase() === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to. Warning, this is Case sensitive.")
             if (changeWeapon != "") this.player.currentWeapon.leftShoot = changeWeapon;
             } else {
                 changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
                 if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
             }
-        } else if (this.devCommand === "health") {
+        } else if (this.devCommand.toLocaleLowerCase() === "health") {
             let increaseHealth = prompt("Enter how much you wish to increase the health of the player by:");
             if (increaseHealth!= "" && parseInt(increaseHealth) != NaN) this.player.health += parseInt(increaseHealth);
         } 
