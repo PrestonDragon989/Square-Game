@@ -140,6 +140,7 @@ class Player {
         else if (this.currentWeapon.leftShoot === "quickShoot") shootClock = this.quickShootClock;
         else if (this.currentWeapon.leftShoot === "slowShoot") shootClock = this.slowShootClock;
         else if (this.currentWeapon.leftShoot === "sniperShoot") shootClock = this.sniperShootClock;
+        else console.log(`Weapon not Found. ${this.currentWeapon.leftShoot} is not a valid weapon.`)
 
         //Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotTime;
@@ -215,6 +216,7 @@ class Player {
         else if (this.currentWeapon.rightShoot === "hugeShotgun") shootClock = this.hugeShotgunClock
         else if (this.currentWeapon.rightShoot === "smallShotgun") shootClock = this.smallShotgunClock;
         else if (this.currentWeapon.rightShoot === "bazooka") shootClock = this.bazookaShootClock;
+        else console.log(`Weapon not Found. ${this.currentWeapon.rightShoot} is not a valid weapon.`)
 
         //Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotgunTime;

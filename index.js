@@ -36,7 +36,19 @@ class Game {
         //Collisions
         this.collision = new Collision(this.player, this.enemy);
 
-        this.enemy.spawnEnemy([1, 2], 5, this.enemy.basicEnemyData["basicRedEnemy"], "Uwu");
+        //Dev Mode
+        this.devMode = false;
+        this.devAlert = false;
+        this.devCommand = "";
+        this.devKeys = {
+            alt: false,
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+        };
+
+        //this.enemy.spawnEnemy([1, 2], 5, this.enemy.basicEnemyData["basicRedEnemy"], "Uwu");
 
         // Starting Game
         this.gameLoop();
@@ -92,6 +104,26 @@ class Game {
                         this.gamePaused = false;
                         break;
                     }
+
+                //Dev Mode 
+                case "Enter":
+                    this.devKeys.alt = true;
+                    break;
+                case "1":
+                    this.devKeys[1] = true;
+                    break;
+                case "2":
+                    this.devKeys[2] = true;
+                    break;
+                case "3":
+                    this.devKeys[3] = true;
+                    break;
+                case "4":
+                    this.devKeys[4] = true;
+                    break;
+
+                case "/":
+                    if (this.devMode) this.devCommand = prompt("Enter Dev Command: ");
             }
         });
 
@@ -125,6 +157,23 @@ class Game {
                 case "ArrowDown":
                     this.player.keysPressed.down = false;
                     break;
+
+                //Dev Mode 
+                case "Enter":
+                    this.devKeys.alt = false;
+                    break;
+                case "1":
+                    this.devKeys[1] = false;
+                    break;
+                case "2":
+                    this.devKeys[2] = false;
+                    break;
+                case "3":
+                    this.devKeys[3] = false;
+                    break;
+                case "4":
+                    this.devKeys[4] = false;
+                    break;
             }
         });
 
@@ -146,6 +195,32 @@ class Game {
             event.preventDefault();
         });
     }
+    devCheckCommand() {
+        if (this.devCommand === "stop" || this.devCommand == "end") {this.devMode = false; this.player.img.src = "images/entities/player/player-square.png";}
+        else if (this.devCommand === "list") alert("You can enter in a command by Pressing /.\nYou can see this list again by typing in the command \"list\".\nHere is a list of commands you can do:\n\n  -1. End / Stop (Ends Dev Mode)\n  -2. List (Shows a List of Commands)\n  -3. Weapon (Changes a weapon you have (Left or Right))\n  -4. Health (Adds or Subtracts Health from the Player)");
+        else if (this.devCommand === "weapon") {
+            let changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\".");
+            if (changeWeapon === "list") {
+                alert("Here is a list of all the weapons:\n\n  Left Weapons\n  1. basicShoot\n  2. quickShoot\n  3. slowShoot\n  4. sniperShoot\n\n Right Weapons\n  1. mediumShotgun\n  2. bigShotgun\n  3. hugeShotgun\n  4. smallShotgun\n  5. bazooka");
+                changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\".");
+                if (changeWeapon === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to:")
+                    if (changeWeapon != "") this.player.currentWeapon.leftShoot = changeWeapon;
+                } else {
+                changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
+                if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
+            }
+            } else if (changeWeapon === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to:")
+            if (changeWeapon != "") this.player.currentWeapon.leftShoot = changeWeapon;
+            } else {
+                changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
+                if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
+            }
+        } else if (this.devCommand === "health") {
+            let increaseHealth = prompt("Enter how much you wish to increase the health of the player by:");
+            if (increaseHealth!= "" && parseInt(increaseHealth) != NaN) this.player.health += parseInt(increaseHealth);
+        } 
+        this.devCommand = "";
+    }
 
     // Game Logic
     update() {
@@ -155,6 +230,24 @@ class Game {
             return;
         }
         
+        //Dev Mode Features
+        if (this.devKeys.alt && this.devKeys[1] && this.devKeys[2] && this.devKeys[3] && this.devKeys[4]) {
+            this.devMode = true;
+            this.devKeys.alt = false;
+            this.devKeys [1] = false;
+            this.devKeys [2] = false;
+            this.devKeys [3] = false;
+            this.devKeys [4] = false;
+            this.player.img.src = "images/entities/player/dev-mode-square.png";
+            if (!this.devAlert) {
+                this.devAlert = true;
+                if (confirm("Dev Mode is Enabled.\nYou can enter a command by Pressing Enter.\nPress OK to see a list of commands you can do. ")) {
+                    alert("You can enter in a command by Pressing /.\nYou can see this list again by typing in the command \"list\".\nHere is a list of commands you can do:\n\n  -1. End / Stop (Ends Dev Mode)\n  -2. List (Shows a List of Commands)\n  -3. Weapon (Changes a weapon you have (Left or Right))\n  -4. Health (Adds or Subtracts Health from the Player)");
+                }
+            }
+        } else if (!this.devMode) this.devAlert = false;
+        if (this.devCommand != "") this.devCheckCommand();
+
         //Player Move
         this.player.handleInput();
 
