@@ -198,7 +198,7 @@ class Game {
     devCheckCommand() {
         if (this.devCommand === "stop" || this.devCommand == "end") {this.devMode = false; this.player.img.src = "images/entities/player/player-square.png";}
         else if (this.devCommand === "list") alert("You can enter in a command by Pressing /.\nYou can see this list again by typing in the command \"list\".\nHere is a list of commands you can do:\n\n  -1. End / Stop (Ends Dev Mode)\n  -2. List (Shows a List of Commands)\n  -3. Weapon (Changes a weapon you have (Left or Right))\n  -4. Health (Adds or Subtracts Health from the Player)");
-        else if (this.devCommand === "weapon") {
+        else if (this.devCommand === "weapon" || this.devCommand === "weapons") {
             let changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\".");
             if (changeWeapon === "list") {
                 alert("Here is a list of all the weapons:\n\n  Left Weapons\n  1. basicShoot\n  2. quickShoot\n  3. slowShoot\n  4. sniperShoot\n\n Right Weapons\n  1. mediumShotgun\n  2. bigShotgun\n  3. hugeShotgun\n  4. smallShotgun\n  5. bazooka");
@@ -269,6 +269,9 @@ class Game {
 
         // Rendering Player
         this.player.render();
+
+        // Paues Icon
+        if (this.gamePaused) this.c.drawImage(this.pauseIcon, (this.canvas.width / 2 - 100), (this.canvas.height / 2 - 100), 200, 200);
     }
 
     // The game loop function
