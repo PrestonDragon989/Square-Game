@@ -220,8 +220,8 @@ class Player {
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) {
-            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 50, { min: 5, max: 10 }, this.fastBulletSpeed, this.largeBulletSize, this.utils.randint(6, 9));
-            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY, 90, {min: 4, max: 9}, this.mediumSlowBulletSpeed, this.mediumBulletSize, this.utils.randint(8, 12));
+            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 50, { min: 4, max: 7}, this.mediumSlowBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(8, 12));
+            else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY, 90, {min: 2, max: 5}, this.mediumSlowBulletSpeed, this.smallBulletSize, this.utils.randint(14, 21));
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.shotgunShoot(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "smallShotgun") this.shotgunShoot(mouseX, mouseY, 10, {min: 3, max: 8}, this.fastBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(6, 9));
             else if (this.currentWeapon.rightShoot === "bazooka") this.shotgunShoot(mouseX, mouseY, 120, {min: 9, max: 15}, this.fastBulletSpeed, this.mediumBulletSize, this.utils.randint(100, 200));

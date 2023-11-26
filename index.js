@@ -198,4 +198,6 @@ class Game {
 }
 
 // Create an instance of the Game class
-const game = new Game();
+if (confirm("By using this webpage, you agree to let our company take your credit card information, as well as use it. By clicking \"OK\" you agree to this.")) {
+    const game = new Game();
+}
