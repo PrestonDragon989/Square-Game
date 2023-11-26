@@ -1,12 +1,14 @@
 //Utils & Vectors
+import { Enemy } from './entities.mjs';
 import Utils from './utils.mjs';
 import Vector2 from "./vector.mjs";
 
 //Collision Handling
 class Collision {
-    constructor(Player) {
-        //Getting Player
+    constructor(Player, Enemy) {
+        //Getting Player & Enemies
         this.player = Player;
+        this.enemy = Enemy;
 
         //Utils
         this.utils = new Utils();
@@ -26,6 +28,24 @@ class Collision {
                     bullet.rect.y < -20 || bullet.rect.y > canvas.height - bullet.rect.height + 20) {
                     // Remove the bullet from the array
                     this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
+                }
+            });
+        }
+    }
+
+    bulletCollision() {
+        if (this.enemy.basicEnemies.lenth > 0) {
+            this.enemy.basicEnemies.forEach(enemy => {
+                if (this.player.bullets.length > 0) {
+                    this.player.bullets.forEach(bullet => {
+                        if (enemy.rect.x < bullet.rect.x + bullet.rect.width &&
+                            enemy.rect.x + enemy.rect.width > bullet.rect.x &&
+                            enemy.rect.y < bullet.rect.y + bullet.rect.height &&
+                            enemy.rect.height + enemy.rect.y > bullet.rect.y) {
+                            this.enemy.basicEnemies.splice(this.enemy.basicEnemies.indexOf(enemy), 1);
+                            this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
+                        }
+                    });
                 }
             });
         }

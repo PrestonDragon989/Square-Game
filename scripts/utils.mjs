@@ -15,23 +15,22 @@ class Utils {
         return Math.random() * (max - min) + min;
     }
 
-    getJson(jsonPath) {
-        fetch(jsonPath)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          let x = "I need to do something here. . . ";
-          // Do something with the JSON data here
-        })
-        .catch(error => {
-          console.error('Error fetching or parsing JSON file:', error);
-        });
-        }  
+    async getJson(jsonPath) {
+      try {
+        const response = await fetch(jsonPath);
+    
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+    
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching or parsing JSON file:', error);
+        throw error; // Re-throw the error to be caught by the caller, if needed
+      }
     }
+  }
 
 //Exporting Utils to All of the Good boys and girls of this world who need it <3
 export default Utils;

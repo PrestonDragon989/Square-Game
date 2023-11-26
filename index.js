@@ -34,7 +34,9 @@ class Game {
         this.enemy = new Enemy(this.canvas, this.c, this.player);
 
         //Collisions
-        this.collision = new Collision(this.player);
+        this.collision = new Collision(this.player, this.enemy);
+
+        this.enemy.spawnEnemy([1, 2], 5, this.enemy.basicEnemyData["basicRedEnemy"], "Uwu");
 
         // Starting Game
         this.gameLoop();
@@ -198,6 +200,6 @@ class Game {
 }
 
 // Create an instance of the Game class
-if (confirm("By using this webpage, you agree to let our company take your credit card information, as well as use it. By clicking \"OK\" you agree to this.")) {
+//if (confirm("By using this webpage, you agree to let our company take your credit card information, as well as use it. By clicking \"OK\" you agree to this.")) {
     const game = new Game();
-}
+//}

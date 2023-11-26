@@ -275,7 +275,16 @@ class Enemy {
         this.player = Player;
 
         //Getting Enemies JSON File
-        this.basicEnemyData = this.utils.getJson("gameData/basicEnemies.json");
+        this.basicEnemyData = null;
+        this.utils.getJson("gameData/basicEnemies.json")
+        .then(data => {
+            console.log(data);
+            this.basicEnemyData = data;
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        
 
         //Current Enemies
         this.basicEnemies = [];
@@ -325,7 +334,7 @@ class Enemy {
         if (this.basicEnemies.length !== 0){
             //Rendering Each enemy in the Array
             this.basicEnemies.forEach(enemy => {
-
+                this.c.drawImage(enemy[0], enemy[1], enemy[y], enemy[2]["width"], enemy[2]["height"])
             });
         }
         if (this.bossEnemies.length !== 0){
