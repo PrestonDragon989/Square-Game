@@ -276,21 +276,28 @@ class Enemy {
         //Player
         this.player = Player;
 
-        //Getting Enemies JSON File
-        this.basicEnemyData = null;
-        this.utils.getJson("gameData/basicEnemies.json")
-        .then(data => {
-            console.log(data);
-            this.basicEnemyData = data;
-        })
-        .catch(error => {
-            console.error(error);
-        });
-        
-
         //Current Enemies
         this.basicEnemies = [];
         this.bossEnemies = [];
+
+        //Load Enemy Data
+        this.loadEnemies()
+            .then(() => {
+                // Continue with the initialization or game setup logic
+                console.log(this.basicEnemyData)
+            })
+            .catch((error) => {
+                console.error("Error loading enemies:", error);
+            });
+    }
+
+    async loadEnemies() {
+        try {
+            // Getting Enemies JSON File
+            this.basicEnemyData = await this.utils.getJson("gameData/basicEnemies.json");
+        } catch (error) {
+            throw error;
+        }
     }
     
     //Easy Functions for Enemies
@@ -336,7 +343,7 @@ class Enemy {
         if (this.basicEnemies.length !== 0){
             //Rendering Each enemy in the Array
             this.basicEnemies.forEach(enemy => {
-                this.c.drawImage(enemy[0], enemy[1], enemy[y], enemy[2]["width"], enemy[2]["height"])
+                this.c.drawImage(enemy[0], enemy[1], enemy[2]["y"], enemy[2]["width"], enemy[2]["height"]);
             });
         }
         if (this.bossEnemies.length !== 0){

@@ -15,19 +15,14 @@ class Utils {
         return Math.random() * (max - min) + min;
     }
 
-    async getJson(jsonPath) {
+    async getJson(filePath) {
       try {
-        const response = await fetch(jsonPath);
-    
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-    
-        const data = await response.json();
-        return data;
+        const response = await fetch(filePath);
+        const jsonData = await response.json();
+        return jsonData;
       } catch (error) {
-        console.error('Error fetching or parsing JSON file:', error);
-        throw error; // Re-throw the error to be caught by the caller, if needed
+        console.error('Error fetching or parsing the JSON file:', error);
+        return null;
       }
     }
   }
