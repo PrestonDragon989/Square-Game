@@ -24,7 +24,7 @@ class Utils {
           return response.json();
         })
         .then(data => {
-          console.log(data);
+          let x = "I need to do something here. . . ";
           // Do something with the JSON data here
         })
         .catch(error => {

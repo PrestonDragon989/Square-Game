@@ -181,8 +181,6 @@ class Player {
             // Calculate the angle for the current bullet
             const angle = angleToMouse - spreadRadians / 2 + i * angleIncrement;
 
-            console.log("Bullet Angle:", angle);
-
             // Making bullet Dimensions
             const bulletDimensions = {
                 x: player_pos.x,
@@ -279,8 +277,6 @@ class Enemy {
         //Getting Enemies JSON File
         this.basicEnemyData = this.utils.getJson("gameData/basicEnemies.json");
 
-        console.log(this.basicEnemyData);
-
         //Current Enemies
         this.basicEnemies = [];
         this.bossEnemies = [];
@@ -293,10 +289,36 @@ class Enemy {
         while (true) {
             x = this.utils.randint(0, this.canvas.width - width)
             y = this.utils.randint(0, this.canvas.height - height)
-            break;
+
+            //Checking if the spawn location is within the range of the player
+            if (x in Range(this.player.x - spawnAway, this.player.x + this.player.width + spawnAway) || y in Range(this.player.y - spawnAway, this.player.y + this.player.height + spawnAway)) {
+                continue;
+            } /* Checking to see if the enemy goes out of bounds */ else if (x + width > this.canvas.width || y + height > this.canvas.height) {
+                continue;
+            } else break;
         }
         //Returning the Position
         return (x, y);
+    }
+
+    spawnEnemy(specficPos, spawnAway, enemyType, AI) {
+        // Getting Position of Enemy Spawn (If custom, set custom. If not, generate coords.)
+        let x, y;
+        if (specficPos[0] === null || specficPos[1] === null) {
+            x, y = this.randomSpawn(enemyType["height"], enemyType["width"], spawnAway);
+        } else { x = specficPos[0], y = specficPos[1]; }
+        
+        //Getting Enemy Stats & Image
+        let enemyImg = new Image();
+        enemyImg.src = enemyType["image"];
+
+        let contactDamage = this.utils.randint(enemyType["contactDamage"]["min"], enemyType["contactDamage"]["max"]);
+        let bulletDamage = this.utils.randint(enemyType["bulletDamage"]["min"], enemyType["bulletDamage"]["max"]);
+
+        /* Enemy Array Structure:
+            Image, X, Y, Enemy Rect (From JSON Info), Contact Damage, Bullet Damage, AI
+        */
+        this.basicEnemies.push([enemyImg, x, y, enemyType["rect"], contactDamage, bulletDamage, AI])
     }
 
     render() {

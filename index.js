@@ -169,6 +169,9 @@ class Game {
         this.c.fillStyle = "rgb(45, 45, 45)";
         this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Rendering Enemy
+        this.enemy.render();
+
         // Rendering Player
         this.player.render();
     }
