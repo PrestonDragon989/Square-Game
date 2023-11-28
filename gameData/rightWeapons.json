@@ -1,10 +1,70 @@
 {
     "defaultShotgun": {
         "shootClock": 1750,
-        "bulletSize": 9,
+        "bulletSize": 11,
         "bulletSpeed": 9,
         "bullets": {"min": 7, "max": 10},
         "spread": 50,
-        "damage": {"min": 10, "max": 15}
+        "damage": {"min": 9, "max": 13}
+    },
+    "veryFastShotgun": {
+        "shootClock": 800,
+        "bulletSize": 7,
+        "bulletSpeed": 15,
+        "bullets": {"min": 5, "max": 6},
+        "spread": 10,
+        "damage": {"min": 3, "max": 5}
+    },
+    "fastShotgun": {
+        "shootClock": 1000,
+        "bulletSize": 9,
+        "bulletSpeed": 13,
+        "bullets": {"min": 5, "max": 6},
+        "spread": 20,
+        "damage": {"min": 5, "max": 7}
+    },
+    "mediumfastShotgun": {
+        "shootClock": 1300,
+        "bulletSize": 10,
+        "bulletSpeed": 11.5,
+        "bullets": {"min": 5, "max": 7},
+        "spread": 30,
+        "damage": {"min": 6, "max": 9}
+    },
+
+    "mediumSlowShotgun": {
+        "shootClock": 2100,
+        "bulletSize": 11,
+        "bulletSpeed": 7,
+        "bullets": {"min": 11, "max": 14},
+        "spread": 60,
+        "damage": {"min": 8, "max": 12}
+    },
+
+
+
+    "bazooka": {
+        "shootClock": 2500,
+        "bulletSize": 9,
+        "bulletSpeed": 10,
+        "bullets": {"min": 50, "max": 150},
+        "spread": 180,
+        "damage": {"min": 5, "max": 10}
+    },
+    "gooseGun": {
+        "shootClock": 1,
+        "bulletSize": 1,
+        "bulletSpeed": 15,
+        "bullets": {"min": 50, "max": 100},
+        "spread": 5,
+        "damage": {"min": 3, "max": 5}
+    },
+    "superNova": {
+        "shootClock": 4000,
+        "bulletSize": 15,
+        "bulletSpeed": 11,
+        "bullets": {"min": 200, "max": 300},
+        "spread": 359,
+        "damage": {"min": 3000, "max": 5000}
     }
 }

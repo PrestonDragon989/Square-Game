@@ -201,7 +201,7 @@ class Player {
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) 
-            this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["bullets"]["min"], max: this.currentWeapon.rightShoot["bullets"]["max"]}, this.mediumSlowBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(8, 12));
+            this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]}, this.currentWeapon.rightShoot["bulletSpeed"], this.currentWeapon.rightShoot["bulletSize"], this.utils.randint(this.currentWeapon.rightShoot["bullets"]["min"], this.currentWeapon.rightShoot["bullets"]["max"]));
     }
 
     //Player Shoot

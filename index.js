@@ -56,8 +56,6 @@ class Game {
         if (this.enemy.basicEnemyData !== undefined && this.player.leftWeapons !== undefined && this.player.rightWeapons!== undefined) {
             this.player.currentWeapon.leftShoot = this.player.leftWeapons["defaultShoot"];
             this.player.currentWeapon.rightShoot = this.player.rightWeapons["defaultShotgun"];
-            console.log(this.player.rightWeapons);
-            console.log(this.player.currentWeapon);
             this.gameLoop();
         } else {
             // Wait for the basicEnemyData to be loaded before starting the game loop
@@ -207,8 +205,13 @@ class Game {
         });
     }
     devCheckCommand() {
+        //Stopping Dev Mode 
         if (this.devCommand.toLocaleLowerCase() === "stop" || this.devCommand.toLocaleLowerCase() == "end") {this.devMode = false; this.player.img.src = "images/entities/player/player-square.png";}
+        
+        //List of Dev Mode Commands
         else if (this.devCommand.toLocaleLowerCase() === "list") alert("You can enter in a command by Pressing /.\nYou can see this list again by typing in the command \"list\".\nHere is a list of commands you can do:\n\n  -1. End / Stop (Ends Dev Mode)\n  -2. List (Shows a List of Commands)\n  -3. Weapon (Changes a weapon you have (Left or Right))\n  -4. Health (Adds or Subtracts Health from the Player)");
+        
+        //Changing Weapon
         else if (this.devCommand.toLocaleLowerCase() === "weapon" || this.devCommand.toLocaleLowerCase() === "weapons") {
             let changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\".");
             if (changeWeapon === "list") {
@@ -218,18 +221,24 @@ class Game {
                     if (changeWeapon != "") this.player.currentWeapon.leftShoot = this.player.leftWeapons[changeWeapon];
                 } else {
                 changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
-                if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
+                if (changeWeapon != "") this.player.currentWeapon.rightShoot = this.player.rightWeapons[changeWeapon];
             }
             } else if (changeWeapon.toLocaleLowerCase() === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to. Warning, this is Case sensitive.")
             if (changeWeapon != "") this.player.currentWeapon.leftShoot = this.player.leftWeapons[changeWeapon];
             } else {
                 changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
-                if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
+                if (changeWeapon != "") this.player.currentWeapon.rightShoot = this.player.rightWeapons[changeWeapon];
             }
-        } else if (this.devCommand.toLocaleLowerCase() === "health") {
+        } 
+        
+        //Changing Health
+        else if (this.devCommand.toLocaleLowerCase() === "health") {
             let increaseHealth = prompt("Enter how much you wish to increase the health of the player by:");
             if (increaseHealth!= "" && parseInt(increaseHealth) != NaN) this.player.health += parseInt(increaseHealth);
-        } else if (this.devCommand.toLocaleLowerCase() === "data") alert(this.player.leftWeapons, this.player.rightWeapons, this.enemy.basicEnemyData);
+        } 
+        
+        // Showing Player Stats
+        else if (this.devCommand.toLocaleLowerCase() === "stats") alert(`Player Health: ${this.player.health}\nPlayer Size: ${this.player.height} x ${this.player.width}\nCords: (${this.player.x}, ${this.player.y})\nPlayer Speed: ${this.player.speed}`);
         this.devCommand = "";
     }
 
