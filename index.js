@@ -56,10 +56,8 @@ class Game {
         if (this.enemy.basicEnemyData !== undefined && this.player.leftWeapons !== undefined && this.player.rightWeapons!== undefined) {
             this.player.currentWeapon.leftShoot = this.player.leftWeapons["defaultShoot"];
             this.player.currentWeapon.rightShoot = this.player.rightWeapons["defaultShotgun"];
-            //this.player.currentWeapon.rightShoot = this.player.rightWeapons["check"];
             console.log(this.player.rightWeapons);
             console.log(this.player.currentWeapon);
-            console.log(this.enemy.basicEnemyData);
             this.gameLoop();
         } else {
             // Wait for the basicEnemyData to be loaded before starting the game loop
