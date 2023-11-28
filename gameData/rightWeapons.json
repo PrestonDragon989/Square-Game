@@ -1,3 +1,10 @@
 {
-    "check": true
+    "defaultShotgun": {
+        "shootClock": 1750,
+        "bulletSize": 9,
+        "bulletSpeed": 9,
+        "bullets": {"min": 7, "max": 10},
+        "spread": 50,
+        "damage": {"min": 10, "max": 15}
+    }
 }

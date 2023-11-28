@@ -195,19 +195,19 @@ class Player {
 
     rightShootClock(mouseX, mouseY) {
         //Getting Current Weapon's Shoot Clock
-        let shootClock;
-        if (this.currentWeapon.rightShoot === "mediumShotgun") shootClock = this.mediumShotgunClock;
+        let shootClock = this.currentWeapon.rightShoot["shootClock"];
+        /*if (this.currentWeapon.rightShoot === "mediumShotgun") shootClock = this.mediumShotgunClock;
         else if (this.currentWeapon.rightShoot === "bigShotgun") shootClock = this.bigShotgunClock;
         else if (this.currentWeapon.rightShoot === "hugeShotgun") shootClock = this.hugeShotgunClock
         else if (this.currentWeapon.rightShoot === "smallShotgun") shootClock = this.smallShotgunClock;
         else if (this.currentWeapon.rightShoot === "bazooka") shootClock = this.bazookaShootClock;
-        else console.log(`Weapon not Found. ${this.currentWeapon.rightShoot} is not a valid weapon.`)
+        else console.log(`Weapon not Found. ${this.currentWeapon.rightShoot} is not a valid weapon.`)*/
 
         //Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) {
-            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, 50, { min: 4, max: 7}, this.mediumSlowBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(8, 12));
+            if (this.currentWeapon.rightShoot === "mediumShotgun") this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["bullets"]["min"], max: this.currentWeapon.rightShoot["bullets"]["max"]}, this.mediumSlowBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(8, 12));
             else if (this.currentWeapon.rightShoot === "bigShotgun") this.shotgunShoot(mouseX, mouseY, 90, {min: 2, max: 5}, this.mediumSlowBulletSpeed, this.smallBulletSize, this.utils.randint(14, 21));
             else if (this.currentWeapon.rightShoot === "hugeShotgun") this.shotgunShoot(mouseX, mouseY);
             else if (this.currentWeapon.rightShoot === "smallShotgun") this.shotgunShoot(mouseX, mouseY, 10, {min: 3, max: 8}, this.fastBulletSpeed, this.mediumSmallBulletSize, this.utils.randint(6, 9));

@@ -53,10 +53,11 @@ class Game {
     }
 
     runGame() {
-        if (this.enemy.basicEnemyData !== undefined && this.player.leftWeapons !== undefined) {
+        if (this.enemy.basicEnemyData !== undefined && this.player.leftWeapons !== undefined && this.player.rightWeapons!== undefined) {
             this.player.currentWeapon.leftShoot = this.player.leftWeapons["defaultShoot"];
+            this.player.currentWeapon.rightShoot = this.player.rightWeapons["defaultShotgun"];
             //this.player.currentWeapon.rightShoot = this.player.rightWeapons["check"];
-            //console.log(this.player.rightWeapons);
+            console.log(this.player.rightWeapons);
             console.log(this.player.currentWeapon);
             console.log(this.enemy.basicEnemyData);
             this.gameLoop();
@@ -230,7 +231,7 @@ class Game {
         } else if (this.devCommand.toLocaleLowerCase() === "health") {
             let increaseHealth = prompt("Enter how much you wish to increase the health of the player by:");
             if (increaseHealth!= "" && parseInt(increaseHealth) != NaN) this.player.health += parseInt(increaseHealth);
-        } 
+        } else if (this.devCommand.toLocaleLowerCase() === "data") alert(this.player.leftWeapons, this.player.rightWeapons, this.enemy.basicEnemyData);
         this.devCommand = "";
     }
 
