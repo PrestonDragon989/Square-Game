@@ -48,10 +48,22 @@ class Game {
             4: false,
         };
 
-        //this.enemy.spawnEnemy([1, 2], 5, this.enemy.basicEnemyData["basicRedEnemy"], "Uwu");
-
         // Starting Game
-        this.gameLoop();
+        this.runGame()
+    }
+
+    runGame() {
+        if (this.enemy.basicEnemyData !== undefined && this.player.leftWeapons !== undefined) {
+            this.player.currentWeapon.leftShoot = this.player.leftWeapons["defaultShoot"];
+            //this.player.currentWeapon.rightShoot = this.player.rightWeapons["check"];
+            //console.log(this.player.rightWeapons);
+            console.log(this.player.currentWeapon);
+            console.log(this.enemy.basicEnemyData);
+            this.gameLoop();
+        } else {
+            // Wait for the basicEnemyData to be loaded before starting the game loop
+            setTimeout(() => this.runGame(), 100);
+        }
     }
 
     // Handling Player Movement
@@ -204,13 +216,13 @@ class Game {
                 alert("Here is a list of all the weapons:\n\n  Left Weapons\n  1. basicShoot\n  2. quickShoot\n  3. slowShoot\n  4. sniperShoot\n\n Right Weapons\n  1. mediumShotgun\n  2. bigShotgun\n  3. hugeShotgun\n  4. smallShotgun\n  5. bazooka");
                 changeWeapon = prompt("Enter \"left\" or \"right\" to show which weapon you wish to change. If you want a list of the weapons, type \"list\". Warning, this is Case sensitive.");
                 if (changeWeapon.toLocaleLowerCase() === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to. Warning, this is Case sensitive.")
-                    if (changeWeapon != "") this.player.currentWeapon.leftShoot = changeWeapon;
+                    if (changeWeapon != "") this.player.currentWeapon.leftShoot = this.player.leftWeapons[changeWeapon];
                 } else {
                 changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
                 if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;
             }
             } else if (changeWeapon.toLocaleLowerCase() === "left") {changeWeapon = prompt("Enter which weapon you wish to change the left click to. Warning, this is Case sensitive.")
-            if (changeWeapon != "") this.player.currentWeapon.leftShoot = changeWeapon;
+            if (changeWeapon != "") this.player.currentWeapon.leftShoot = this.player.leftWeapons[changeWeapon];
             } else {
                 changeWeapon = prompt("Enter which weapon you wish to change the right click to:")
                 if (changeWeapon != "") this.player.currentWeapon.rightShoot = changeWeapon;

@@ -1,0 +1,38 @@
+{
+    "defaultShoot": {
+        "shootClock": 250,
+        "bulletSize": 11,
+        "bulletSpeed": 10,
+        "damage": {"min": 10, "max": 15}
+    },
+    "sniperShoot": {
+        "shootClock": 2000,
+        "bulletSize": 20,
+        "bulletSpeed": 25,
+        "damage": {"min": 50, "max": 60}
+    },
+    "mediumFastShoot": {
+        "shootClock": 220,
+        "bulletSize": 10,
+        "bulletSpeed": 11,
+        "damage": {"min": 8, "max": 12}
+    },
+    "fastShoot": {
+        "shootClock": 150,
+        "bulletSize": 9,
+        "bulletSpeed": 9,
+        "damage": {"min": 6, "max": 9}
+    },
+    "veryFastShoot": {
+        "shootClock": 100,
+        "bulletSize": 7,
+        "bulletSpeed": 13,
+        "damage": {"min": 2, "max": 5}
+    },
+    "mediumSlowShoot": {
+        "shootClock": 275,
+        "bulletSize": 13,
+        "bulletSpeed": 11,
+        "damage": {"min": 13, "max": 18}
+    }
+}

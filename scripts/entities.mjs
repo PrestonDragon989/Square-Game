@@ -35,34 +35,11 @@ class Player {
         this.bulletImg = new Image();
         this.bulletImg.src = "images/entities/player/player-bullet.png";
 
-        //Bullet Sizes
-        this.largeBulletSize = 20;
-        this.bigBulletSize = 18;
-        this.mediumBulletSize = 13;
-        this.mediumSmallBulletSize = 11;
-        this.smallBulletSize = 9;
+        // Loading Weapons
+        this.loadWeapons();
 
-        //Bullet Speeds
-        this.extremelyFastBulletSpeed = 25;
-        this.veryFastBulletSpeed = 20;
-        this.fastBulletSpeed = 15;
-        this.mediumFastBulletSpeed = 12;
-        this.mediumBulletSpeed = 10;
-        this.mediumSlowBulletSpeed = 7;
-        this.slowBulletSpeed = 5;
 
-        //Shoot Clocks
-        this.basicShootClock = 250;
-        this.quickShootClock = 150;
-        this.slowShootClock = 500;
-        this.sniperShootClock = 2000;
-
-        this.mediumShotgunClock = 1700;
-        this.bigShotgunClock = 2500;
-        this.hugeShotgunClock = 2000;
-        this.smallShotgunClock = 1350
-        this.bazookaShootClock = 3500;
-
+        // Last Shot Times
         this.lastShotTime = 0;
         this.lastShotgunTime = 0;
 
@@ -72,8 +49,8 @@ class Player {
         //Current Weapon
         this.currentWeapon = {
             //Current Weapon
-            leftShoot: "basicShoot",
-            rightShoot: "mediumShotgun"
+            leftShoot: null,
+            rightShoot: null
         };
 
         //Player Keys
@@ -90,6 +67,22 @@ class Player {
             up: false,
             down: false,
         };
+    }
+
+    async loadWeapons() {
+        try {
+            // Getting Left Weapons JSON File
+            this.leftWeapons = await this.utils.getJson("gameData/leftWeapons.json");
+        } catch (error) {
+            throw error;
+        }
+
+        try {
+            // Getting Right Weapons JSON File
+            this.rightWeapons = await this.utils.getJson("gameData/rightWeapons.json");
+        } catch (error) {
+            throw error;
+        }
     }
 
     //Handling Player Inputs
@@ -135,22 +128,14 @@ class Player {
     
     leftShootClock(mouseX, mouseY) {
         //Getting Current Weapon's Shoot Clock
-        let shootClock;
-        if (this.currentWeapon.leftShoot === "basicShoot") shootClock = this.basicShootClock;
-        else if (this.currentWeapon.leftShoot === "quickShoot") shootClock = this.quickShootClock;
-        else if (this.currentWeapon.leftShoot === "slowShoot") shootClock = this.slowShootClock;
-        else if (this.currentWeapon.leftShoot === "sniperShoot") shootClock = this.sniperShootClock;
-        else console.log(`Weapon not Found. ${this.currentWeapon.leftShoot} is not a valid weapon.`)
+        let shootClock = this.currentWeapon.leftShoot["shootClock"];
 
         //Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotTime;
 
         // Only allow shooting if at least 1000 milliseconds (1 second) have passed since the last shot
         if (timeElapsed >= shootClock) {
-            if (this.currentWeapon.leftShoot === "basicShoot") this.basicShoot(mouseX, mouseY, this.mediumBulletSize, this.mediumBulletSpeed, {min: 10, max: 15});
-            else if (this.currentWeapon.leftShoot === "quickShoot") this.basicShoot(mouseX, mouseY, this.smallBulletSize, this.mediumBulletSpeed, {min: 5, max: 10});
-            else if (this.currentWeapon.leftShoot === "slowShoot") this.basicShoot(mouseX, mouseY, this.bigBulletSize, this.mediumFastBulletSpeed, {min: 17, max: 23});
-            else if (this.currentWeapon.leftShoot === "sniperShoot") this.basicShoot(mouseX, mouseY, this.largeBulletSize, this.extremelyFastBulletSpeed, {min: 50, max: 60});
+            this.basicShoot(mouseX, mouseY, this.currentWeapon.leftShoot["bulletSize"], this.currentWeapon.leftShoot["bulletSpeed"], {min: this.currentWeapon.leftShoot["damage"]["min"], max: this.currentWeapon.leftShoot["damage"]["max"]});
         } 
     }
 
@@ -282,13 +267,6 @@ class Enemy {
 
         //Load Enemy Data
         this.loadEnemies()
-            .then(() => {
-                // Continue with the initialization or game setup logic
-                console.log(this.basicEnemyData)
-            })
-            .catch((error) => {
-                console.error("Error loading enemies:", error);
-            });
     }
 
     async loadEnemies() {
