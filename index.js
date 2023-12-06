@@ -53,6 +53,7 @@ class Game {
 
     runGame() {
         if (this.enemy.basicEnemyData !== undefined && this.player.playerWeapons !== undefined) {
+            //Setting Default Settings
             this.player.currentWeapon.leftShoot = this.player.playerWeapons["defaultShoot"];
             this.player.currentWeapon.rightShoot = this.player.playerWeapons["defaultShotgun"];
             this.gameLoop();
@@ -68,6 +69,10 @@ class Game {
         // Keydown event
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
+                case "t":
+                    console.log(`Enemy Spawned: ${this.enemy.basicEnemyData["basicRedEnemy"]}`);
+                    this.enemy.spawnEnemy([100, 100], 2, this.enemy.basicEnemyData["basicRedEnemy"], null);
+                    break;
                 //WASD Movement Keys
                 case "a":
                     this.player.keysPressed.ALeft = true;

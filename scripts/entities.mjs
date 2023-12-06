@@ -290,37 +290,64 @@ class Enemy {
     spawnEnemy(specficPos, spawnAway, enemyType, AI) {
         // Getting Position of Enemy Spawn (If custom, set custom. If not, generate coords.)
         let x, y;
+    
+        // Assign values to x and y
         if (specficPos[0] === null || specficPos[1] === null) {
-            x, y = this.randomSpawn(enemyType["height"], enemyType["width"], spawnAway);
-        } else { x = specficPos[0], y = specficPos[1]; }
-        
-        //Getting Enemy Stats & Image
+            // Generate random spawn coordinates
+            while (true) {
+                x = this.utils.randint(0, this.canvas.width - enemyType["rect"]["width"]);
+                y = this.utils.randint(0, this.canvas.height - enemyType["rect"]["height"]);
+    
+                // Check if the spawn location is within the range of the player
+                if (x in this.utils.Range(this.player.x - spawnAway, this.player.x + this.player.width + spawnAway) || y in this.utils.Range(this.player.y - spawnAway, this.player.y + this.player.height + spawnAway)) {
+                    continue;
+                } else if (x + enemyType["rect"]["width"] > this.canvas.width || y + enemyType["rect"]["height"] > this.canvas.height) {
+                    continue;
+                } else {
+                    break;
+                }
+            }
+        } else {
+            // Use specified coordinates
+            x = specficPos[0];
+            y = specficPos[1];
+        }
+
+        // Setting Rect x & y to new coords
+        enemyType["rect"]["x"] = x;
+        enemyType["rect"]["y"] = y;
+    
+        // Getting Enemy Stats & Image
         let enemyImg = new Image();
         enemyImg.src = enemyType["image"];
-
+    
         let contactDamage = this.utils.randint(enemyType["contactDamage"]["min"], enemyType["contactDamage"]["max"]);
         let bulletDamage = this.utils.randint(enemyType["bulletDamage"]["min"], enemyType["bulletDamage"]["max"]);
-
+    
         /* Enemy Array Structure:
             Image, X, Y, Enemy Rect (From JSON Info), Contact Damage, Bullet Damage, AI
         */
-        this.basicEnemies.push([enemyImg, x, y, enemyType["rect"], contactDamage, bulletDamage, AI])
+        this.basicEnemies.push([enemyImg, enemyType["rect"], contactDamage, bulletDamage, AI]);
     }
-
+    
     render() {
-        if (this.basicEnemies.length !== 0){
-            //Rendering Each enemy in the Array
+        if (this.basicEnemies.length !== 0) {
+            // Rendering Each enemy in the Array
             this.basicEnemies.forEach(enemy => {
-                this.c.drawImage(enemy[0], enemy[1], enemy[2]["y"], enemy[2]["width"], enemy[2]["height"]);
+                if (enemy[0].complete) {
+                    this.c.drawImage(enemy[0], enemy[2]["x"], enemy[2]["y"], enemy[2]["width"], enemy[2]["height"]);
+                    console.log(enemy[1]);
+                }
             });
         }
-        if (this.bossEnemies.length !== 0){
-            //Rendering Each Boss in the Array
+        if (this.bossEnemies.length !== 0) {
+            // Rendering Each Boss in the Array
             this.bossEnemies.forEach(boss => {
-
-            })
+                // Render boss logic goes here
+            });
         }
     }
+    
 }
 
 //Exporting the Player Class & Enemy Class to Game
