@@ -36,22 +36,25 @@
     },
     "mediumSlowShoot": {
         "type": "shoot",
-        "shootClock": 275,
+        "shootClock": 300,
         "bulletSize": 13,
         "bulletSpeed": 11,
-        "damage": {"min": 13, "max": 18}
+        "damage": {"min": 13, "max": 15}
     },
-
-
-
-
-
-
-
-
-
-
-
+    "slowShoot": {
+        "type": "shoot",
+        "shootClock": 550,
+        "bulletSize": 14,
+        "bulletSpeed": 12,
+        "damage": {"min": 15, "max": 18}
+    },
+    "verySlowShoot": {
+        "type": "shoot",
+        "shootClock": 700,
+        "bulletSize": 15,
+        "bulletSpeed": 14,
+        "damage": {"min": 18, "max": 20}
+    },
 
 
 
@@ -101,6 +104,24 @@
         "bullets": {"min": 11, "max": 14},
         "spread": 60,
         "damage": {"min": 8, "max": 12}
+    },
+    "slowShotgun": {
+        "type": "shotgun",
+        "shootClock":3000,
+        "bulletSize": 12,
+        "bulletSpeed": 9,
+        "bullets": {"min": 12, "max": 14},
+        "spread": 70,
+        "damage": {"min": 9, "max": 14}
+    },
+    "verySlowShotgun": {
+        "type": "shotgun",
+        "shootClock":3500,
+        "bulletSize": 13.5,
+        "bulletSpeed": 10.5,
+        "bullets": {"min": 14, "max": 15},
+        "spread": 80,
+        "damage": {"min": 11, "max": 15}
     },
 
 
