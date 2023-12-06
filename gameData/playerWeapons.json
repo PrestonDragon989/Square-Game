@@ -1,5 +1,63 @@
 {
+    "defaultShoot": {
+        "type": "shoot",
+        "shootClock": 250,
+        "bulletSize": 11,
+        "bulletSpeed": 10,
+        "damage": {"min": 10, "max": 15}
+    },
+    "sniperShoot": {
+        "type": "shoot",
+        "shootClock": 2000,
+        "bulletSize": 20,
+        "bulletSpeed": 25,
+        "damage": {"min": 50, "max": 60}
+    },
+    "mediumFastShoot": {
+        "type": "shoot",
+        "shootClock": 220,
+        "bulletSize": 10,
+        "bulletSpeed": 11,
+        "damage": {"min": 8, "max": 12}
+    },
+    "fastShoot": {
+        "type": "shoot",
+        "shootClock": 150,
+        "bulletSize": 9,
+        "bulletSpeed": 9,
+        "damage": {"min": 6, "max": 9}
+    },
+    "veryFastShoot": {
+        "type": "shoot",
+        "shootClock": 100,
+        "bulletSize": 7,
+        "bulletSpeed": 13,
+        "damage": {"min": 2, "max": 5}
+    },
+    "mediumSlowShoot": {
+        "type": "shoot",
+        "shootClock": 275,
+        "bulletSize": 13,
+        "bulletSpeed": 11,
+        "damage": {"min": 13, "max": 18}
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     "defaultShotgun": {
+        "type": "shotgun",
         "shootClock": 1750,
         "bulletSize": 11,
         "bulletSpeed": 9,
@@ -8,6 +66,7 @@
         "damage": {"min": 9, "max": 13}
     },
     "veryFastShotgun": {
+        "type": "shotgun",
         "shootClock": 800,
         "bulletSize": 7,
         "bulletSpeed": 15,
@@ -16,6 +75,7 @@
         "damage": {"min": 3, "max": 5}
     },
     "fastShotgun": {
+        "type": "shotgun",
         "shootClock": 1000,
         "bulletSize": 9,
         "bulletSpeed": 13,
@@ -24,6 +84,7 @@
         "damage": {"min": 5, "max": 7}
     },
     "mediumfastShotgun": {
+        "type": "shotgun",
         "shootClock": 1300,
         "bulletSize": 10,
         "bulletSpeed": 11.5,
@@ -33,6 +94,7 @@
     },
 
     "mediumSlowShotgun": {
+        "type": "shotgun",
         "shootClock": 2100,
         "bulletSize": 11,
         "bulletSpeed": 7,
@@ -44,6 +106,7 @@
 
 
     "bazooka": {
+        "type": "shotgun",
         "shootClock": 2500,
         "bulletSize": 9,
         "bulletSpeed": 10,
@@ -52,6 +115,7 @@
         "damage": {"min": 5, "max": 10}
     },
     "gooseGun": {
+        "type": "shotgun",
         "shootClock": 1,
         "bulletSize": 1,
         "bulletSpeed": 15,
@@ -60,6 +124,7 @@
         "damage": {"min": 3, "max": 5}
     },
     "superNova": {
+        "type": "shotgun",
         "shootClock": 4000,
         "bulletSize": 15,
         "bulletSpeed": 11,

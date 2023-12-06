@@ -72,14 +72,7 @@ class Player {
     async loadWeapons() {
         try {
             // Getting Left Weapons JSON File
-            this.leftWeapons = await this.utils.getJson("gameData/leftWeapons.json");
-        } catch (error) {
-            throw error;
-        }
-
-        try {
-            // Getting Right Weapons JSON File
-            this.rightWeapons = await this.utils.getJson("gameData/rightWeapons.json");
+            this.playerWeapons = await this.utils.getJson("gameData/playerWeapons.json");
         } catch (error) {
             throw error;
         }
@@ -120,23 +113,31 @@ class Player {
 
         // Adding bullet to the bullet list
         this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: this.utils.randint(damage.min, damage.max)});
-
-        //Updating last shot time
-        this.lastShotTime = Date.now();
     }
     
     
     leftShootClock(mouseX, mouseY) {
-        //Getting Current Weapon's Shoot Clock
+        // Getting Current Weapon's Shoot Clock
         let shootClock = this.currentWeapon.leftShoot["shootClock"];
-
-        //Checking Elapsed Time
+    
+        // Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotTime;
-
+    
         // Only allow shooting if at least 1000 milliseconds (1 second) have passed since the last shot
         if (timeElapsed >= shootClock) {
-            this.basicShoot(mouseX, mouseY, this.currentWeapon.leftShoot["bulletSize"], this.currentWeapon.leftShoot["bulletSpeed"], {min: this.currentWeapon.leftShoot["damage"]["min"], max: this.currentWeapon.leftShoot["damage"]["max"]});
-        } 
+            if (this.currentWeapon.leftShoot["type"] == "shotgun") {
+                this.shotgunShoot(mouseX, mouseY, this.currentWeapon.leftShoot["spread"], {
+                    min: this.currentWeapon.leftShoot["damage"]["min"],
+                    max: this.currentWeapon.leftShoot["damage"]["max"]
+                }, this.currentWeapon.leftShoot["bulletSpeed"], this.currentWeapon.leftShoot["bulletSize"], this.utils.randint(this.currentWeapon.leftShoot["bullets"]["min"], this.currentWeapon.leftShoot["bullets"]["max"]));
+            } else {
+                this.basicShoot(mouseX, mouseY, this.currentWeapon.leftShoot["bulletSize"], this.currentWeapon.leftShoot["bulletSpeed"], {
+                    min: this.currentWeapon.leftShoot["damage"]["min"],
+                    max: this.currentWeapon.leftShoot["damage"]["max"]
+                });
+            }
+            this.lastShotTime = Date.now();
+        }
     }
 
     shotgunShoot(mouseX, mouseY, spread, damage, bulletSpeed, bulletSize, numberOfBullets) {
@@ -186,9 +187,6 @@ class Player {
                 damage: this.utils.randint(damage.min, damage.max),
             });
         }
-
-        // Updating last shot time
-        this.lastShotgunTime = Date.now();
     }
     
     
@@ -200,8 +198,11 @@ class Player {
         //Checking Elapsed Time
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
-        if (timeElapsed >= shootClock) 
-            this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]}, this.currentWeapon.rightShoot["bulletSpeed"], this.currentWeapon.rightShoot["bulletSize"], this.utils.randint(this.currentWeapon.rightShoot["bullets"]["min"], this.currentWeapon.rightShoot["bullets"]["max"]));
+        if (timeElapsed >= shootClock) {
+           if (this.currentWeapon.rightShoot["type"] == "shotgun") this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]}, this.currentWeapon.rightShoot["bulletSpeed"], this.currentWeapon.rightShoot["bulletSize"], this.utils.randint(this.currentWeapon.rightShoot["bullets"]["min"], this.currentWeapon.rightShoot["bullets"]["max"]));
+           else this.basicShoot(mouseX, mouseY, this.currentWeapon.rightShoot["bulletSize"], this.currentWeapon.rightShoot["bulletSpeed"], {min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]});
+           this.lastShotgunTime = Date.now();
+        }
     }
 
     //Player Shoot
