@@ -70,8 +70,7 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "t":
-                    console.log(`Enemy Spawned: ${this.enemy.basicEnemyData["basicRedEnemy"]}`);
-                    this.enemy.spawnEnemy([100, 100], 2, this.enemy.basicEnemyData["basicRedEnemy"], null);
+                    this.enemy.spawnEnemy([null, null], 1000, this.enemy.basicEnemyData["basicRedEnemy"], null);
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -281,6 +280,9 @@ class Game {
         
         //Player Collison
         this.collision.wallCollision(this.canvas);
+
+        // Checking Enemy Death
+        this.enemy.checkDeath();
 }
 
     // Rendering Function to handle All rendering Needs

@@ -271,51 +271,53 @@ class Enemy {
     //Easy Functions for Enemies
     randomSpawn(width, height, spawnAway) {
         let x, y;
-        //Validating Spawn Location
+    
         while (true) {
-            x = this.utils.randint(0, this.canvas.width - width)
-            y = this.utils.randint(0, this.canvas.height - height)
-
-            //Checking if the spawn location is within the range of the player
-            if (x in Range(this.player.x - spawnAway, this.player.x + this.player.width + spawnAway) || y in Range(this.player.y - spawnAway, this.player.y + this.player.height + spawnAway)) {
-                continue;
-            } /* Checking to see if the enemy goes out of bounds */ else if (x + width > this.canvas.width || y + height > this.canvas.height) {
-                continue;
-            } else break;
+            x = this.utils.randint(0, this.canvas.width - width);
+            y = this.utils.randint(0, this.canvas.height - height);
+    
+            // Calculate enemy rectangle
+            const enemyRect = {
+                x: x,
+                y: y,
+                width: width,
+                height: height
+            };
+    
+            // Check if the enemy's rectangle intersects with the player's rectangle
+            const playerRect = {
+                x: this.player.x - spawnAway,
+                y: this.player.y - spawnAway,
+                width: this.player.width + spawnAway,
+                height: this.player.height + spawnAway
+            };
+    
+            if (!this.utils.rectIntersect(enemyRect, playerRect) &&
+                x + width <= this.canvas.width && y + height <= this.canvas.height) {
+                break;
+            }
         }
+    
         //Returning the Position
-        return (x, y);
+        return [x, y];
     }
+    
 
     spawnEnemy(specficPos, spawnAway, enemyType, AI) {
         // Getting Position of Enemy Spawn (If custom, set custom. If not, generate coords.)
         let x, y;
     
         // Assign values to x and y
-        if (specficPos[0] === null || specficPos[1] === null) {
+        if (specficPos[0] == null) {
             // Generate random spawn coordinates
-            while (true) {
-                x = this.utils.randint(0, this.canvas.width - enemyType["rect"]["width"]);
-                y = this.utils.randint(0, this.canvas.height - enemyType["rect"]["height"]);
-    
-                // Check if the spawn location is within the range of the player
-                if (x in this.utils.Range(this.player.x - spawnAway, this.player.x + this.player.width + spawnAway) || y in this.utils.Range(this.player.y - spawnAway, this.player.y + this.player.height + spawnAway)) {
-                    continue;
-                } else if (x + enemyType["rect"]["width"] > this.canvas.width || y + enemyType["rect"]["height"] > this.canvas.height) {
-                    continue;
-                } else {
-                    break;
-                }
-            }
+            let spawn = this.randomSpawn(enemyType["rect"]["width"], enemyType["rect"]["height"], spawnAway);
+            x = spawn[0];
+            y = spawn[1];
         } else {
             // Use specified coordinates
             x = specficPos[0];
             y = specficPos[1];
         }
-
-        // Setting Rect x & y to new coords
-        enemyType["rect"]["x"] = x;
-        enemyType["rect"]["y"] = y;
     
         // Getting Enemy Stats & Image
         let enemyImg = new Image();
@@ -327,17 +329,22 @@ class Enemy {
         /* Enemy Array Structure:
             Image, X, Y, Enemy Rect (From JSON Info), Contact Damage, Bullet Damage, AI
         */
-        this.basicEnemies.push([enemyImg, enemyType["rect"], contactDamage, bulletDamage, AI]);
+        this.basicEnemies.push([enemyImg, { x: x, y: y, width: enemyType["rect"]["width"], height: enemyType["rect"]["height"] }, this.utils.randint(enemyType["HP"]["min"], enemyType["HP"]["max"]) ,contactDamage, bulletDamage, AI]);
+    }
+    
+    checkDeath() {
+        this.basicEnemies.forEach(enemy => {
+            if (enemy[2] <= 0) {
+                this.basicEnemies.splice(this.basicEnemies.indexOf(enemy), 1);
+            }
+        });
     }
     
     render() {
         if (this.basicEnemies.length !== 0) {
             // Rendering Each enemy in the Array
             this.basicEnemies.forEach(enemy => {
-                if (enemy[0].complete) {
-                    this.c.drawImage(enemy[0], enemy[2]["x"], enemy[2]["y"], enemy[2]["width"], enemy[2]["height"]);
-                    console.log(enemy[1]);
-                }
+                this.c.drawImage(enemy[0], enemy[1]["x"], enemy[1]["y"], enemy[1]["width"], enemy[1]["height"]);
             });
         }
         if (this.bossEnemies.length !== 0) {
