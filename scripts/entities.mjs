@@ -224,16 +224,18 @@ class Player {
         }
   }
 
-    render() {
+    //Rendering Functions
+    playerRender() {
+        //Player
+        this.c.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+    bulletRender() {
         //Player Bullets
         if (this.bullets.length > 0) {
             this.bullets.forEach((bullet, index) => {
                 this.c.drawImage(this.bulletImg, bullet.rect.x, bullet.rect.y, bullet.rect.width, bullet.rect.height);
             });
         }
-
-        //Player
-        this.c.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 }
 
@@ -255,6 +257,10 @@ class Enemy {
         this.basicEnemies = [];
         this.bossEnemies = [];
 
+        // Load Enemy Health Bar
+        this.healthBar = new Image();
+        this.healthBar.src = "images/misc/health-bar.png";
+
         //Load Enemy Data
         this.loadEnemies()
     }
@@ -271,6 +277,7 @@ class Enemy {
     //Easy Functions for Enemies
     randomSpawn(width, height, spawnAway) {
         let x, y;
+        let quit = 0
     
         while (true) {
             x = this.utils.randint(0, this.canvas.width - width);
@@ -288,14 +295,16 @@ class Enemy {
             const playerRect = {
                 x: this.player.x - spawnAway,
                 y: this.player.y - spawnAway,
-                width: this.player.width + spawnAway,
-                height: this.player.height + spawnAway
+                width: this.player.width + spawnAway + spawnAway,
+                height: this.player.height + spawnAway + spawnAway
             };
     
             if (!this.utils.rectIntersect(enemyRect, playerRect) &&
                 x + width <= this.canvas.width && y + height <= this.canvas.height) {
                 break;
-            }
+            } else if (quit == 40) {
+                return [null, null];
+            } else quit++;
         }
     
         //Returning the Position
@@ -303,7 +312,7 @@ class Enemy {
     }
     
 
-    spawnEnemy(specficPos, spawnAway, enemyType, AI) {
+    spawnEnemy(specficPos, spawnAway, enemyType, HPBar,AI = null) {
         // Getting Position of Enemy Spawn (If custom, set custom. If not, generate coords.)
         let x, y;
     
@@ -313,6 +322,11 @@ class Enemy {
             let spawn = this.randomSpawn(enemyType["rect"]["width"], enemyType["rect"]["height"], spawnAway);
             x = spawn[0];
             y = spawn[1];
+            // Setting Up for a quit to happen if there is no legal squares
+            if (x == null || y == null) {
+                console.log(spawnAway);
+                return;
+            }
         } else {
             // Use specified coordinates
             x = specficPos[0];
@@ -325,17 +339,42 @@ class Enemy {
     
         let contactDamage = this.utils.randint(enemyType["contactDamage"]["min"], enemyType["contactDamage"]["max"]);
         let bulletDamage = this.utils.randint(enemyType["bulletDamage"]["min"], enemyType["bulletDamage"]["max"]);
-    
+
+        // Current & Max HP  [Current, Max]
+        let newHP = this.utils.randint(enemyType["HP"]["min"], enemyType["HP"]["max"]);
+        let HP = [newHP, newHP];
+
+        // Getting Enemy Speed
+        let speed = this.utils.randint(enemyType["speed"]["min"], enemyType["speed"]["max"]);
+
+        // Getting Rect
+        let rect = { 
+            x: x,
+            y: y,
+            width: enemyType["rect"]["width"],
+            height: enemyType["rect"]["height"]
+        }
+
+        // HP Bar Validation
+        if (HPBar[0] == true) {
+            HPBar = [true, enemyType["rect"]["width"] * .80, 12.5]
+        }
+
+        // Getting Enemy AI
+        let enemyAI
+        if (AI != null) enemyAI = this.utils.convertAI(enemyType["AI"], rect, HP, speed, contactDamage, bulletDamage);
+        else enemyAI = null;
+        
         /* Enemy Array Structure:
-            Image, X, Y, Enemy Rect (From JSON Info), Contact Damage, Bullet Damage, AI
+            Image, Enemy Rect (From JSON Info), HP, Speed, Contact Damage, Bullet Damage, AI
         */
-        this.basicEnemies.push([enemyImg, { x: x, y: y, width: enemyType["rect"]["width"], height: enemyType["rect"]["height"] }, this.utils.randint(enemyType["HP"]["min"], enemyType["HP"]["max"]) ,contactDamage, bulletDamage, AI]);
+        this.basicEnemies.push([enemyImg, rect, HP, speed, contactDamage, bulletDamage, enemyAI, HPBar]);
     }
     
     checkDeath() {
         this.basicEnemies.forEach(enemy => {
-            if (enemy[2] <= 0) {
-                this.basicEnemies.splice(this.basicEnemies.indexOf(enemy), 1);
+            if (enemy[2][0] <= 0) { // Checking Current HP
+                this.basicEnemies.splice(this.basicEnemies.indexOf(enemy), 1); // Killing it off
             }
         });
     }
@@ -345,6 +384,11 @@ class Enemy {
             // Rendering Each enemy in the Array
             this.basicEnemies.forEach(enemy => {
                 this.c.drawImage(enemy[0], enemy[1]["x"], enemy[1]["y"], enemy[1]["width"], enemy[1]["height"]);
+
+                // Rendering HP Bar if need be
+                if (enemy[7][0]) {
+                    this.c.drawImage(this.healthBar, 0, 480, 600, 576, enemy[1]["x"] + (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), (enemy[1]["width"] *.80), 20, 1)
+                }
             });
         }
         if (this.bossEnemies.length !== 0) {

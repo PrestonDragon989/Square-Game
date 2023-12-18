@@ -23,6 +23,10 @@ class Vector2 {
       this.x = newX;
       this.y = newY;
   }
+    scale(factor) {
+      this.x *= factor;
+      this.y *= factor;
+    }
 }
 
 //As much as I hate these dream killing mathematics, we need them. -some book IG

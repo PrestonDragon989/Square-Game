@@ -1,4 +1,7 @@
+// Vector for quick calculation
 import Vector2 from "./vector.mjs";
+
+// AI
 
 class Utils {
     constructor() {
@@ -59,6 +62,37 @@ class Utils {
             rect1.y < rect2.y + rect2.height &&
             rect1.y + rect1.height > rect2.y
         );
+    }
+
+    convertAI(AI, rect, HP, speed, contactDamage, bulletDamage) {
+        if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage);
+    }
+
+    getDistance(pointA, pointB) {
+        const deltaX = pointB[0] - pointA[0];
+        const deltaY = pointB[1] - pointA[1];
+    
+        // Applying the distance formula
+        const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+    
+        return distance;
+    }
+
+    calcPercentage(value, total) {
+        // Ensure both parameters are numbers
+        if (typeof value !== 'number' || typeof total !== 'number') {
+            throw new Error('Both parameters must be numbers');
+        }
+    
+        // Avoid division by zero
+        if (total === 0) {
+            throw new Error('Total cannot be zero');
+        }
+    
+        // Calculate the percentage
+        const percentage = (value / total) * 100;
+    
+        return percentage;
     }
 }
 

@@ -70,7 +70,7 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 1000, this.enemy.basicEnemyData["basicRedEnemy"], null);
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4]);
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -281,6 +281,9 @@ class Game {
         //Player Collison
         this.collision.wallCollision(this.canvas);
 
+        // Bullet Collision
+        this.collision.bulletCollision();
+
         // Checking Enemy Death
         this.enemy.checkDeath();
 }
@@ -291,11 +294,14 @@ class Game {
         this.c.fillStyle = "rgb(45, 45, 45)";
         this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+        // Player Bullets Rendering
+        this.player.bulletRender();
+
         // Rendering Enemy
         this.enemy.render();
 
         // Rendering Player
-        this.player.render();
+        this.player.playerRender();
 
         // Paues Icon
         if (this.gamePaused) this.c.drawImage(this.pauseIcon, (this.canvas.width / 2 - 100), (this.canvas.height / 2 - 100), 200, 200);
