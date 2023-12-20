@@ -1,8 +1,8 @@
 // Imports
 import { Player } from "./entities.mjs";
 import { Enemy } from "./entities.mjs";
-import { Utils } from "./utils.mjs";
-import { Vector2 } from "./vector2.mjs";
+import Utils from "./utils.mjs";
+import Vector2 from "./vector.mjs";
 import { Collision } from "./collision.mjs";
 
 class baseAI {
@@ -14,7 +14,7 @@ class baseAI {
         this.collision = collision;
 
         // Initialization of rect
-        this.rect = null; // Initialize rect here or pass it as a parameter
+        this.rect = null; 
     }
 
     basicMove(pointA, speed) {
@@ -48,7 +48,7 @@ class basicRedAI extends baseAI {
         let newState;
 
         // Distance to Player
-        const distanceToPlayer = this.utils.getDistance([this.rect.x, this.rect.y], [this.player.x, this.player.y]);
+        const distanceToPlayer = this.utils.getDistance([this.rect.x + (this.width / 2), this.y + (this.height / 2)], [this.player.x, this.player.y]);
 
         if (distanceToPlayer < 120) {
             newState = "attack";

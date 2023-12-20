@@ -56,8 +56,6 @@ class Collision {
             this.enemy.basicEnemies.forEach(enemy => {
                 this.player.bullets.forEach(bullet => {
                     if (this.utils.rectIntersect(bullet.rect, enemy[1])) {
-                        console.log('hello world!');
-                        console.log(enemy[2][0]);
                         enemy[2][0] -= bullet.damage;
                         this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
                     }

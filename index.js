@@ -70,7 +70,7 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4]);
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumGreenEnemy"], [true, 3, 4]);
                     break;
                 //WASD Movement Keys
                 case "a":

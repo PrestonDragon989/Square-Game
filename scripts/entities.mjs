@@ -253,6 +253,10 @@ class Enemy {
         //Player
         this.player = Player;
 
+        // Enemy Data
+        this.basicEnemyData = null;
+        this.bossEnemyData = null;
+
         //Current Enemies
         this.basicEnemies = [];
         this.bossEnemies = [];
@@ -312,7 +316,7 @@ class Enemy {
     }
     
 
-    spawnEnemy(specficPos, spawnAway, enemyType, HPBar,AI = null) {
+    spawnEnemy(specficPos, spawnAway, enemyType, HPBar, AI = null) {
         // Getting Position of Enemy Spawn (If custom, set custom. If not, generate coords.)
         let x, y;
     
@@ -366,7 +370,7 @@ class Enemy {
         else enemyAI = null;
         
         /* Enemy Array Structure:
-            Image, Enemy Rect (From JSON Info), HP, Speed, Contact Damage, Bullet Damage, AI
+            Image, Enemy Rect (From JSON Info), HP, Speed, Contact Damage, Bullet Damage, AI, HP Bar
         */
         this.basicEnemies.push([enemyImg, rect, HP, speed, contactDamage, bulletDamage, enemyAI, HPBar]);
     }
@@ -387,7 +391,16 @@ class Enemy {
 
                 // Rendering HP Bar if need be
                 if (enemy[7][0]) {
-                    this.c.drawImage(this.healthBar, 0, 480, 600, 576, enemy[1]["x"] + (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), (enemy[1]["width"] *.80), 20, 1)
+                    // Drawing Background HP Bar
+                    this.c.drawImage(this.healthBar, 0, 480, 600, 576, enemy[1]["x"] - (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), (enemy[1]["width"] * 1.20), 40);
+
+                    // Drawing Current HP Bar
+                    let HPPercent = this.utils.calcPercentage(enemy[2][0], enemy[2][1]);
+                    if (HPPercent > 80) this.c.drawImage(this.healthBar, 0, 0, 600, 96, enemy[1]["x"] - (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), ((enemy[1]["width"] * 1.20))  * (0.01 * HPPercent), 7.2);
+                    else if (HPPercent > 60) this.c.drawImage(this.healthBar, 0, 96, 600, 96, enemy[1]["x"] - (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), ((enemy[1]["width"] * 1.20))  * (0.01 * HPPercent), 7.2);
+                    else if (HPPercent > 40) this.c.drawImage(this.healthBar, 0, 192, 600, 96, enemy[1]["x"] - (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), ((enemy[1]["width"] * 1.20))  * (0.01 * HPPercent), 7.2);
+                    else if (HPPercent > 20) this.c.drawImage(this.healthBar, 0, 288, 600, 96, enemy[1]["x"] - (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), ((enemy[1]["width"] * 1.20))  * (0.01 * HPPercent), 7.2);
+                    else this.c.drawImage(this.healthBar, 0, 384, 600, 96, enemy[1]["x"] - (enemy[1]["width"] * .1), enemy[1]["y"] + (enemy[1]["height"] + 10), ((enemy[1]["width"] * 1.20))  * (0.01 * HPPercent), 7.2);
                 }
             });
         }

@@ -11,7 +11,7 @@
         "shootClock": 2000,
         "bulletSize": 20,
         "bulletSpeed": 25,
-        "damage": {"min": 50, "max": 60}
+        "damage": {"min": 150, "max": 200}
     },
     "mediumFastShoot": {
         "type": "shoot",
