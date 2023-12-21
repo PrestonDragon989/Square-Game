@@ -24,6 +24,10 @@ class Player {
         this.img = new Image();
         this.img.src = "images/entities/player/player-square.png";
 
+        // HP Bar Image
+        this.healthBar = new Image();
+        this.healthBar.src = "images/misc/health-bar.png";
+
         //Player Health Stats
         this.maxHealth = 100;
         this.health = 100;
@@ -236,6 +240,17 @@ class Player {
                 this.c.drawImage(this.bulletImg, bullet.rect.x, bullet.rect.y, bullet.rect.width, bullet.rect.height);
             });
         }
+
+        // Drawing Background HP Bar
+        this.c.drawImage(this.healthBar, 0, 480, 600, 576, this.x - (this.width * .2), this.y + (this.width + 10), (this.width * 1.40), 40);
+
+        // Drawing Current HP Bar
+        let HPPercent = this.utils.calcPercentage(this.health, this.maxHealth);
+        if (HPPercent > 80) this.c.drawImage(this.healthBar, 0, 0, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
+        else if (HPPercent > 60) this.c.drawImage(this.healthBar, 0, 96, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((ethis.width * 1.40))  * (0.01 * HPPercent), 7.2);
+        else if (HPPercent > 40) this.c.drawImage(this.healthBar, 0, 192, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
+        else if (HPPercent > 20) this.c.drawImage(this.healthBar, 0, 288, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
+        else this.c.drawImage(this.healthBar, 0, 384, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
     }
 }
 
