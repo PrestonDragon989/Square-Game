@@ -58,6 +58,7 @@ class Game {
             this.player.currentWeapon.rightShoot = this.player.playerWeapons["defaultShotgun"];
             this.gameLoop();
             this.handleInput();
+            this.utils.textboxDetectClick();
         } else {
             // Wait for the basicEnemyData to be loaded before starting the game loop
             setTimeout(() => this.runGame(), 100);
@@ -253,6 +254,9 @@ class Game {
             this.c.drawImage(this.pauseIcon, this.canvas.width / 2 - this.pauseIconSize / 2, this.canvas.height / 2 - this.pauseIconSize / 2, this.pauseIconSize, this.pauseIconSize);
             return;
         }
+
+        // Updating Textbox
+        this.utils.updateTextbox();
         
         //Dev Mode Features
         if (this.devKeys.alt && this.devKeys[1] && this.devKeys[2] && this.devKeys[3] && this.devKeys[4]) {

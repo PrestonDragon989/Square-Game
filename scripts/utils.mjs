@@ -7,6 +7,10 @@ class Utils {
     constructor() {
         this.utils = true;
         this.isThis = "This is, in fact, the Utils Class!"
+
+        // Textbox
+        this.textbox = document.getElementById("text-box");
+        this.textboxClicked = false;
     }
     
     //Random Number Between min and max
@@ -93,6 +97,33 @@ class Utils {
         const percentage = (value / total) * 100;
     
         return percentage;
+    }
+
+
+    // Textbox Functions
+    textboxDetectClick() {
+        // Cancel right click window
+        this.textbox.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        });
+        
+        // Checking Click
+        this.textbox.addEventListener('mousedown', function(event) {
+            console.log('Mouse down!');
+            this.textboxClicked = true;
+        });
+        
+        this.textbox.addEventListener('mouseup', function(event) {
+            console.log('Mouse up!');
+            this.textContentClicked = false;
+        });
+    }
+
+    updateTextbox() {
+        if (this.textboxClicked) {
+            this.textbox.style.left = "200%";
+            console.log("Textbox clicked!");
+        }
     }
 }
 
