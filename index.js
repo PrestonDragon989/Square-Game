@@ -27,7 +27,7 @@ class Game {
         this.gamePaused = false;
 
         // Creating Player Instance, and movement
-        this.player = new Player(this.c, this.canvas, 100, 100);
+        this.player = new Player(this.c, this.canvas, (this.canvas.width / 2 - 25), (this.canvas.height / 2 - 25));
 
         //Creating Enemy Instance
         this.enemy = new Enemy(this.canvas, this.c, this.player);
@@ -72,7 +72,7 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicBlueEnemy"], [true, 3, 4]);
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4]);
                     break;
                 //WASD Movement Keys
                 case "a":
