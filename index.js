@@ -59,6 +59,7 @@ class Game {
             this.gameLoop();
             this.handleInput();
             this.utils.textboxDetectClick();
+            this.utils.displayText("Welcome to Square Game! Use the WASD keys to move. Click left click to use your left weapon, & right click to use your right weapon. P or Escape pause the game. Click this text box to move on!");
         } else {
             // Wait for the basicEnemyData to be loaded before starting the game loop
             setTimeout(() => this.runGame(), 100);
@@ -200,12 +201,12 @@ class Game {
 
         //Left Click Detection
         this.canvas.addEventListener('click', (event) => {
-            if (!this.gamePaused) this.player.playerLeftShoot(event.offsetX, event.offsetY);
+            if (!this.gamePaused || !this.utils.textboxActive) this.player.playerLeftShoot(event.offsetX, event.offsetY);
         });
 
         //Right Click Detection
         this.canvas.addEventListener('contextmenu', (event) => {
-            if (!this.gamePaused) this.player.playerRightShoot(event.offsetX, event.offsetY);
+            if (!this.gamePaused || !this.utils.textboxActive) this.player.playerRightShoot(event.offsetX, event.offsetY);
             event.preventDefault();
         });
     }
@@ -253,10 +254,12 @@ class Game {
         if (this.gamePaused) {
             this.c.drawImage(this.pauseIcon, this.canvas.width / 2 - this.pauseIconSize / 2, this.canvas.height / 2 - this.pauseIconSize / 2, this.pauseIconSize, this.pauseIconSize);
             return;
-        }
+        } else if (this.utils.textboxActive) {
+            // Updating Textbox
+            this.utils.updateTextbox();
+            return;
+        };
 
-        // Updating Textbox
-        this.utils.updateTextbox();
         
         //Dev Mode Features
         if (this.devKeys.alt && this.devKeys[1] && this.devKeys[2] && this.devKeys[3] && this.devKeys[4]) {

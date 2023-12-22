@@ -46,3 +46,18 @@ body {
     left: 200%; /* Perfectly Centered is 20% */
     z-index: 1;
 }
+
+#speaker-box {
+    font-weight: bold;
+    box-sizing: border-box;
+    padding: 10px;
+    font-size: 140%;
+    font-family: 'PixelFont', sans-serif;
+    background-color: rgba(100, 100, 100, 0.5);
+    border: 2px solid rgb(200, 200, 200);
+    width: 20%;
+    height: 50px;
+    position: absolute; 
+    top: 73.2%; 
+    left: 200%; /* Perfectly Centered is 20% */
+}

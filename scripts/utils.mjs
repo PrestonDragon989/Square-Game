@@ -5,12 +5,11 @@ import Vector2 from "./vector.mjs";
 
 class Utils {
     constructor() {
-        this.utils = true;
-        this.isThis = "This is, in fact, the Utils Class!"
-
         //Getting Textbox
         this.textbox = document.getElementById("text-box");
+        this.speakerbox = document.getElementById("speaker-box");
         this.textboxClicked = false;
+        this.textboxActive = false;
     }
     
     //Random Number Between min and max
@@ -102,6 +101,7 @@ class Utils {
 
     // Textbox Functions
     textboxDetectClick() {
+        // Main Text Box
         // Cancel right click window
         this.textbox.addEventListener('contextmenu', (event) => {
             event.preventDefault();
@@ -115,11 +115,38 @@ class Utils {
         this.textbox.addEventListener('mouseup', (event) => {
             this.textboxClicked = false;
         });
+
+        // Speaker Box
+        // Cancel right click window
+        this.speakerbox.addEventListener('contextmenu', (event) => {
+            event.preventDefault();
+        });
+        
+        // Checking Click
+        this.speakerbox.addEventListener('mousedown', (event) => {
+            this.textboxClicked = true;
+        });
+        
+        this.speakerbox.addEventListener('mouseup', (event) => {
+            this.textboxClicked = false;
+        });
     }    
 
     updateTextbox() {
-        if (this.textboxClicked) {
-            
+        if (this.textboxClicked & this.textboxActive) {
+            this.textboxActive = false;
+            this.speakerbox.style.left = "200%";
+            this.textbox.style.left = "200%";
+        }
+    }
+
+    displayText(text, speaker = null) {
+        this.textboxActive = true;
+        this.textbox.style.left = "20%";
+        this.textbox.innerHTML = text;
+        if (speaker != null) {
+            this.speakerbox.style.left = "20%";
+            this.speakerbox.innerHTML = speaker;
         }
     }
 }
