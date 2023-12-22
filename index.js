@@ -52,7 +52,7 @@ class Game {
     }
 
     runGame() {
-        if (this.enemy.basicEnemyData !== undefined && this.player.playerWeapons !== undefined && this.utils.textbox != "notLoaded") {
+        if (this.enemy.basicEnemyData !== undefined && this.player.playerWeapons !== undefined) {
             //Setting Default Settings
             this.player.currentWeapon.leftShoot = this.player.playerWeapons["defaultShoot"];
             this.player.currentWeapon.rightShoot = this.player.playerWeapons["defaultShotgun"];
@@ -105,8 +105,8 @@ class Game {
                 //Pause Button
                 case "Escape":
                     if (!this.gamePaused) {
-                    this.gamePaused = true;
-                    break;
+                        this.gamePaused = true;
+                        break;
                     } else {
                         this.gamePaused = false;
                         break;
@@ -319,14 +319,12 @@ class Game {
         // Calculate time elapsed since the last frame
         this.deltaTime = (timestamp - this.lastTimestamp) / 1000; // Convert to seconds
 
-        /* Logic From Here */
         // Update game logic based on elapsed time
         this.update();
 
         // Render the game
         this.render();
 
-        /* To Here */
         // Store the current timestamp for the next frame
         this.lastTimestamp = timestamp;
 
@@ -336,6 +334,4 @@ class Game {
 }
 
 // Create an instance of the Game class
-//if (confirm("By using this webpage, you agree to let our company take your credit card information, as well as use it. By clicking \"OK\" you agree to this.")) {
-    const game = new Game();
-//}
+const game = new Game();
