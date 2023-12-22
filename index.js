@@ -52,7 +52,7 @@ class Game {
     }
 
     runGame() {
-        if (this.enemy.basicEnemyData !== undefined && this.player.playerWeapons !== undefined) {
+        if (this.enemy.basicEnemyData !== undefined && this.player.playerWeapons !== undefined && this.utils.textbox != "notLoaded") {
             //Setting Default Settings
             this.player.currentWeapon.leftShoot = this.player.playerWeapons["defaultShoot"];
             this.player.currentWeapon.rightShoot = this.player.playerWeapons["defaultShotgun"];

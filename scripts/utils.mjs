@@ -8,7 +8,7 @@ class Utils {
         this.utils = true;
         this.isThis = "This is, in fact, the Utils Class!"
 
-        // Textbox
+        //Getting Textbox
         this.textbox = document.getElementById("text-box");
         this.textboxClicked = false;
     }
@@ -108,21 +108,18 @@ class Utils {
         });
         
         // Checking Click
-        this.textbox.addEventListener('mousedown', function(event) {
-            console.log('Mouse down!');
+        this.textbox.addEventListener('mousedown', (event) => {
             this.textboxClicked = true;
         });
         
-        this.textbox.addEventListener('mouseup', function(event) {
-            console.log('Mouse up!');
-            this.textContentClicked = false;
+        this.textbox.addEventListener('mouseup', (event) => {
+            this.textboxClicked = false;
         });
-    }
+    }    
 
     updateTextbox() {
         if (this.textboxClicked) {
-            this.textbox.style.left = "200%";
-            console.log("Textbox clicked!");
+            
         }
     }
 }
