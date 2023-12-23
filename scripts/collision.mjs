@@ -38,7 +38,7 @@ class Collision {
         if (this.enemy.basicEnemies.length > 0 && this.player.bullets.length > 0) {
             this.enemy.basicEnemies.forEach(enemy => {
                 this.player.bullets.forEach(bullet => {
-                    if (this.utils.rectIntersect(bullet.rect, enemy[1]) && bullet[-1] == 1) {
+                    if (this.utils.rectIntersect(bullet.rect, enemy[1])) {
                         enemy[2][0] -= bullet.damage;
                         this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
                     }

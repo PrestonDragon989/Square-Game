@@ -201,12 +201,12 @@ class Game {
 
         //Left Click Detection
         this.canvas.addEventListener('click', (event) => {
-            if (!this.gamePaused || !this.utils.textboxActive) this.player.playerLeftShoot(event.offsetX, event.offsetY);
+            if (!this.gamePaused && !this.utils.textboxActive) this.player.playerLeftShoot(event.offsetX, event.offsetY);
         });
 
         //Right Click Detection
         this.canvas.addEventListener('contextmenu', (event) => {
-            if (!this.gamePaused || !this.utils.textboxActive) this.player.playerRightShoot(event.offsetX, event.offsetY);
+            if (this.gamePaused == false && this.utils.textboxActive == false) this.player.playerRightShoot(event.offsetX, event.offsetY);
             event.preventDefault();
         });
     }
