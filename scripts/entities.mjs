@@ -91,7 +91,7 @@ class Player {
     }
 
     //Shoot Function
-    basicShoot(mouseX, mouseY, bulletSize, bulletSpeed, damage) {
+    basicShoot(mouseX, mouseY, bulletSize, bulletSpeed, damage, target) {
         //Getting Player Center, mouseclick Coords
         let playerCenterX = this.x + 25
         let playerCenterY = this.y + 25
@@ -116,7 +116,7 @@ class Player {
         bullet_vector.normalize();
 
         // Adding bullet to the bullet list
-        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: this.utils.randint(damage.min, damage.max)});
+        this.bullets.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: this.utils.randint(damage.min, damage.max), target});
     }
     
     
@@ -133,18 +133,18 @@ class Player {
                 this.shotgunShoot(mouseX, mouseY, this.currentWeapon.leftShoot["spread"], {
                     min: this.currentWeapon.leftShoot["damage"]["min"],
                     max: this.currentWeapon.leftShoot["damage"]["max"]
-                }, this.currentWeapon.leftShoot["bulletSpeed"], this.currentWeapon.leftShoot["bulletSize"], this.utils.randint(this.currentWeapon.leftShoot["bullets"]["min"], this.currentWeapon.leftShoot["bullets"]["max"]));
+                }, this.currentWeapon.leftShoot["bulletSpeed"], this.currentWeapon.leftShoot["bulletSize"], this.utils.randint(this.currentWeapon.leftShoot["bullets"]["min"], this.currentWeapon.leftShoot["bullets"]["max"]), 1);
             } else {
                 this.basicShoot(mouseX, mouseY, this.currentWeapon.leftShoot["bulletSize"], this.currentWeapon.leftShoot["bulletSpeed"], {
                     min: this.currentWeapon.leftShoot["damage"]["min"],
                     max: this.currentWeapon.leftShoot["damage"]["max"]
-                });
+                }, 1);
             }
             this.lastShotTime = Date.now();
         }
     }
 
-    shotgunShoot(mouseX, mouseY, spread, damage, bulletSpeed, bulletSize, numberOfBullets) {
+    shotgunShoot(mouseX, mouseY, spread, damage, bulletSpeed, bulletSize, numberOfBullets, target) {
         // Getting Player Center, mouse click Coords
         let playerCenterX = this.x + 25;
         let playerCenterY = this.y + 25;
@@ -189,6 +189,7 @@ class Player {
                 vector: bullet_vector,
                 velocity: bulletSpeed,
                 damage: this.utils.randint(damage.min, damage.max),
+                target
             });
         }
     }
@@ -203,8 +204,8 @@ class Player {
         const timeElapsed = Date.now() - this.lastShotgunTime;
 
         if (timeElapsed >= shootClock) {
-           if (this.currentWeapon.rightShoot["type"] == "shotgun") this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]}, this.currentWeapon.rightShoot["bulletSpeed"], this.currentWeapon.rightShoot["bulletSize"], this.utils.randint(this.currentWeapon.rightShoot["bullets"]["min"], this.currentWeapon.rightShoot["bullets"]["max"]));
-           else this.basicShoot(mouseX, mouseY, this.currentWeapon.rightShoot["bulletSize"], this.currentWeapon.rightShoot["bulletSpeed"], {min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]});
+           if (this.currentWeapon.rightShoot["type"] == "shotgun") this.shotgunShoot(mouseX, mouseY, this.currentWeapon.rightShoot["spread"], { min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]}, this.currentWeapon.rightShoot["bulletSpeed"], this.currentWeapon.rightShoot["bulletSize"], this.utils.randint(this.currentWeapon.rightShoot["bullets"]["min"], this.currentWeapon.rightShoot["bullets"]["max"]), 1);
+           else this.basicShoot(mouseX, mouseY, this.currentWeapon.rightShoot["bulletSize"], this.currentWeapon.rightShoot["bulletSpeed"], {min: this.currentWeapon.rightShoot["damage"]["min"], max: this.currentWeapon.rightShoot["damage"]["max"]}, 1);
            this.lastShotgunTime = Date.now();
         }
     }

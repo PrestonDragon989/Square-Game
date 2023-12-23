@@ -34,28 +34,11 @@ class Collision {
     }
 
     bulletCollision() {
-        // Killing Bullet if it is out of bounds
-        /*if (this.enemy.basicEnemies.length > 0) {
-            this.enemy.basicEnemies.forEach(enemy => {
-                if (this.player.bullets.length > 0) {
-                    this.player.bullets.forEach(bullet => {
-                        if (enemy.rect.x < bullet.rect.x + bullet.rect.width &&
-                            enemy.rect.x + enemy.rect.width > bullet.rect.x &&
-                            enemy.rect.y < bullet.rect.y + bullet.rect.height &&
-                            enemy.rect.height + enemy.rect.y > bullet.rect.y) {
-                            this.enemy.basicEnemies.splice(this.enemy.basicEnemies.indexOf(enemy), 1);
-                            this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
-                        }
-                    });
-                }
-            });
-        }*/
-
         // Dealing Damage to the enemy if it hits
         if (this.enemy.basicEnemies.length > 0 && this.player.bullets.length > 0) {
             this.enemy.basicEnemies.forEach(enemy => {
                 this.player.bullets.forEach(bullet => {
-                    if (this.utils.rectIntersect(bullet.rect, enemy[1])) {
+                    if (this.utils.rectIntersect(bullet.rect, enemy[1]) && bullet[-1] == 1) {
                         enemy[2][0] -= bullet.damage;
                         this.player.bullets.splice(this.player.bullets.indexOf(bullet), 1);
                     }
