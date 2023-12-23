@@ -2,7 +2,6 @@
 import { Player, Enemy } from "./scripts/entities.mjs";
 import { Collision } from "./scripts/collision.mjs";
 import Utils from './scripts/utils.mjs';
-import Vector2 from "./scripts/vector.mjs";
 
 // Class Game, to handle all main game features
 class Game {
@@ -206,10 +205,11 @@ class Game {
 
         //Right Click Detection
         this.canvas.addEventListener('contextmenu', (event) => {
-            if (this.gamePaused == false && this.utils.textboxActive == false) this.player.playerRightShoot(event.offsetX, event.offsetY);
+            if (!this.gamePaused && !this.utils.textboxActive) this.player.playerRightShoot(event.offsetX, event.offsetY);
             event.preventDefault();
         });
     }
+
     devCheckCommand() {
         //Stopping Dev Mode 
         if (this.devCommand.toLocaleLowerCase() === "stop" || this.devCommand.toLocaleLowerCase() == "end") {this.devMode = false; this.player.img.src = "images/entities/player/player-square.png";}
@@ -293,7 +293,7 @@ class Game {
 
         // Checking Enemy Death
         this.enemy.checkDeath();
-}
+    }
 
     // Rendering Function to handle All rendering Needs
     render() {
