@@ -251,7 +251,7 @@ class Player {
         else if (HPPercent > 60) this.c.drawImage(this.healthBar, 0, 96, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
         else if (HPPercent > 40) this.c.drawImage(this.healthBar, 0, 192, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
         else if (HPPercent > 20) this.c.drawImage(this.healthBar, 0, 288, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
-        else this.c.drawImage(this.healthBar, 0, 384, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
+        else if (HPPercent >= 0) this.c.drawImage(this.healthBar, 0, 384, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
     }
 }
 

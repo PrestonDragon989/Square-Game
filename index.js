@@ -30,6 +30,7 @@ class Game {
 
         //Creating Enemy Instance
         this.enemy = new Enemy(this.canvas, this.c, this.player);
+        this.autoGen = false;
 
         //Collisions
         this.collision = new Collision(this.player, this.enemy);
@@ -71,7 +72,7 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
+                    
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -278,6 +279,8 @@ class Game {
             }
         } else if (!this.devMode) this.devAlert = false;
         if (this.devCommand != "") this.devCheckCommand();
+
+        if (this.utils.randint(1, 200) == 1) this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
 
         //Player Move
         this.player.handleInput();

@@ -54,7 +54,6 @@ class Collision {
             this.enemy.basicEnemies.forEach(enemy => {
                 if (this.utils.rectIntersect({width: enemy[1].width, height: enemy[1].height, x: enemy[1].x, y: enemy[1].y}, {width: this.player.width, height: this.player.height, x: this.player.x, y: this.player.y})) {
                     this.player.health -= enemy[4];
-                    console.log(enemy[2]);
                     
                     // Calculating Player Contact Damage
                     let maxLeftDamage;

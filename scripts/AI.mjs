@@ -48,8 +48,16 @@ class basicRedAI extends baseAI {
         // Distance to Player
         let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x, this.player.y]);
 
-        if (distanceToPlayer <= 120) {
-            newState = "attack";
+        if (distanceToPlayer <= 125) {
+            newState = "attack1";
+        } else if (distanceToPlayer <= 150) {
+            newState = "attack2";
+        } else if (distanceToPlayer <= 250) {
+            newState = "attack3";
+        } else if (distanceToPlayer <= 1000) {
+            newState = "attack4";
+        } else if (distanceToPlayer <= 2000) {
+            newState = "attack5";
         } else {
             newState = "follow";
         }
@@ -70,9 +78,33 @@ class basicRedAI extends baseAI {
     
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
-        } else if (this.state === "attack") {
+        } else if (this.state === "attack1") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 2.25));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack2") {
             // Calculate the movement vector
             const movementVector = this.basicMove((this.speed * 2));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack3") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 1.80));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack4") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 1.45));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack5") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 1.25));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
