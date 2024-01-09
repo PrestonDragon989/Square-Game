@@ -1,5 +1,6 @@
 // Vector for quick calculation
 import Vector2 from "./vector.mjs";
+import { basicRedAI } from "./AI.mjs";
 
 // AI
 
@@ -67,8 +68,8 @@ class Utils {
         );
     }
 
-    convertAI(AI, rect, HP, speed, contactDamage, bulletDamage) {
-        if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage);
+    convertAI(AI, rect, HP, speed, contactDamage, bulletDamage, player) {
+        if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
     }
 
     getDistance(pointA, pointB) {

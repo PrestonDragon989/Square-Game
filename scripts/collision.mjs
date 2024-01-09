@@ -48,6 +48,32 @@ class Collision {
         }
         
     }
+
+    enemyHitboxCollision() {
+        if (this.enemy.basicEnemies.length > 0) {
+            this.enemy.basicEnemies.forEach(enemy => {
+                if (this.utils.rectIntersect({width: enemy[1].width, height: enemy[1].height, x: enemy[1].x, y: enemy[1].y}, {width: this.player.width, height: this.player.height, x: this.player.x, y: this.player.y})) {
+                    this.player.health -= enemy[4];
+                    console.log(enemy[2]);
+                    
+                    // Calculating Player Contact Damage
+                    let maxLeftDamage;
+                    let maxRightDamage;
+                    if (this.player.currentWeapon.leftShoot["type"] === "shotgun") {
+                        maxLeftDamage = (this.player.currentWeapon.leftShoot["bullets"]["max"] * this.player.currentWeapon.leftShoot["damage"]["max"]);
+                    } else if (this.player.currentWeapon.leftShoot["type"] === "shoot") {
+                        maxLeftDamage = this.player.currentWeapon.leftShoot["damage"]["max"];
+                    } else maxLeftDamage = 0;
+                    if (this.player.currentWeapon.rightShoot["type"] === "shotgun") {
+                        maxRightDamage = (this.player.currentWeapon.rightShoot["bullets"]["max"] * this.player.currentWeapon.rightShoot["damage"]["max"]);
+                    } else if (this.player.currentWeapon.rightShoot["type"] === "shoot") {
+                        maxRightDamage = this.player.currentWeapon.rightShoot["damage"]["max"];
+                    } else maxRightDamage = 0;
+                    enemy[2][0] -= 2 * (maxLeftDamage + maxRightDamage);
+                }
+            });
+        }
+    }
 }
 
 //Exporting To the Game Class

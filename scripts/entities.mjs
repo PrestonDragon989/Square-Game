@@ -248,7 +248,7 @@ class Player {
         // Drawing Current HP Bar
         let HPPercent = this.utils.calcPercentage(this.health, this.maxHealth);
         if (HPPercent > 80) this.c.drawImage(this.healthBar, 0, 0, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
-        else if (HPPercent > 60) this.c.drawImage(this.healthBar, 0, 96, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((ethis.width * 1.40))  * (0.01 * HPPercent), 7.2);
+        else if (HPPercent > 60) this.c.drawImage(this.healthBar, 0, 96, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
         else if (HPPercent > 40) this.c.drawImage(this.healthBar, 0, 192, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
         else if (HPPercent > 20) this.c.drawImage(this.healthBar, 0, 288, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
         else this.c.drawImage(this.healthBar, 0, 384, 600, 96, this.x - (this.width * .2), this.y + (this.height + 10), ((this.width * 1.40))  * (0.01 * HPPercent), 7.2);
@@ -382,7 +382,7 @@ class Enemy {
 
         // Getting Enemy AI
         let enemyAI
-        if (AI != null) enemyAI = this.utils.convertAI(enemyType["AI"], rect, HP, speed, contactDamage, bulletDamage);
+        if (AI != null) enemyAI = this.utils.convertAI(AI, rect, HP, speed, contactDamage, bulletDamage);
         else enemyAI = null;
         
         /* Enemy Array Structure:
@@ -397,6 +397,19 @@ class Enemy {
                 this.basicEnemies.splice(this.basicEnemies.indexOf(enemy), 1); // Killing it off
             }
         });
+    }
+
+    updateAI() {
+        if (this.basicEnemies.length > 0) {
+            this.basicEnemies.forEach(enemy => {
+                if (enemy[6] != null) {    
+                    const movement = enemy[6].AIAction(this.player, enemy[1]);
+                    
+                    enemy[1].x += movement[0];
+                    enemy[1].y += movement[1];
+                }
+            });
+        }
     }
     
     render() {

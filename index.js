@@ -71,7 +71,7 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4]);
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -284,7 +284,13 @@ class Game {
 
         //Bullet Update
         this.player.bulletMovement();
-        
+
+        // Enemy AI
+        this.enemy.updateAI();
+
+        // Updating Enemy - Player Damage
+        this.collision.enemyHitboxCollision()
+
         //Player Collison
         this.collision.wallCollision(this.canvas);
 
