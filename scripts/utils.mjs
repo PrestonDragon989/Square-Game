@@ -1,6 +1,6 @@
 // Vector for quick calculation
 import Vector2 from "./vector.mjs";
-import { basicRedAI } from "./AI.mjs";
+import { basicRedAI, mediumRedAI } from "./AI.mjs";
 
 // AI
 
@@ -11,6 +11,8 @@ class Utils {
         this.speakerbox = document.getElementById("speaker-box");
         this.textboxClicked = false;
         this.textboxActive = false;
+        this.textboxQue = [];
+        this.lastTextboxClick = 0
     }
     
     //Random Number Between min and max
@@ -70,6 +72,7 @@ class Utils {
 
     convertAI(AI, rect, HP, speed, contactDamage, bulletDamage, player) {
         if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
+        else if (AI == "mediumRedAI") return new mediumRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
     }
 
     getDistance(pointA, pointB) {
@@ -134,10 +137,17 @@ class Utils {
     }    
 
     updateTextbox() {
-        if (this.textboxClicked & this.textboxActive) {
+        let timeElapsed = Date.now() - this.lastTextboxClick 
+        if (this.textboxClicked & this.textboxActive & timeElapsed >= 300) {
             this.textboxActive = false;
             this.speakerbox.style.left = "200%";
             this.textbox.style.left = "200%";
+            if (this.textboxQue.length > 0) {
+                this.displayText(this.textboxQue[0][0], this.textboxQue[0][1]);
+                // Removing First Item in the list
+                this.textboxQue.splice(this.textboxQue[0]);
+            }
+            this.lastTextboxClick = Date.now();
         }
     }
 
@@ -149,6 +159,10 @@ class Utils {
             this.speakerbox.style.left = "20%";
             this.speakerbox.innerHTML = speaker;
         }
+    }
+
+    displayTextQue(text, speaker = null) {
+        this.textboxQue.push([text, speaker]);
     }
 }
 

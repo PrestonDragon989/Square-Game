@@ -246,7 +246,13 @@ class Game {
         
         // Showing Player Stats
         else if (this.devCommand.toLocaleLowerCase() === "stats") alert(`Player Health: ${this.player.health}\nPlayer Size: ${this.player.height} x ${this.player.width}\nCords: (${this.player.x}, ${this.player.y})\nPlayer Speed: ${this.player.speed}`);
+        
+        else if (this.devCommand.toLocaleLowerCase() === "speed") {
+            let newSpeed = prompt("Type your new speed. Normal speed is fide. Current:", this.player.speed);
+            this.player.speed = newSpeed;
+        }
         this.devCommand = "";
+
     }
 
     // Game Logic
@@ -260,7 +266,6 @@ class Game {
             this.utils.updateTextbox();
             return;
         };
-
         
         //Dev Mode Features
         if (this.devKeys.alt && this.devKeys[1] && this.devKeys[2] && this.devKeys[3] && this.devKeys[4]) {
@@ -280,7 +285,7 @@ class Game {
         } else if (!this.devMode) this.devAlert = false;
         if (this.devCommand != "") this.devCheckCommand();
 
-        if (this.utils.randint(1, 200) == 1) this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
+        if (this.utils.randint(1, 200) == 1) this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
 
         //Player Move
         this.player.handleInput();
@@ -288,14 +293,14 @@ class Game {
         //Bullet Update
         this.player.bulletMovement();
 
-        // Enemy AI
-        this.enemy.updateAI();
+        //Player Collison
+        this.collision.wallCollision(this.canvas);
 
         // Updating Enemy - Player Damage
         this.collision.enemyHitboxCollision()
 
-        //Player Collison
-        this.collision.wallCollision(this.canvas);
+        // Enemy AI
+        this.enemy.updateAI();
 
         // Bullet Collision
         this.collision.bulletCollision();
@@ -328,11 +333,11 @@ class Game {
         // Calculate time elapsed since the last frame
         this.deltaTime = (timestamp - this.lastTimestamp) / 1000; // Convert to seconds
 
-        // Update game logic based on elapsed time
-        this.update();
-
         // Render the game
         this.render();
+
+        // Update game logic based on elapsed time
+        this.update();
 
         // Store the current timestamp for the next frame
         this.lastTimestamp = timestamp;
