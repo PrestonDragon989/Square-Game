@@ -167,7 +167,7 @@ class mediumRedAI extends baseAI {
 
             // Setting Up Dash Chance
             
-            if (distanceToPlayer <= 5000 && this.state != "dash" && this.utils.randint(1, 300) === 1) { 
+            if (distanceToPlayer <= 5000 && this.state != "dash" && this.utils.randint(1, 400) === 1) { 
                 newState = "dash";
             }
             
