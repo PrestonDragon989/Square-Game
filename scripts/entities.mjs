@@ -11,6 +11,7 @@ class Player {
 
         //Getting Utils
         this.utils = new Utils();
+        this.utils.textboxDetectClick();
         
         //Getting Coordinates
         this.x = x;
@@ -31,6 +32,7 @@ class Player {
         //Player Health Stats
         this.maxHealth = 100;
         this.health = 100;
+        this.playerDeath = [false, false];
 
         //Player Speed
         this.speed = 5;
@@ -228,6 +230,17 @@ class Player {
             bullet.rect.y += bullet.vector.y * bullet.velocity;
         }
   }
+
+    // Checking Player Death
+    checkDeath() {
+        if (this.health <= 0 && this.playerDeath[0] == false) {
+            this.playerDeath = [true, false];
+        }
+        if (this.playerDeath[0] == true && this.playerDeath[1] == false) {
+            this.playerDeath = [true, true];
+            this.utils.displayText("Player has died.");
+        }
+    }
 
     //Rendering Functions
     playerRender() {
