@@ -31,6 +31,10 @@ class Game {
         //Creating Enemy Instance
         this.enemy = new Enemy(this.canvas, this.c, this.player);
         this.autoGen = false;
+        this.lastEnemyTimestamp = {
+            basicRed: Date.now(),
+            mediumRed: Date.now()
+        }
 
         //Collisions
         this.collision = new Collision(this.player, this.enemy);
@@ -71,8 +75,13 @@ class Game {
         // Keydown event
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
+                case "q":
+                    if (this.autoGen == false) this.autoGen = true;
+                    else if (this.autoGen == true) this.autoGen = false;
+                    console.log("autoGen: " + this.autoGen);
+                    break;
                 case "t":
-                    
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -255,6 +264,18 @@ class Game {
 
     }
 
+    prodeduralSummoning() {
+        // Last Spawn Times
+        const basicRedTimeElapsed = Date.now() - this.lastEnemyTimestamp.basicRed;
+
+
+        // Spawn Rates
+        if (this.utils.randint(1, 600 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicRedTimeElapsed >= 3000) {
+            this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
+            this.lastEnemyTimestamp = Date.now();
+        }
+    }
+
     // Game Logic
     update() {
         //Game Paused 
@@ -285,8 +306,6 @@ class Game {
         } else if (!this.devMode) this.devAlert = false;
         if (this.devCommand != "") this.devCheckCommand();
 
-        if (this.utils.randint(1, 200) == 1) this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
-
         //Player Move
         this.player.handleInput();
 
@@ -295,6 +314,9 @@ class Game {
 
         //Player Collison
         this.collision.wallCollision(this.canvas);
+
+        // Enemy Procedural Summoning
+        if (this.autoGen) this.prodeduralSummoning();
 
         // Updating Enemy - Player Damage
         this.collision.enemyHitboxCollision()

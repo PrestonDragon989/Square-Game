@@ -20,7 +20,12 @@ class baseAI {
     basicMove(speed) {
         // Getting Vector movement, and return the result
         return new Vector2(this.player.x - this.rect.x, this.player.y - this.rect.y).normalize().scale(speed);    
-    }   
+    }
+
+    specificMove(speed, coordinates) {
+        // Getting Vector movement, and return the result
+        return new Vector2(coordinates[0] - this.rect.x, coordinates[1] - this.rect.y).normalize().scale(speed);    
+    }
 }
 
 // Red AI Classes
@@ -125,7 +130,7 @@ class mediumRedAI extends baseAI {
         this.bulletDamage = bulletDamage;
 
         // Time Stamps
-        this.lastDashTime = 0;
+        this.lastDashTime = Date.now();
         this.dashWaitTime = 0;
 
         // Target Positions
@@ -134,36 +139,75 @@ class mediumRedAI extends baseAI {
         // State Information
         this.state = "follow";
         this.dashState = "stop"
-        this.dashMark = [0, 0];
+        this.dashMark = null;
+        this.dashNumber = 0;
+        this.dashSpeed = 4;
     }
 
     AIBrain() {
         let newState;
 
-        // Calculating Distance to player
-        let distanceToPlayer = this.utils.getDistance([this.player.x, this.player.y], [this.rect.x, this.rect.y])
+        if (this.state !== "dash") {
 
-        // Chancging Speed Based on Distance
-        if (distanceToPlayer <= 250) {
-            newState = "attack1";
-        } else if (distanceToPlayer <= 1000) {
-            newState = "attack2";
-        } else if (distanceToPlayer <= 2000) {
-            newState = "attack3";
-        } else {
-            newState = "follow";
-        }
+            // Calculating Distance to player
+            let distanceToPlayer = this.utils.getDistance([this.player.x, this.player.y], [this.rect.x, this.rect.y])
 
-        // Setting Up Dash Chance
-        
-        if (distanceToPlayer <= 2000 && this.lastDashTime >= 10000 && this.state != "dash" && this.utils.randint(1, 3000) == 1) newState = "dash"
+            // Chancging Speed Based on Distance
+            if (distanceToPlayer <= 250) {
+                newState = "attack1";
+            } else if (distanceToPlayer <= 1000) {
+                newState = "attack2";
+            } else if (distanceToPlayer <= 2000) {
+                newState = "attack3";
+            } else {
+                newState = "follow";
+            }
+
+            // Setting Up Dash Chance
+            
+            if (distanceToPlayer <= 5000 && this.state != "dash" && this.utils.randint(1, 300) === 1) { 
+                newState = "dash";
+            }
+            
+        } else newState = "dash";
 
         return newState;
     }
 
     dashLogic() {
-        
-    }
+        // Setting Dash Number
+        if (this.dashNumber === 0) {
+            this.dashNumber = this.utils.randint(4, 9);
+        }
+        const timeElapsed = Date.now() - this.lastDashTime;
+
+        // Getting Dash Mark if we need one
+        if (this.dashMark == null && this.dashNumber >= 1 && timeElapsed > this.dashWaitTime) {
+            let dashMarkX = this.player.x + this.utils.randint(-5, 5);
+            let dashMarkY = this.player.y + this.utils.randint(-5, 5);
+
+            this.dashMark = [dashMarkX, dashMarkY];
+            this.dashWaitTime = this.utils.randint(50, 250);
+            this.dashSpeed = this.utils.randint(40, 80);
+            if (this.utils.randint(0,100) === 0) this.dashSpeed = 19;
+        }
+        if (this.dashMark !== null) {
+        if (this.utils.getDistance([this.dashMark[0], this.dashMark[1]], [this.rect.x, this.rect.y]) >= 25 && timeElapsed >= this.dashWaitTime) {
+            return this.specificMove(this.speed + 4, [this.dashMark[0], this.dashMark[1]]);
+        } 
+        else if (this.utils.getDistance([this.dashMark[0], this.dashMark[1]], [this.rect.x, this.rect.y]) <= 25) {
+            this.dashNumber--;
+            this.lastDashTime = Date.now();
+            this.dashMark = null;
+            if (this.dashNumber <= 0) {
+                this.state = "follow";
+            }
+            return {x: 0, y: 0}
+        } 
+        else return {x: 0, y: 0}
+        }
+        return {x: 0, y: 0};
+;    }
 
     AIAction(player, rect) {
         // Resetting Values
@@ -171,7 +215,7 @@ class mediumRedAI extends baseAI {
         this.rect = rect;
 
         // Getting State
-        this.state = this.AIBrain()
+        this.state = this.AIBrain();
 
         // AI Actions based on state
         if (this.state === "follow") {
@@ -182,19 +226,19 @@ class mediumRedAI extends baseAI {
             return [movementVector.x, movementVector.y];
         } else if (this.state === "attack1") {
             // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 1.25));
+            const movementVector = this.basicMove((this.speed * 1.4));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
         } else if (this.state === "attack2") {
             // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 1.15));
+            const movementVector = this.basicMove((this.speed * 1.3));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
         } else if (this.state === "attack3") {
             // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 1.05));
+            const movementVector = this.basicMove((this.speed * 1.15));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];

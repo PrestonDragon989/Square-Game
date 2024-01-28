@@ -61,6 +61,32 @@ class Utils {
         return result;
     }
 
+    inRange(variable, min, max) {
+        if (variable >= min && variable <= max) {
+            return true;
+        } else return false;
+    }
+
+    spawnRateIncrease(enemyList, min) {
+        let rateIncrease;
+
+        if (enemyList.length === 0) rateIncrease = 5000;
+        else if (enemyList.length === 1) rateIncrease = 4000;
+        else if (enemyList.length === 2) rateIncrease = 3500;
+        else if (enemyList.length === 4) rateIncrease = 2000;
+        else if (enemyList.length === 6) rateIncrease = 1000;
+        else if (enemyList.length === 8) rateIncrease = 900;
+        else if (enemyList.length === 9) rateIncrease = 800;
+        else if (enemyList.length === 10) rateIncrease = 600;
+        else if (enemyList.length === 11) rateIncrease = 400;
+        else if (enemyList.length === 12) rateIncrease = 200;
+        else rateIncrease = 0;
+
+        if (rateIncrease > min) rateIncrease = min - 2;
+
+        return rateIncrease;
+    }
+
     rectIntersect(rect1, rect2) {
         return (
             rect1.x < rect2.x + rect2.width &&
