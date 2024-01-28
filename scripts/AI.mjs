@@ -153,7 +153,9 @@ class mediumRedAI extends baseAI {
             let distanceToPlayer = this.utils.getDistance([this.player.x, this.player.y], [this.rect.x, this.rect.y])
 
             // Chancging Speed Based on Distance
-            if (distanceToPlayer <= 250) {
+            if (distanceToPlayer >= 3000) {
+                newState = "run";
+            } else if (distanceToPlayer <= 250) {
                 newState = "attack1";
             } else if (distanceToPlayer <= 1000) {
                 newState = "attack2";
@@ -207,7 +209,7 @@ class mediumRedAI extends baseAI {
         else return {x: 0, y: 0}
         }
         return {x: 0, y: 0};
-;    }
+    }
 
     AIAction(player, rect) {
         // Resetting Values
@@ -218,7 +220,13 @@ class mediumRedAI extends baseAI {
         this.state = this.AIBrain();
 
         // AI Actions based on state
-        if (this.state === "follow") {
+        if (this.state === "run") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove(this.speed * 1.35);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "follow") {
             // Calculate the movement vector
             const movementVector = this.basicMove(this.speed);
     
