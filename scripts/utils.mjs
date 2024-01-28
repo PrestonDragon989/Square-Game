@@ -70,16 +70,16 @@ class Utils {
     spawnRateIncrease(enemyList, min) {
         let rateIncrease;
 
-        if (enemyList.length === 0) rateIncrease = 5000;
-        else if (enemyList.length === 1) rateIncrease = 4000;
-        else if (enemyList.length === 2) rateIncrease = 3500;
-        else if (enemyList.length === 4) rateIncrease = 2000;
-        else if (enemyList.length === 6) rateIncrease = 1000;
-        else if (enemyList.length === 8) rateIncrease = 900;
-        else if (enemyList.length === 9) rateIncrease = 800;
-        else if (enemyList.length === 10) rateIncrease = 600;
-        else if (enemyList.length === 11) rateIncrease = 400;
-        else if (enemyList.length === 12) rateIncrease = 200;
+        if (enemyList.length === 0) rateIncrease = 4000;
+        else if (enemyList.length === 1) rateIncrease = 3000;
+        else if (enemyList.length === 2) rateIncrease = 2500;
+        else if (enemyList.length === 4) rateIncrease = 1000;
+        else if (enemyList.length === 6) rateIncrease = 1500;
+        else if (enemyList.length === 8) rateIncrease = 800;
+        else if (enemyList.length === 9) rateIncrease = 500;
+        else if (enemyList.length === 10) rateIncrease = 400;
+        else if (enemyList.length === 11) rateIncrease = 300;
+        else if (enemyList.length === 12) rateIncrease = 150;
         else rateIncrease = 0;
 
         if (rateIncrease > min) rateIncrease = min - 2;

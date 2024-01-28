@@ -268,11 +268,10 @@ class Game {
         // Last Spawn Times
         const basicRedTimeElapsed = Date.now() - this.lastEnemyTimestamp.basicRed;
 
-
         // Spawn Rates
         if (this.utils.randint(1, 600 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicRedTimeElapsed >= 3000) {
             this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
-            this.lastEnemyTimestamp = Date.now();
+            this.lastEnemyTimestamp.basicRed = Date.now();
         }
     }
 
