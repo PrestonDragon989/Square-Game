@@ -134,6 +134,7 @@ class mediumRedAI extends baseAI {
         // State Information
         this.state = "follow";
         this.dashState = "stop"
+        this.dashMark = [0, 0];
     }
 
     AIBrain() {
