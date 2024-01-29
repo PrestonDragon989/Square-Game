@@ -190,12 +190,12 @@ class mediumRedAI extends baseAI {
 
             this.dashMark = [dashMarkX, dashMarkY];
             this.dashWaitTime = this.utils.randint(50, 250);
-            this.dashSpeed = this.utils.randint(40, 80);
-            if (this.utils.randint(0,100) === 0) this.dashSpeed = 19;
+            this.dashSpeed = this.utils.randFloat(1.75, 3.5);
+            if (this.utils.randint(1,50) == 1) this.dashSpeed = 5;
         }
         if (this.dashMark !== null) {
         if (this.utils.getDistance([this.dashMark[0], this.dashMark[1]], [this.rect.x, this.rect.y]) >= 25 && timeElapsed >= this.dashWaitTime) {
-            return this.specificMove(this.speed + 4, [this.dashMark[0], this.dashMark[1]]);
+            return this.specificMove(this.speed * this.dashSpeed, [this.dashMark[0], this.dashMark[1]]);
         } 
         else if (this.utils.getDistance([this.dashMark[0], this.dashMark[1]], [this.rect.x, this.rect.y]) <= 25) {
             this.dashNumber--;
@@ -274,7 +274,8 @@ class complexRedAI extends baseAI {
         this.bulletDamage = bulletDamage;
 
         // Time Stamps
-        this.lastDashTime = Date.now();
+        this.lastBasicDashTime = Date.now();
+        this.lastFlurryDashTime = Date.now();
         this.dashWaitTime = 0;
 
         // Target Positions
@@ -287,6 +288,13 @@ class complexRedAI extends baseAI {
         this.basicDashMark = null;
         this.basicDashNumber = 0;
         this.basicDashSpeed = 4;
+
+        this.flurryDashMark = null;
+        this.flurryDashNumber = 0;
+        this.flurryDashSpeed = 5;
+        this.flurryDashCenterMark = null;
+        this.begginingFlurryDash = true;
+        this.begginingFlurryDashWait = Date.now();
     }
 
     AIBrain() {
@@ -295,55 +303,121 @@ class complexRedAI extends baseAI {
         // Calculating Distance to player
         let distanceToPlayer = this.utils.getDistance([this.player.x, this.player.y], [this.rect.x, this.rect.y])
 
-        // Basic Speed Mechanics
-        if (distanceToPlayer >= 3000) {
-            newState = "run";
-        } else if (distanceToPlayer <= 250) {
-            newState = "attack1";
-        } else if (distanceToPlayer <= 1000) {
-            newState = "attack2";
-        } else if (distanceToPlayer <= 2000) {
-            newState = "attack3";
+        if (this.state != "basicDash" && this.state != "flurryDash") {
+            // Basic Speed Mechanics
+            if (distanceToPlayer >= 3000) {
+                newState = "run";
+            } else if (distanceToPlayer <= 100) {
+                newState = "attack1";
+            } else if (distanceToPlayer <= 250) {
+                newState = "attack2";
+            } else if (distanceToPlayer <= 1500) {
+                newState = "attack3";
+            } else {
+                newState = "follow";
+            }
+
+            // Dash Chances
+            if (this.utils.randint(1, 350) == 1) {
+                newState = "flurryDash";
+                this.lastFlurryDashTime = Date.now();
+                this.begginingFlurryDashWait = Date.now();
+                this.begginingFlurryDash = true;
+            }
+            if (this.utils.randint(1, 300) == 1) {
+                newState = "basicDash";
+                this.lastBasicDashTime = Date.now();
+            }
+
         } else {
-            newState = "follow";
+            newState = this.state;
         }
 
-        
-        return newState;
+        return newState; 
     }
 
     basicDashLogic() {
         // Setting Dash Number
-        if (this.basicDashNumber === 0) {
-            this.basicDashNumber = this.utils.randint(3, 9);
-            if (this.utils.randint(1, 40)) this.basicDashNumber = 25
+        if (this.basicDashNumber == 0) {
+            this.basicDashNumber = this.utils.randint(3, 9); 
+            if (this.utils.randint(1, 40) == 1) this.basicDashNumber = 25;
         }
         const timeElapsed = Date.now() - this.lastBasicDashTime;
 
         // Getting Dash Mark if we need one
-        if (this.dashMark == null && this.dashNumber >= 1 && timeElapsed > this.dashWaitTime) {
-            let dashMarkX = this.player.x + this.utils.randint(-5, 5);
-            let dashMarkY = this.player.y + this.utils.randint(-5, 5);
+        if (this.basicDashMark == null && this.basicDashNumber >= 1 && timeElapsed > this.dashWaitTime) {
+            let dashMarkX = this.player.x;
+            let dashMarkY = this.player.y;
 
-            this.dashMark = [dashMarkX, dashMarkY];
-            this.dashWaitTime = this.utils.randint(1, 300);
-            this.dashSpeed = this.utils.randint(80, 120);
-            if (this.utils.randint(0,100) === 0) this.dashSpeed = 190;
+            this.basicDashMark = [dashMarkX, dashMarkY];
+            this.dashWaitTime = this.utils.randint(500, 1000);
+            this.basicDashSpeed = this.utils.randint(4, 6.5);
         }
-        if (this.dashMark !== null) {
-        if (this.utils.getDistance([this.dashMark[0], this.dashMark[1]], [this.rect.x, this.rect.y]) >= 25 && timeElapsed >= this.dashWaitTime) {
-            return this.specificMove(this.speed + 4, [this.dashMark[0], this.dashMark[1]]);
-        } 
-        else if (this.utils.getDistance([this.dashMark[0], this.dashMark[1]], [this.rect.x, this.rect.y]) <= 25) {
-            this.dashNumber--;
-            this.lastDashTime = Date.now();
-            this.dashMark = null;
-            if (this.dashNumber <= 0) {
-                this.state = "follow";
+        if (this.basicDashMark !== null) {
+            if (this.utils.getDistance([this.basicDashMark[0], this.basicDashMark[1]], [this.rect.x, this.rect.y]) >= 35 && timeElapsed >= this.dashWaitTime) {
+                return this.specificMove(this.speed * this.basicDashSpeed, [this.basicDashMark[0], this.basicDashMark[1]]);
+            } 
+            else if (this.utils.getDistance([this.basicDashMark[0], this.basicDashMark[1]], [this.rect.x, this.rect.y]) <= 35) {
+                this.basicDashNumber--;
+                this.lastBasicDashTime = Date.now();
+                this.basicDashMark = null;
+                if (this.basicDashNumber <= 0) {
+                    this.state = "follow";
+                }
+                return {x: 0, y: 0}
+            } 
+            else {
+                return {x: 0, y: 0};
             }
-            return {x: 0, y: 0}
-        } 
-        else return {x: 0, y: 0}
+        }
+        return {x: 0, y: 0};
+    }
+
+    flurryDashLogic() {
+        // Setting Up initial hesitation
+        if (this.begginingFlurryDash) {
+            const timeElapsed = Date.now() - this.begginingFlurryDashWait;
+            if (timeElapsed < 2500) {
+                return {x: 0, y: 0};
+            } else {
+                this.begginingFlurryDash = false;
+            }
+        }
+        // Setting Dash Number
+        if (this.flurryDashNumber == 0) {
+            this.flurryDashNumber = this.utils.randint(8, 13); 
+        }
+        if (this.flurryDashCenterMark == null) {
+            this.flurryDashCenterMark = [this.player.x, this.player.y];
+        }
+        const timeElapsed = Date.now() - this.lastFlurryDashTime;
+
+        // Getting Dash Mark if we need one
+        if (this.flurryDashMark == null && this.flurryDashNumber >= 1 && timeElapsed > this.dashWaitTime) {
+            let dashMarkX = this.flurryDashCenterMark[0] + this.utils.randint(-250, 250);
+            let dashMarkY = this.flurryDashCenterMark[1] + this.utils.randint(-250, 250);
+
+            this.flurryDashMark = [dashMarkX, dashMarkY];
+            this.dashWaitTime = this.utils.randint(0, 50);
+            this.flurryDashSpeed = this.utils.randint(5, 7.5);
+        }
+        if (this.flurryDashMark !== null) {
+            if (this.utils.getDistance([this.flurryDashMark[0], this.flurryDashMark[1]], [this.rect.x, this.rect.y]) >= 35 && timeElapsed >= this.dashWaitTime) {
+                return this.specificMove(this.speed * this.flurryDashSpeed, [this.flurryDashMark[0], this.flurryDashMark[1]]);
+            } 
+            else if (this.utils.getDistance([this.flurryDashMark[0], this.flurryDashMark[1]], [this.rect.x, this.rect.y]) <= 35) {
+                this.flurryDashNumber--;
+                this.lastFlurryDashTime = Date.now();
+                this.flurryDashMark = null;
+                if (this.flurryDashNumber <= 0) {
+                    this.state = "follow";
+                    this.flurryDashCenterMark = null
+                }
+                return {x: 0, y: 0};
+            } 
+            else {
+                return {x: 0, y: 0};
+            }
         }
         return {x: 0, y: 0};
     }
@@ -377,22 +451,31 @@ class complexRedAI extends baseAI {
             return [movementVector.x, movementVector.y];
         } else if (this.state === "attack2") {
             // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 1.3));
+            const movementVector = this.basicMove((this.speed * 1.2));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
         } else if (this.state === "attack3") {
             // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 1.15));
+            const movementVector = this.basicMove((this.speed * 1.1));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
-        } else if (this.state === "dash") {
+        } else if (this.state === "basicDash") {
             // Calculate the movement vector
-            const movementVector = this.dashLogic((this.speed));
+            const movementVector = this.basicDashLogic((this.speed));
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
+        } else if (this.state === "flurryDash") {
+            // Calculate the movement vector
+            const movementVector = this.flurryDashLogic((this.speed));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else {            
+            console.log("Movement cancelled");
+            return {x: 0, y: 0};
         }
     }
 }

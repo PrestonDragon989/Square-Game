@@ -335,7 +335,7 @@ class Game {
         this.enemy.checkDeath();
 
         // Checking Player Death
-        this.player.checkDeath(); console.log("death checked" , this.player.health , this.player.playerDeath)
+        this.player.checkDeath(); 
     }
 
     // Rendering Function to handle All rendering Needs

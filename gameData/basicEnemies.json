@@ -15,7 +15,7 @@
     },
     "mediumRedEnemy": {
         "image": "images/entities/enemies/basicRedEnemies/medium-red-enemy.png",
-        "HP": {"min": 110, "max": 190},
+        "HP": {"min": 140, "max": 190},
         "rect": {
             "x": 0,
             "y": 0,
