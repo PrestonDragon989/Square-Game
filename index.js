@@ -81,7 +81,7 @@ class Game {
                     console.log("autoGen: " + this.autoGen);
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
                     break;
                 //WASD Movement Keys
                 case "a":

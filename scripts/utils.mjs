@@ -1,6 +1,6 @@
 // Vector for quick calculation
 import Vector2 from "./vector.mjs";
-import { basicRedAI, mediumRedAI } from "./AI.mjs";
+import { basicRedAI, complexRedAI, mediumRedAI } from "./AI.mjs";
 
 // AI
 
@@ -99,6 +99,7 @@ class Utils {
     convertAI(AI, rect, HP, speed, contactDamage, bulletDamage, player) {
         if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
         else if (AI == "mediumRedAI") return new mediumRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
+        else if (AI == "complexRedAI") return new complexRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
     }
 
     getDistance(pointA, pointB) {
