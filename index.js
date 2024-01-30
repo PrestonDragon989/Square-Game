@@ -64,7 +64,7 @@ class Game {
             this.gameLoop();
             this.handleInput();
             this.utils.textboxDetectClick();
-            this.utils.displayText("Welcome to Square Game! Use the WASD keys to move. Click left click to use your left weapon, & right click to use your right weapon. P or Escape pause the game. Click this text box to move on!");
+            this.utils.displayText("Welcome to Square Game! Use the WASD keys to move. Click left click to use your left weapon, & right click to use your right weapon. P or Escape pause the game. Press Q to start the auto-generation of enemies. Click this text box to move on!");
         } else {
             // Wait for the basicEnemyData to be loaded before starting the game loop
             setTimeout(() => this.runGame(), 100);
