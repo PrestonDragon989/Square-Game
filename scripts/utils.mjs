@@ -12,7 +12,7 @@ class Utils {
         this.textboxClicked = false;
         this.textboxActive = false;
         this.textboxQue = [];
-        this.lastTextboxClick = 0
+        this.lastTextboxClick = Date.now();
     }
     
     //Random Number Between min and max
@@ -179,6 +179,8 @@ class Utils {
     }
 
     displayText(text, speaker = null) {
+        this.lastTextboxClick = Date.now();
+        this.textboxClicked = false;
         this.textboxActive = true;
         this.textbox.style.left = "20%";
         this.textbox.innerHTML = text;

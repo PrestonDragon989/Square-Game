@@ -341,7 +341,10 @@ class Game {
         this.enemy.checkDeath();
 
         // Checking Player Death
-        this.player.checkDeath(); 
+        if (this.player.checkDeath() && this.player.playerDeath === false) {
+            this.utils.displayText("Player has died.");
+            this.player.playerDeath = true;
+        }
     }
 
     // Rendering Function to handle All rendering Needs
