@@ -286,9 +286,14 @@ class Enemy {
         this.basicEnemies = [];
         this.bossEnemies = [];
 
+        // Enemy Bullets
+        this.enemyBullets = [];
+
         // Load Enemy Health Bar
         this.healthBar = new Image();
         this.healthBar.src = "images/misc/health-bar.png";
+
+        // 
 
         //Load Enemy Data
         this.loadEnemies()
@@ -408,15 +413,33 @@ class Enemy {
         });
     }
 
+    bulletMovement() {
+        if (this.enemyBullets.length <= 0) return;
+    
+        for (const bullet of this.enemyBullets) {
+            bullet.rect.x += bullet.vector.x * bullet.velocity;
+            bullet.rect.y += bullet.vector.y * bullet.velocity;
+        }
+    }
+
     updateAI() {
         if (this.basicEnemies.length > 0) {
             this.basicEnemies.forEach(enemy => {
-                if (enemy[6] != null) {    
-                    const movement = enemy[6].AIAction(this.player, enemy[1]);
-                    
+                if (enemy[6] != null) {
+                    // Getting AI Movement & Actiosn
+                    const movement = enemy[6].AIAction(this.player, enemy[1], this.enemyBullets);
                     enemy[1].x += movement[0];
                     enemy[1].y += movement[1];
                 }
+            });
+        }
+    }
+
+    bulletRender() {
+        // Enemy Bullets
+        if (this.enemyBullets.length > 0) {
+            this.enemyBullets.forEach((bullet, index) => {
+                if (bullet.img.complete) this.c.drawImage(bullet.img, bullet.rect.x, bullet.rect.y, bullet.rect.width, bullet.rect.height);
             });
         }
     }

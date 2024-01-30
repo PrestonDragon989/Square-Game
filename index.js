@@ -82,7 +82,7 @@ class Game {
                     console.log("autoGen: " + this.autoGen);
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -337,6 +337,9 @@ class Game {
         // Bullet Collision
         this.collision.bulletCollision();
 
+        // Enemy Bullets
+        this.enemy.bulletMovement();
+
         // Checking Enemy Death
         this.enemy.checkDeath();
 
@@ -355,6 +358,8 @@ class Game {
 
         // Player Bullets Rendering
         this.player.bulletRender();
+
+        this.enemy.bulletRender();
 
         // Rendering Enemy
         this.enemy.render();

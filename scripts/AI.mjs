@@ -26,6 +26,32 @@ class baseAI {
         // Getting Vector movement, and return the result
         return new Vector2(coordinates[0] - this.rect.x, coordinates[1] - this.rect.y).normalize().scale(speed);    
     }
+
+    basicShoot(targetX, targetY, bulletSize, bulletSpeed, damage, bulletList, image, rect, target = 1) {
+        //Getting Enemy Center, location Coords
+        let enemyCenterX = rect.x + (rect.width / 2);
+        let enemyCenterY = rect.y + (rect.height / 2);
+
+        //Redining Into Librarys for Ease of use in the code
+        const enemy_pos = { x: enemyCenterX, y: enemyCenterY};
+        const target_pos = { x: targetX, y: targetY};
+
+        // Making bullet Dimensions 
+        const bulletDimensions = {
+            x: enemy_pos.x,
+            y: enemy_pos.y,
+            width: bulletSize,
+            height: bulletSize
+        };
+
+        // Getting bullet location
+        const bullet_vector = new Vector2(target_pos.x - enemy_pos.x, target_pos.y - enemy_pos.y);
+        bullet_vector.normalize();
+
+        // Adding bullet to the bullet list
+        bulletList.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: this.utils.randint(damage.min, damage.max), target, img: image});
+
+    }
 }
 
 // Red AI Classes
@@ -69,7 +95,7 @@ class basicRedAI extends baseAI {
         return newState;
     }
 
-    AIAction(player, rect) {
+    AIAction(player, rect, enemyBulletList) {
         // Changing State based on brain
         this.player = player;
         this.rect = rect;
@@ -142,6 +168,9 @@ class mediumRedAI extends baseAI {
         this.dashMark = null;
         this.dashNumber = 0;
         this.dashSpeed = 4;
+
+        this.image = new Image();
+        this.image.src = "/images/entities/enemies/bosses/purple-summoner.png";
     }
 
     AIBrain() {
@@ -211,7 +240,7 @@ class mediumRedAI extends baseAI {
         return {x: 0, y: 0};
     }
 
-    AIAction(player, rect) {
+    AIAction(player, rect, enemyBulletList) {
         // Resetting Values
         this.player = player;
         this.rect = rect;
@@ -252,6 +281,7 @@ class mediumRedAI extends baseAI {
             return [movementVector.x, movementVector.y];
         } else if (this.state === "dash") {
             // Calculate the movement vector
+            this.basicShoot(this.player.x, this.player.y, 20, 1, 12, enemyBulletList, this.image, this.rect, 1);
             const movementVector = this.dashLogic((this.speed));
 
             // Update the enemy position based on the movement vector
@@ -422,7 +452,7 @@ class complexRedAI extends baseAI {
         return {x: 0, y: 0};
     }
 
-    AIAction(player, rect) {
+    AIAction(player, rect, enemyBulletList) {
         // Resetting Values
         this.player = player;
         this.rect = rect;

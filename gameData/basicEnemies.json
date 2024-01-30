@@ -37,7 +37,7 @@
         },
         "contactDamage": {"min": 40, "max": 30},
         "bulletDamage": {"min": 13, "max": 200},
-        "speed": {"min": 4, "max": 6}
+        "speed": {"min": 4, "max": 5}
     },
 
 
