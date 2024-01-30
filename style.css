@@ -22,6 +22,7 @@ body {
 #game-canvas {
     /* Border to make it look nice */
     border: 2px solid rgb(200, 200, 200);
+    background-color: rgb(45, 45, 45);
     
     /* Centering on Screen */
     margin-top: 15px;
