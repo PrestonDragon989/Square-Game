@@ -14,14 +14,14 @@ class Collision {
         this.utils = new Utils();
     }
 
-    wallCollision(canvas) {
+    wallCollision(canvas, enemyBullets) {
         //Checking Player Wall Collisions
         if (this.player.x < 0) this.player.x = 0;
         if (this.player.x > canvas.width - this.player.width) this.player.x = canvas.width - this.player.width;
         if (this.player.y < 0) this.player.y = 0;
         if (this.player.y > canvas.height - this.player.height) this.player.y = canvas.height - this.player.height;
 
-        //Checking Player Bullet Collisions
+        //Checking Bullet Collisions
         if (this.player.bullets.length > 0) {
             this.player.bullets.forEach(bullet => {
                 if (bullet.rect.x < -20 || bullet.rect.x > canvas.width - bullet.rect.width + 20 ||
@@ -31,9 +31,16 @@ class Collision {
                 }
             });
         }
+        enemyBullets.forEach(bullet => {
+            if (bullet.rect.x < -100 || bullet.rect.x > canvas.width - bullet.rect.width + 100 ||
+                bullet.rect.y < -100 || bullet.rect.y > canvas.height - bullet.rect.height + 100) {
+                // Remove the bullet from the array
+                enemyBullets.splice(enemyBullets.indexOf(bullet), 1);
+            }
+        });
     }
 
-    bulletCollision() {
+    playerBulletCollision() {
         // Dealing Damage to the enemy if it hits
         if (this.enemy.basicEnemies.length > 0 && this.player.bullets.length > 0) {
             this.enemy.basicEnemies.forEach(enemy => {
@@ -47,6 +54,19 @@ class Collision {
 
         }
         
+    }
+
+    enemyBulletCollision(bulletList, player) {
+        this.player = player;
+        // Dealing Damage to the enemy if it hits
+        if (bulletList.length > 0) {
+            bulletList.forEach(bullet => {
+            if (this.utils.rectIntersect(bullet.rect, {x: this.player.x, y: this.player.y, width: this.player.width, height: this.player.height})) {
+                this.player.health -= bullet.damage; console.log(bullet.damage);
+                bulletList.splice(bulletList.indexOf(bullet), 1); 
+            }
+            });
+        } 
     }
 
     enemyHitboxCollision() {

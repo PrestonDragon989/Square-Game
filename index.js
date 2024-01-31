@@ -82,7 +82,7 @@ class Game {
                     console.log("autoGen: " + this.autoGen);
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicBlueEnemy"], [true, 3, 4], "basicBlueAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -323,7 +323,7 @@ class Game {
         this.player.bulletMovement();
 
         //Player Collison
-        this.collision.wallCollision(this.canvas);
+        this.collision.wallCollision(this.canvas, this.enemy.enemyBullets);
 
         // Enemy Procedural Summoning
         if (this.autoGen) this.prodeduralSummoning();
@@ -332,10 +332,11 @@ class Game {
         this.collision.enemyHitboxCollision()
 
         // Enemy AI
-        this.enemy.updateAI();
+        this.enemy.updateAI(this.enemy.enemyBullets);
 
         // Bullet Collision
-        this.collision.bulletCollision();
+        this.collision.playerBulletCollision();
+        this.collision.enemyBulletCollision(this.enemy.enemyBullets, this.player);
 
         // Enemy Bullets
         this.enemy.bulletMovement();

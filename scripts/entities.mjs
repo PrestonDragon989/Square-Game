@@ -428,8 +428,8 @@ class Enemy {
                 if (enemy[6] != null) {
                     // Getting AI Movement & Actiosn
                     const movement = enemy[6].AIAction(this.player, enemy[1], this.enemyBullets);
-                    enemy[1].x += movement[0];
-                    enemy[1].y += movement[1];
+                    enemy[1].x += movement.x;
+                    enemy[1].y += movement.y;
                 }
             });
         }

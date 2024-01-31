@@ -49,7 +49,7 @@ class baseAI {
         bullet_vector.normalize();
 
         // Adding bullet to the bullet list
-        bulletList.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: this.utils.randint(damage.min, damage.max), target, img: image});
+        bulletList.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: damage, target, img: image});
 
     }
 }
@@ -228,7 +228,7 @@ class mediumRedAI extends baseAI {
             this.lastDashTime = Date.now();
             this.dashMark = null;
             if (this.dashNumber <= 0) {
-                this.state = "follow";
+                this.state = "dash";
             }
             return {x: 0, y: 0}
         } 
@@ -506,9 +506,101 @@ class complexRedAI extends baseAI {
     }
 }
 
+class basicBlueAI extends baseAI {
+    constructor(rect, HP, speed, contactDamage, bulletDamage) {
+        // Call the constructor of the superclass
+        super();
+        this.player = null;
+
+        // Basic Info
+        this.rect = rect;
+        this.speed = speed;
+        this.HP = HP;
+        this.contactDamage = contactDamage;
+        this.bulletDamage = bulletDamage;
+
+        // State Information
+        this.state = "follow";
+
+        // Bullet Times
+        this.lastBulletShot = Date.now();
+
+        this.bulletImage = new Image();
+        this.bulletImage.src = "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png";
+    }
+
+    AIBrain() {
+        let newState;
+
+        // Distance to Player
+        let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x, this.player.y]);
+
+        if (distanceToPlayer <= 125) {
+            newState = "attack1";
+        } else if (distanceToPlayer <= 150) {
+            newState = "attack2";
+        } else if (distanceToPlayer <= 250) {
+            newState = "attack3";
+        } else if (distanceToPlayer <= 1000) {
+            newState = "attack4";
+        } else if (distanceToPlayer <= 2000) {
+            newState = "attack5";
+        } else {
+            newState = "follow";
+        }
+        
+        return newState;
+    }
+
+    AIAction(player, rect, enemyBulletList) {
+        // Changing State based on brain
+        this.player = player;
+        this.rect = rect;
+        this.state = this.AIBrain();
+
+        const timeElapsed = Date.now() - this.lastBulletShot;
+        if (timeElapsed > 1) {
+            this.lastBulletShot = Date.now();
+            this.basicShoot(this.player.x + this.player.width, this.player.y + this.player.height, 7, 3, 5, enemyBulletList, this.bulletImage, this.rect, 1);
+        }
+
+        return {x:0 ,y:0};
+
+    
+        // AI Actions based on state
+        if (this.state === "follow") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove(this.speed);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack1") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 2.25));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack2") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 2));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "attack3") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 1.80));
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        }
+    }
+}
+
+
 export { 
     baseAI, 
     basicRedAI,
     mediumRedAI,
-    complexRedAI
+    complexRedAI,
+    basicBlueAI
 };
