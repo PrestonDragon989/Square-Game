@@ -83,6 +83,7 @@ class Game {
                     break;
                 case "t":
                     this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicBlueEnemy"], [true, 3, 4], "basicBlueAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
                     break;
                 //WASD Movement Keys
                 case "a":

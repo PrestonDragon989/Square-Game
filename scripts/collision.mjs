@@ -62,7 +62,7 @@ class Collision {
         if (bulletList.length > 0) {
             bulletList.forEach(bullet => {
             if (this.utils.rectIntersect(bullet.rect, {x: this.player.x, y: this.player.y, width: this.player.width, height: this.player.height})) {
-                this.player.health -= bullet.damage; console.log(bullet.damage);
+                this.player.health -= bullet.damage; 
                 bulletList.splice(bulletList.indexOf(bullet), 1); 
             }
             });
