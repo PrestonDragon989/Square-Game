@@ -356,10 +356,9 @@ class Game {
         this.c.fillStyle = "rgb(45, 45, 45)";
         this.c.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Player Bullets Rendering
-        this.player.bulletRender();
-
+        // Bullet Rendering
         this.enemy.bulletRender();
+        this.player.bulletRender();
 
         // Rendering Enemy
         this.enemy.render();

@@ -168,9 +168,6 @@ class mediumRedAI extends baseAI {
         this.dashMark = null;
         this.dashNumber = 0;
         this.dashSpeed = 4;
-
-        this.image = new Image();
-        this.image.src = "/images/entities/enemies/bosses/purple-summoner.png";
     }
 
     AIBrain() {
@@ -281,7 +278,6 @@ class mediumRedAI extends baseAI {
             return [movementVector.x, movementVector.y];
         } else if (this.state === "dash") {
             // Calculate the movement vector
-            this.basicShoot(this.player.x, this.player.y, 20, 1, 12, enemyBulletList, this.image, this.rect, 1);
             const movementVector = this.dashLogic((this.speed));
 
             // Update the enemy position based on the movement vector
