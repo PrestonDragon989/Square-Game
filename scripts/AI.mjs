@@ -230,11 +230,11 @@ class mediumRedAI extends baseAI {
             if (this.dashNumber <= 0) {
                 this.state = "dash";
             }
-            return {x: 0, y: 0}
+            return [0, 0];
         } 
-        else return {x: 0, y: 0}
+        else return [0, 0];
         }
-        return {x: 0, y: 0};
+        return [0, 0];
     }
 
     AIAction(player, rect, enemyBulletList) {
@@ -390,13 +390,13 @@ class complexRedAI extends baseAI {
                 if (this.basicDashNumber <= 0) {
                     this.state = "follow";
                 }
-                return {x: 0, y: 0}
+                return [0, 0];
             } 
             else {
-                return {x: 0, y: 0};
+                return [0, 0];
             }
         }
-        return {x: 0, y: 0};
+        return [0, 0];
     }
 
     flurryDashLogic() {
@@ -439,13 +439,13 @@ class complexRedAI extends baseAI {
                     this.state = "follow";
                     this.flurryDashCenterMark = null
                 }
-                return {x: 0, y: 0};
+                return [0, 0];
             } 
             else {
-                return {x: 0, y: 0};
+                return [0, 0];
             }
         }
-        return {x: 0, y: 0};
+        return [0, 0];
     }
 
     AIAction(player, rect, enemyBulletList) {
@@ -501,7 +501,7 @@ class complexRedAI extends baseAI {
             return [movementVector.x, movementVector.y];
         } else {            
             console.log("Movement cancelled");
-            return {x: 0, y: 0};
+            return [0, 0];
         }
     }
 }
@@ -564,7 +564,7 @@ class basicBlueAI extends baseAI {
             this.basicShoot(this.player.x + this.player.width, this.player.y + this.player.height, 7, 3, 5, enemyBulletList, this.bulletImage, this.rect, 1);
         }
 
-        return {x:0 ,y:0};
+        return [0, 0];
 
     
         // AI Actions based on state
