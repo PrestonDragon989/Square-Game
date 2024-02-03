@@ -82,8 +82,7 @@ class Game {
                     console.log("autoGen: " + this.autoGen);
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicBlueEnemy"], [true, 3, 4], "basicBlueAI");
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -332,8 +331,8 @@ class Game {
         // Updating Enemy - Player Damage
         this.collision.enemyHitboxCollision()
 
-        // Enemy AI
-        this.enemy.updateAI(this.enemy.enemyBullets);
+        // Enemy AI + Walls
+        this.enemy.updateAI(this.enemy.enemyBullets, this.canvas);
 
         // Bullet Collision
         this.collision.playerBulletCollision();

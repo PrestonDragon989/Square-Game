@@ -230,11 +230,11 @@ class mediumRedAI extends baseAI {
             if (this.dashNumber <= 0) {
                 this.state = "dash";
             }
-            return [0, 0];
+            return {x: 0, y: 0};
         } 
-        else return [0, 0];
+        else return {x: 0, y: 0};
         }
-        return [0, 0];
+        return {x: 0, y: 0};
     }
 
     AIAction(player, rect, enemyBulletList) {
@@ -282,7 +282,7 @@ class mediumRedAI extends baseAI {
 
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
-        }
+        } else return [0, 0];
     }
 }
 
@@ -558,13 +558,8 @@ class basicBlueAI extends baseAI {
         this.rect = rect;
         this.state = this.AIBrain();
 
-        const timeElapsed = Date.now() - this.lastBulletShot;
-        if (timeElapsed > 1) {
-            this.lastBulletShot = Date.now();
-            this.basicShoot(this.player.x + this.player.width, this.player.y + this.player.height, 7, 3, 5, enemyBulletList, this.bulletImage, this.rect, 1);
-        }
-
-        return [0, 0];
+        this.lastBulletShot = Date.now();
+        this.basicShoot(this.player.x + this.player.width, this.player.y + this.player.height, 7, 3, 5, enemyBulletList, this.bulletImage, this.rect, 1);
 
     
         // AI Actions based on state
@@ -574,25 +569,7 @@ class basicBlueAI extends baseAI {
     
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
-        } else if (this.state === "attack1") {
-            // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 2.25));
-
-            // Update the enemy position based on the movement vector
-            return [movementVector.x, movementVector.y];
-        } else if (this.state === "attack2") {
-            // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 2));
-
-            // Update the enemy position based on the movement vector
-            return [movementVector.x, movementVector.y];
-        } else if (this.state === "attack3") {
-            // Calculate the movement vector
-            const movementVector = this.basicMove((this.speed * 1.80));
-
-            // Update the enemy position based on the movement vector
-            return [movementVector.x, movementVector.y];
-        }
+        } else return [0, 0];
     }
 }
 
