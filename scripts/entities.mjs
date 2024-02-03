@@ -445,8 +445,6 @@ class Enemy {
                     // Updating Enemy Poisition
                     enemy[1].x += movement[0];
                     enemy[1].y += movement[1];
-
-                    console.log(enemy[1].x, enemy[1].y + enemy[1].height, movement[0], movement[1]);
                 }
             });
         }

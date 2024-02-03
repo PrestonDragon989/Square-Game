@@ -390,13 +390,13 @@ class complexRedAI extends baseAI {
                 if (this.basicDashNumber <= 0) {
                     this.state = "follow";
                 }
-                return [0, 0];
+                return {x: 0, y: 0};
             } 
             else {
-                return [0, 0];
+                return {x: 0, y: 0};
             }
         }
-        return [0, 0];
+        return {x: 0, y: 0};
     }
 
     flurryDashLogic() {
@@ -439,13 +439,13 @@ class complexRedAI extends baseAI {
                     this.state = "follow";
                     this.flurryDashCenterMark = null
                 }
-                return [0, 0];
+                return {x: 0, y: 0};
             } 
             else {
-                return [0, 0];
+                return {x: 0, y: 0};
             }
         }
-        return [0, 0];
+        return {x: 0, y: 0};
     }
 
     AIAction(player, rect, enemyBulletList) {
