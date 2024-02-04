@@ -332,7 +332,8 @@ class Game {
         this.collision.enemyHitboxCollision()
 
         // Enemy AI + Walls
-        this.enemy.updateAI(this.enemy.enemyBullets, this.canvas);
+        this.enemy.updateAI(this.canvas);
+        this.collision.enemyWallCollision(this.enemy.basicEnemies, this.canvas);
 
         // Bullet Collision
         this.collision.playerBulletCollision();

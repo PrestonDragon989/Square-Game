@@ -56,10 +56,11 @@ class baseAI {
 
 // Red AI Classes
 class basicRedAI extends baseAI {
-    constructor(rect, HP, speed, contactDamage, bulletDamage) {
+    constructor(rect, HP, speed, contactDamage, bulletDamage, canvas) {
         // Call the constructor of the superclass
         super();
         this.player = null;
+        this.canvas = canvas;
 
         // Basic Info
         this.rect = rect;
@@ -143,10 +144,11 @@ class basicRedAI extends baseAI {
 }
 
 class mediumRedAI extends baseAI {
-    constructor(rect, HP, speed, contactDamage, bulletDamage) {
+    constructor(rect, HP, speed, contactDamage, bulletDamage, canvas) {
         // Call the constructor of the superclass
         super();
         this.player = null;
+        this.canvas = canvas;
 
         // Basic Info
         this.rect = rect;
@@ -214,7 +216,13 @@ class mediumRedAI extends baseAI {
             let dashMarkX = this.player.x + this.utils.randint(-5, 5);
             let dashMarkY = this.player.y + this.utils.randint(-5, 5);
 
-            this.dashMark = [dashMarkX, dashMarkY];
+            if (dashMarkX < 0) dashMarkX = 0;
+            else if (dashMarkX + this.rect.width > this.canvas.width) dashMarkX = this.canvas.width - this.rect.width;
+
+            if (dashMarkY < 0) dashMarkY = 0;
+            else if (dashMarkY + this.rect.height > this.canvas.height) dashMarkY = this.canvas.height - this.rect.height;
+            
+            this.dashMark = [dashMarkX, dashMarkY]; 
             this.dashWaitTime = this.utils.randint(50, 250);
             this.dashSpeed = this.utils.randFloat(1.75, 3.5);
             if (this.utils.randint(1,50) == 1) this.dashSpeed = 5;
@@ -287,10 +295,11 @@ class mediumRedAI extends baseAI {
 }
 
 class complexRedAI extends baseAI {
-    constructor(rect, HP, speed, contactDamage, bulletDamage) {
+    constructor(rect, HP, speed, contactDamage, bulletDamage, canvas) {
         // Call the constructor of the superclass
         super();
         this.player = null;
+        this.canvas = canvas;
 
         // Basic Info
         this.rect = rect;
@@ -375,6 +384,12 @@ class complexRedAI extends baseAI {
             let dashMarkX = this.player.x;
             let dashMarkY = this.player.y;
 
+            if (dashMarkX < 0) dashMarkX = 0;
+            else if (dashMarkX + this.rect.width > this.canvas.width) dashMarkX = this.canvas.width - this.rect.width;
+
+            if (dashMarkY < 0) dashMarkY = 0;
+            else if (dashMarkY + this.rect.height > this.canvas.height) dashMarkY = this.canvas.height - this.rect.height;
+
             this.basicDashMark = [dashMarkX, dashMarkY];
             this.dashWaitTime = this.utils.randint(500, 1000);
             this.basicDashSpeed = this.utils.randint(4, 6.5);
@@ -422,6 +437,12 @@ class complexRedAI extends baseAI {
         if (this.flurryDashMark == null && this.flurryDashNumber >= 1 && timeElapsed > this.dashWaitTime) {
             let dashMarkX = this.flurryDashCenterMark[0] + this.utils.randint(-250, 250);
             let dashMarkY = this.flurryDashCenterMark[1] + this.utils.randint(-250, 250);
+
+            if (dashMarkX < 0) dashMarkX = 0;
+            else if (dashMarkX + this.rect.width > this.canvas.width) dashMarkX = this.canvas.width - this.rect.width;
+
+            if (dashMarkY < 0) dashMarkY = 0;
+            else if (dashMarkY + this.rect.height > this.canvas.height) dashMarkY = this.canvas.height - this.rect.height;
 
             this.flurryDashMark = [dashMarkX, dashMarkY];
             this.dashWaitTime = this.utils.randint(0, 50);
@@ -507,10 +528,11 @@ class complexRedAI extends baseAI {
 }
 
 class basicBlueAI extends baseAI {
-    constructor(rect, HP, speed, contactDamage, bulletDamage) {
+    constructor(rect, HP, speed, contactDamage, bulletDamage, canvas) {
         // Call the constructor of the superclass
         super();
         this.player = null;
+        this.canvas = canvas;
 
         // Basic Info
         this.rect = rect;

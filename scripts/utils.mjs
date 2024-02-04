@@ -96,11 +96,11 @@ class Utils {
         );
     }
 
-    convertAI(AI, rect, HP, speed, contactDamage, bulletDamage, player) {
-        if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
-        else if (AI == "mediumRedAI") return new mediumRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
-        else if (AI == "complexRedAI") return new complexRedAI(rect, HP, speed, contactDamage, bulletDamage, player);
-        else if (AI == "basicBlueAI") return new basicBlueAI(rect, HP, speed, contactDamage, bulletDamage, player);
+    convertAI(AI, rect, HP, speed, contactDamage, bulletDamage, player, canvas) {
+        if (AI == "basicRedAI") return new basicRedAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
+        else if (AI == "mediumRedAI") return new mediumRedAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
+        else if (AI == "complexRedAI") return new complexRedAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
+        else if (AI == "basicBlueAI") return new basicBlueAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
     }
 
     getDistance(pointA, pointB) {

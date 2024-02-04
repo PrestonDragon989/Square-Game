@@ -40,6 +40,19 @@ class Collision {
         });
     }
 
+    enemyWallCollision(basicEnemyList, canvas) {
+        if (basicEnemyList.length > 0) {
+            basicEnemyList.forEach(enemy => {
+                if (enemy[1].x < 0) enemy[1].x = 0;
+                else if ((enemy[1].x + enemy[1].width )> canvas.width) enemy[1].x = (canvas.width - enemy[1].width);
+
+                if (enemy[1].y < 0) enemy[1].y = 0;
+                else if ((enemy[1].y + enemy[1].height) > canvas.height) {enemy[1].y = (canvas.height - enemy[1].height - 1); console.log("Hit bottom Wall");}
+            });
+        }
+    }
+
+
     playerBulletCollision() {
         // Dealing Damage to the enemy if it hits
         if (this.enemy.basicEnemies.length > 0 && this.player.bullets.length > 0) {

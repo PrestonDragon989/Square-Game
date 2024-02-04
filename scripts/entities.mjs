@@ -396,7 +396,7 @@ class Enemy {
 
         // Getting Enemy AI
         let enemyAI
-        if (AI != null) enemyAI = this.utils.convertAI(AI, rect, HP, speed, contactDamage, bulletDamage);
+        if (AI != null) enemyAI = this.utils.convertAI(AI, rect, HP, speed, contactDamage, bulletDamage, this.canvas);
         else enemyAI = null;
         
         /* Enemy Array Structure:
@@ -422,26 +422,13 @@ class Enemy {
         }
     }
 
-    updateAI(canvas) {
+    updateAI() {
         if (this.basicEnemies.length > 0) {
             this.basicEnemies.forEach(enemy => {
                 if (enemy[6] != null) {
                     // Getting AI Movement & Actiosn
                     var movement = enemy[6].AIAction(this.player, enemy[1], this.enemyBullets);
-                    /*
-                    // Stopping enemies from going out of bounds
-                    if (enemy[1].x + movement[0] < 0) {
-                        movement = [enemy[1].x, movement[1]];
-                    } else if (enemy[1].x + enemy[1].width > canvas.width) {
-                        movement = [-1 * (enemy[1].x - canvas.width), movement[1]];
-                    }
-                    if (enemy[1].y + movement[0] < 0) {
-                        movement = [enemy[1].y, movement[1]];
-                    } else if (enemy[1].y + enemy[1].height > canvas.height) {
-                        movement = [movement[0], -1 * ((enemy[1].y + enemy[1].height) - canvas.height)];
-                    }
-                    */
-
+                    
                     // Updating Enemy Poisition
                     enemy[1].x += movement[0];
                     enemy[1].y += movement[1];
