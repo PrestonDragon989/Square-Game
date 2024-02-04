@@ -84,7 +84,7 @@
 
     "basicBlueEnemy": {
         "image": "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png",
-        "HP": {"min": 70, "max": 90},
+        "HP": {"min": 90, "max": 120},
         "rect": {
             "x": 0,
             "y": 0,
@@ -93,6 +93,6 @@
         },
         "contactDamage": {"min": 7, "max": 15},
         "bulletDamage": {"min": 13, "max": 22},
-        "speed": {"min": 2, "max": 4}
+        "speed": {"min": 3, "max": 4.5}
     }
 }

@@ -82,7 +82,7 @@ class Game {
                     console.log("autoGen: " + this.autoGen);
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicBlueEnemy"], [true, 3, 4], "basicBlueAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -273,15 +273,15 @@ class Game {
 
         // Spawn Rates
         if (this.utils.randint(1, 600 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicRedTimeElapsed >= 2500) {
-            this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
+            this.enemy.spawnEnemy([null, null], 250, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
             this.lastEnemyTimestamp.basicRed = Date.now();
         }
         if (this.utils.randint(1, 1500 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.4)) === 1 && mediumRedTimeElapsed >= 6000) {
-            this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
+            this.enemy.spawnEnemy([null, null], 250, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
             this.lastEnemyTimestamp.mediumRed = Date.now(); 
         }
         if (this.utils.randint(1, 4000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.05)) === 1 && complexRedTimeElapsed >= 20000) {
-            this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
+            this.enemy.spawnEnemy([null, null], 250, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
             this.lastEnemyTimestamp.complexRed = Date.now(); 
         }
     }

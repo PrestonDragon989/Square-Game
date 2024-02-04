@@ -50,7 +50,6 @@ class baseAI {
 
         // Adding bullet to the bullet list
         bulletList.push({ rect: bulletDimensions, vector: bullet_vector, velocity: bulletSpeed, damage: damage, target, img: image});
-
     }
 }
 
@@ -542,33 +541,45 @@ class basicBlueAI extends baseAI {
         this.bulletDamage = bulletDamage;
 
         // State Information
-        this.state = "follow";
+        this.state = "closeIn";
+
+        // Close In Distance
+        this.closeInDistance = this.utils.randint(350, 100);
+        this.runAwaySpeed = this.utils.randFloat(1, 1.4); 
 
         // Bullet Times
-        this.lastBulletShot = Date.now();
+        this.lastShootTime = Date.now();
+        this.shootWaitTime = 1000;
 
+        // Bullet Image
         this.bulletImage = new Image();
         this.bulletImage.src = "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png";
+    }
+
+    closeIn(enemyBulletList) {
+        // Determing Shoot
+        const timeElapsed = Date.now() - this.lastShootTime;
+        if (timeElapsed > this.shootWaitTime) {
+            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, 7, 3, this.bulletDamage, enemyBulletList, this.bulletImage, this.rect, 1);
+            this.lastShootTime = Date.now();
+        }
+
+        // Returning The Movement Feature
+        return this.basicMove(this.speed);
     }
 
     AIBrain() {
         let newState;
 
         // Distance to Player
-        let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x, this.player.y]);
+        let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)]);
 
-        if (distanceToPlayer <= 125) {
-            newState = "attack1";
-        } else if (distanceToPlayer <= 150) {
-            newState = "attack2";
-        } else if (distanceToPlayer <= 250) {
-            newState = "attack3";
-        } else if (distanceToPlayer <= 1000) {
-            newState = "attack4";
-        } else if (distanceToPlayer <= 2000) {
-            newState = "attack5";
+        if (distanceToPlayer <= this.closeInDistance * 0.75) {
+            newState = "run";
+        } else if (distanceToPlayer <= this.closeInDistance * 1.2) {
+            newState = "closeIn";
         } else {
-            newState = "follow";
+            newState = "closeIn";
         }
         
         return newState;
@@ -579,15 +590,17 @@ class basicBlueAI extends baseAI {
         this.player = player;
         this.rect = rect;
         this.state = this.AIBrain();
-
-        this.lastBulletShot = Date.now();
-        this.basicShoot(this.player.x + this.player.width, this.player.y + this.player.height, 7, 3, 5, enemyBulletList, this.bulletImage, this.rect, 1);
-
     
         // AI Actions based on state
-        if (this.state === "follow") {
+        if (this.state === "closeIn") {
             // Calculate the movement vector
-            const movementVector = this.basicMove(this.speed);
+            const movementVector = this.closeIn(enemyBulletList);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state === "run") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove(-1 * (this.speed * this.runAwaySpeed));
     
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
