@@ -103,6 +103,15 @@ class Utils {
         else if (AI == "basicBlueAI") return new basicBlueAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
     }
 
+    spawnEnemy(enemyClass, type = "basic") {
+        let colors = ["Red"];
+        if (type === "basic") colors = ["Red", "Blue"];
+        else if (type === "medium") colors = ["Red"];
+        else if (type == "complex") colors = ["Red"];
+        let color = colors[this.randint(0, colors.length)];
+        enemyClass.spawnEnemy([null, null], 300, enemyClass.basicEnemyData[`${type}${color}Enemy`], [true, 3, 4], `${type}${color}AI`)
+    }
+
     getDistance(pointA, pointB) {
         const deltaX = pointB[0] - pointA[0];
         const deltaY = pointB[1] - pointA[1];

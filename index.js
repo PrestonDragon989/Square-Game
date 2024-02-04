@@ -32,9 +32,9 @@ class Game {
         this.enemy = new Enemy(this.canvas, this.c, this.player);
         this.autoGen = false;
         this.lastEnemyTimestamp = {
-            basicRed: Date.now(),
-            mediumRed: Date.now(),
-            complexRed: Date.now()
+            complexEnemy: Date.now(),
+            mediumEnemy: Date.now(),
+            basicEnemy: Date.now()
         }
 
         //Collisions
@@ -267,22 +267,22 @@ class Game {
 
     prodeduralSummoning() {
         // Last Spawn Times
-        const basicRedTimeElapsed = Date.now() - this.lastEnemyTimestamp.basicRed;
-        const mediumRedTimeElapsed = Date.now() - this.lastEnemyTimestamp.mediumRed;
-        const complexRedTimeElapsed = Date.now() - this.lastEnemyTimestamp.complexRed;
+        const basicEnemyTimeElapsed = Date.now() - this.lastEnemyTimestamp.basicEnemy;
+        const mediumEnemyTimeElapsed = Date.now() - this.lastEnemyTimestamp.mediumEnemy;
+        const complexEnemyTimeElapsed = Date.now() - this.lastEnemyTimestamp.complexEnemy;
 
         // Spawn Rates
-        if (this.utils.randint(1, 600 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicRedTimeElapsed >= 2500) {
-            this.enemy.spawnEnemy([null, null], 250, this.enemy.basicEnemyData["basicRedEnemy"], [true, 3, 4], "basicRedAI");
-            this.lastEnemyTimestamp.basicRed = Date.now();
+        if (this.utils.randint(1, 600 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicEnemyTimeElapsed >= 2500) {
+            this.utils.spawnEnemy(this.enemy, "basic");
+            this.lastEnemyTimestamp.basicEnemy = Date.now();
         }
-        if (this.utils.randint(1, 1500 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.4)) === 1 && mediumRedTimeElapsed >= 6000) {
-            this.enemy.spawnEnemy([null, null], 250, this.enemy.basicEnemyData["mediumRedEnemy"], [true, 3, 4], "mediumRedAI");
-            this.lastEnemyTimestamp.mediumRed = Date.now(); 
+        if (this.utils.randint(1, 1500 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.4)) === 1 && mediumEnemyTimeElapsed >= 6000) {
+            this.utils.spawnEnemy(this.enemy, "medium");
+            this.lastEnemyTimestamp.mediumEnemy = Date.now();
         }
-        if (this.utils.randint(1, 4000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.05)) === 1 && complexRedTimeElapsed >= 20000) {
-            this.enemy.spawnEnemy([null, null], 250, this.enemy.basicEnemyData["complexRedEnemy"], [true, 3, 4], "complexRedAI");
-            this.lastEnemyTimestamp.complexRed = Date.now(); 
+        if (this.utils.randint(1, 4000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.05)) === 1 && complexEnemyTimeElapsed >= 20000) {
+            this.utils.spawnEnemy(this.enemy, "complex");
+            this.lastEnemyTimestamp.complexEnemy = Date.now();
         }
     }
 

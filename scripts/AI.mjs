@@ -27,6 +27,23 @@ class baseAI {
         return new Vector2(coordinates[0] - this.rect.x, coordinates[1] - this.rect.y).normalize().scale(speed);    
     }
 
+    circleMovement(center, target, speed, rotation) {
+        const vectorToTarget = new Vector2(target.x - center.x, target.y - center.y);
+    
+        if (rotation) {
+            // If rotation is true, rotate the vector smoothly
+            const angle = Math.atan2(vectorToTarget.y, vectorToTarget.x) + speed;
+            const magnitude = vectorToTarget.getMagnitude();
+            vectorToTarget.x = magnitude * Math.cos(angle);
+            vectorToTarget.y = magnitude * Math.sin(angle);
+        } else {
+            // If rotation is false, orbit around the target
+            vectorToTarget.orbit(target, speed, vectorToTarget.getMagnitude());
+        }
+    
+        return { x: vectorToTarget.x, y: vectorToTarget.y };
+    }
+
     basicShoot(targetX, targetY, bulletSize, bulletSpeed, damage, bulletList, image, rect, target = 1) {
         //Getting Enemy Center, location Coords
         let enemyCenterX = rect.x + (rect.width / 2);
@@ -544,28 +561,61 @@ class basicBlueAI extends baseAI {
         this.state = "closeIn";
 
         // Close In Distance
-        this.closeInDistance = this.utils.randint(350, 100);
-        this.runAwaySpeed = this.utils.randFloat(1, 1.4); 
+        this.closeInDistance = this.utils.randint(500, 150);
+        this.runAwaySpeed = this.utils.randFloat(2, 5); 
 
         // Bullet Times
         this.lastShootTime = Date.now();
         this.shootWaitTime = 1000;
+
+        // Orbit Points
+        this.currentOrbitPoint = [];
 
         // Bullet Image
         this.bulletImage = new Image();
         this.bulletImage.src = "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png";
     }
 
+    steady(enemyBulletList) {
+        // Determing Shoot
+        const timeElapsed = Date.now() - this.lastShootTime;
+        if (timeElapsed > this.shootWaitTime) {
+            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
+            this.lastShootTime = Date.now();
+            this.shootWaitTime = this.utils.randint(1500, 2500);
+        }
+
+        // Getting Orbit Point
+
+        // Returning The Movement Feature
+        return {x:0,y:0};
+        return this.specificMove(this.speed, []);
+    }
+
     closeIn(enemyBulletList) {
         // Determing Shoot
         const timeElapsed = Date.now() - this.lastShootTime;
         if (timeElapsed > this.shootWaitTime) {
-            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, 7, 3, this.bulletDamage, enemyBulletList, this.bulletImage, this.rect, 1);
+            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
             this.lastShootTime = Date.now();
+            this.shootWaitTime = this.utils.randint(1500, 2500);
         }
 
         // Returning The Movement Feature
         return this.basicMove(this.speed);
+    }
+
+    run(enemyBulletList) {
+        // Determing Shoot
+        const timeElapsed = Date.now() - this.lastShootTime;
+        if (timeElapsed > this.shootWaitTime) {
+            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
+            this.lastShootTime = Date.now();
+            this.shootWaitTime = this.utils.randint(1500, 2500);
+        }
+
+        // Returning The Movement Feature
+        return this.basicMove(-1 * (this.speed * (this.runAwaySpeed / 10 + 1)));
     }
 
     AIBrain() {
@@ -576,8 +626,8 @@ class basicBlueAI extends baseAI {
 
         if (distanceToPlayer <= this.closeInDistance * 0.75) {
             newState = "run";
-        } else if (distanceToPlayer <= this.closeInDistance * 1.2) {
-            newState = "closeIn";
+        } else if (distanceToPlayer <= this.closeInDistance) {
+            newState = "steady";
         } else {
             newState = "closeIn";
         }
@@ -598,9 +648,15 @@ class basicBlueAI extends baseAI {
     
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
+        } else if (this.state === "steady") {
+            // Calculate the movement vector
+            const movementVector = this.steady(enemyBulletList);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.y, movementVector.x];
         } else if (this.state === "run") {
             // Calculate the movement vector
-            const movementVector = this.basicMove(-1 * (this.speed * this.runAwaySpeed));
+            const movementVector = this.run(enemyBulletList);
     
             // Update the enemy position based on the movement vector
             return [movementVector.x, movementVector.y];
