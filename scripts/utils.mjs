@@ -122,6 +122,30 @@ class Utils {
         return distance;
     }
 
+    getAngleBetween(x1, y1, x2, y2, convertToDegrees) {
+        let calc_angle = Math.atan2 ( y2 - y1 , x2 - x1 );
+        if ( calc_angle < 0 ) { // Removing negative angles
+            calc_angle += Math.PI * 2;
+        }
+        let convertDegrees = 1;
+        if (convertToDegrees == true) convertDegrees = ( 180 / Math.PI );
+
+        return calc_angle * convertDegrees;
+    }
+
+    calculateNewPoint(originalPosition, slope, totalDistance) {
+        // Extracting x and y from originalPosition
+        let [x, y] = originalPosition;
+      
+        // Calculate the new position until the distance is equal to totalDistance
+        while (this.getDistance(originalPosition, [x, y]) <= totalDistance) {
+          x += 1; // You can modify this to suit your needs
+          y += slope * x + originalPosition[1];
+        }
+      
+        return [x, y];
+      }
+
     calcPercentage(value, total) {
         // Ensure both parameters are numbers
         if (typeof value !== 'number' || typeof total !== 'number') {

@@ -1,7 +1,7 @@
 {
     "basicRedEnemy": {
         "image": "images/entities/enemies/basicRedEnemies/basic-red-enemy.png",
-        "HP": {"min": 70, "max": 125},
+        "HP": {"min": 70, "max": 115},
         "rect": {
             "x": 0,
             "y": 0,
@@ -15,7 +15,7 @@
     },
     "mediumRedEnemy": {
         "image": "images/entities/enemies/basicRedEnemies/medium-red-enemy.png",
-        "HP": {"min": 140, "max": 190},
+        "HP": {"min": 120, "max": 190},
         "rect": {
             "x": 0,
             "y": 0,
@@ -84,7 +84,7 @@
 
     "basicBlueEnemy": {
         "image": "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png",
-        "HP": {"min": 70, "max": 90},
+        "HP": {"min": 65, "max": 85},
         "rect": {
             "x": 0,
             "y": 0,

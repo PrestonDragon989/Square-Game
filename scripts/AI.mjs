@@ -564,12 +564,13 @@ class basicBlueAI extends baseAI {
         this.closeInDistance = this.utils.randint(500, 150);
         this.runAwaySpeed = this.utils.randFloat(2, 5); 
 
+        // Getting Orbit Rotation
+        this.orbitRotation = 1;//this.utils.randint(0, 1);
+        this.orbitChangeAnglePoint = 22.5
+
         // Bullet Times
         this.lastShootTime = Date.now();
         this.shootWaitTime = 1000;
-
-        // Orbit Points
-        this.currentOrbitPoint = [];
 
         // Bullet Image
         this.bulletImage = new Image();
@@ -585,18 +586,37 @@ class basicBlueAI extends baseAI {
             this.shootWaitTime = this.utils.randint(1500, 2500);
         }
 
-        // Getting Orbit Point
+        // Setting up newPoint
+        let newPoint;
+
+        // Getting Distance to player
+        let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)], true);
+        
+        // Getting Angle To Player
+        let angleToPlayer = this.utils.getAngleBetween(this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2), this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2), true);
+        
+        // Finding Target point
+        if (this.orbitRotation == 1) {
+            // Getting Angle for new Point
+            let changedAngle = angleToPlayer + this.orbitChangeAnglePoint;
+
+            // Getting Slope of new Point
+            let newSlope = Math.tan((changedAngle * Math.PI) / 180);
+
+            // Getting New point based on new Angle & Slope (Map out new point, which is current point of the player, with the new angle & slope, for the same amount of distance as before)
+            newPoint = this.utils.calculateNewPoint([this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)], newSlope, distanceToPlayer);
+            console.log("Angle to player: "+ angleToPlayer + "\n\nCurrent Slope: " + Math.tan(angleToPlayer) +", \n\nnewSlope: "+ newSlope + ", \n\nchangedAngle: " + changedAngle + "\n\nNew Point: " + newPoint + "\n\nCurrent Position: " + this.rect.x, this.rect.y + "\n\nNewpoint to player: " + this.utils.getDistance([this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)], newPoint) + "\n\nDistance to player: " + distanceToPlayer + "\n\nNewPoint to enemy: " + this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], newPoint));
+        }
 
         // Returning The Movement Feature
-        return {x:0,y:0};
-        return this.specificMove(this.speed, []);
+        return this.specificMove(this.speed, newPoint);
     }
 
     closeIn(enemyBulletList) {
         // Determing Shoot
         const timeElapsed = Date.now() - this.lastShootTime;
         if (timeElapsed > this.shootWaitTime) {
-            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
+            //this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
             this.lastShootTime = Date.now();
             this.shootWaitTime = this.utils.randint(1500, 2500);
         }
@@ -609,7 +629,7 @@ class basicBlueAI extends baseAI {
         // Determing Shoot
         const timeElapsed = Date.now() - this.lastShootTime;
         if (timeElapsed > this.shootWaitTime) {
-            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
+            //this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(7, 8.5), this.utils.randint(3, 3.5), this.bulletDamage + this.utils.randint(-4, 1), enemyBulletList, this.bulletImage, this.rect, 1);
             this.lastShootTime = Date.now();
             this.shootWaitTime = this.utils.randint(1500, 2500);
         }
@@ -624,14 +644,16 @@ class basicBlueAI extends baseAI {
         // Distance to Player
         let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)]);
 
-        if (distanceToPlayer <= this.closeInDistance * 0.75) {
+        if (distanceToPlayer <= this.closeInDistance * 0.6) {
             newState = "run";
         } else if (distanceToPlayer <= this.closeInDistance) {
+            newState = "steady";
+        } else if (distanceToPlayer <= this.closeInDistance * 1.4 && this.state == "steady") {
             newState = "steady";
         } else {
             newState = "closeIn";
         }
-        
+        console.log(newState);
         return newState;
     }
 
