@@ -92,7 +92,20 @@
             "height": 50
         },
         "contactDamage": {"min": 7, "max": 15},
-        "bulletDamage": {"min": 13, "max": 22},
+        "bulletDamage": {"min": 8, "max": 11},
+        "speed": {"min": 2, "max": 3.5}
+    },
+    "mediumBlueEnemy": {
+        "image": "images/entities/enemies/basicBlueEnemies/medium-blue-enemy.png",
+        "HP": {"min": 100, "max": 125},
+        "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 75,
+            "height": 75
+        },
+        "contactDamage": {"min": 15, "max": 19},
+        "bulletDamage": {"min": 14, "max": 25},
         "speed": {"min": 3, "max": 4.5}
     }
 }

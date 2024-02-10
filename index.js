@@ -82,7 +82,7 @@ class Game {
                     console.log("autoGen: " + this.autoGen);
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["basicBlueEnemy"], [true, 3, 4], "basicBlueAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumBlueEnemy"], [true, 3, 4], "mediumBlueAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -204,9 +204,8 @@ class Game {
 
         //Get Mouse Position
         this.canvas.addEventListener('mousemove', (event) => {
-            this.rect = this.canvas.getBoundingClientRect();
-            this.mouseX = event.offsetX;
-            this.mouseY = event.offsetY;
+            this.mouseX = event.clientX;
+            this.mouseY = event.clientY;
         });
 
         //Left Click Detection

@@ -32,6 +32,10 @@ body {
 
     /* Realative positioning */
     position: relative;
+
+    /* Sizing for seeing */
+    width: 1280px;
+    height: 670;
 }
 #text-box {
     box-sizing: border-box;
