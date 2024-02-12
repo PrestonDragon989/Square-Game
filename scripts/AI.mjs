@@ -703,7 +703,7 @@ class mediumBlueAI extends baseAI {
 
         // close In Data
         this.closeInDistance = this.utils.randint(250, 400)
-        this.runAwaySpeed = this.utils.randFloat(1.2, 1.4);
+        this.runAwaySpeed = this.utils.randFloat(1.3, 1.5);
 
         // Bullet Times
         this.lastBasicShootTime = Date.now();
@@ -718,6 +718,15 @@ class mediumBlueAI extends baseAI {
 
         this.turretShootTime = Date.now();
         this.turretShootDuration = null;
+
+        // Dash Shot Data
+        this.dashAttackTime = Date.now();
+        this.dashAttackWaitTime = this.utils.randint(2000, 2500);
+        
+        this.dashShootTime = Date.now();
+        this.dashShootWaitTime = this.utils.randint(75, 150); 
+        
+        this.dashAttackMark = null;
 
         // Bullet Image
         this.bulletImage = new Image();
@@ -739,23 +748,21 @@ class mediumBlueAI extends baseAI {
         const turretOneElapsed = Date.now() - this.turretOneShootTime;
         const turretTwoElapsed = Date.now() - this.turretTwoShootTime;
         if (this.turretShootDuration == null) {
-            this.turretShootDuration = this.utils.randint(3000, 3500);
+            this.turretShootDuration = this.utils.randint(2500, 3500);
             return {x: 0, y: 0};
         }
-        if (timeElapsed < 2000) {
+        if (timeElapsed < 1750) {
 
         } else if (timeElapsed < this.turretShootDuration) {
             if (turretOneElapsed > this.turretOneWaitTime) {
                 this.turretOneShootTime = Date.now()
                 this.turretOneWaitTime = this.utils.randint(25, 75);
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x - 20, y: this.rect.y - 20, height: this.rect.height, width: this.rect.width}, 1);
-                console.log("First Turret Shot");
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
             }
             if (turretTwoElapsed > this.turretTwoWaitTime) {
                 this.turretTwoShootTime = Date.now();
                 this.turretTwoWaitTime = this.utils.randint(25, 75);
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x + 20, y: this.rect.y + 20, height: this.rect.height, width: this.rect.width}, 1);
-                console.log("Second Turret Shot");
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x + 15, y: this.rect.y + 15, height: this.rect.height, width: this.rect.width}, 1);
             }
         } else if (timeElapsed > this.turretShootDuration) {
             this.turretShootDuration = null;
@@ -765,13 +772,48 @@ class mediumBlueAI extends baseAI {
         return {x: 0, y: 0};
     }
 
+    dashShot(bulletList) {
+        const dashAttackTimeElapsed = Date.now() - this.dashAttackTime;
+        const dashShootTimeElapsed = Date.now() - this.dashShootTime;
+
+        // Checking to see if the enemy needs to wait
+        if (dashAttackTimeElapsed < this.dashAttackWaitTime) return {x: 0, y: 0};
+
+        // Getting DashMark if need be
+        if (this.dashAttackMark == null) {
+            this.dashAttackMark = [this.player.x + this.utils.randint(1, 75), this.player.y + this.utils.randint(1, 75)];
+            if (this.dashAttackMark[0] < 0) this.dashAttackMark = [0, this.dashAttackMark[1]];
+            else if (this.dashAttackMark[0] > this.canvas.width - this.rect.width) [this.canvas.width - this.rect.width, this.dashAttackMark[1]];
+            if (this.dashAttackMark[1] < 0) this.dashAttackMark = [this.dashAttackMark[0], 0];
+            else if (this.dashAttackMark[1] > this.canvas.height - this.rect.height) this.dashAttackMark = [this.dashAttackMark[0], this.canvas.height - this.rect.height];
+            console.log(this.dashAttackMark);
+            return {x: 0, y: 0};
+        }
+
+        // Checking to see if enemy is near its pont
+        const distanceToMark = this.utils.getDistance([this.rect.x - (this.rect.width / 2), this.rect.y - (this.rect.height / 2)], this.dashAttackMark);
+        console.log(distanceToMark);
+        if (distanceToMark < 76) {
+            this.dashAttackMark = null;
+            this.state = "closeIn"
+            return {x: 0, y: 0};
+        } else if (distanceToMark >= 76) {
+            if (dashShootTimeElapsed > this.dashShootWaitTime) {
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(14, 16), this.utils.randint(14, 25), this.bulletDamage + this.utils.randint(-2, 3), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
+                this.dashShootWaitTime = this.utils.randint(75, 150);
+                this.dashShootTime = Date.now();
+            }
+            return this.specificMove(this.speed * 1.8, this.dashAttackMark)
+        } else { return {x: 0, y: 0} }
+    }
+
     AIBrain() {
         let newState;
 
         // Distance to Player
         let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)]);
 
-        if (this.state !== "turretShoot") {
+        if (this.state !== "turretShoot" && this.state !== "dashShot") {
             if (distanceToPlayer <= this.closeInDistance * 0.6) {
                 newState = "run";
             } else if (distanceToPlayer <= this.closeInDistance) {
@@ -779,9 +821,14 @@ class mediumBlueAI extends baseAI {
             } else {
                 newState = "closeIn";
             }
-            if (this.utils.randint(1, 10) == 1) {
+            if (this.utils.randint(1, 500) == 1) {
                 newState = "turretShoot";
                 this.turretShootTime = Date.now();
+            }
+            if (this.utils.randint(1, 600) == 1) {
+                newState = "dashShot";
+                this.dashShootTime = Date.now();
+                this.dashAttackTime = Date.now();
             }
         } else newState = this.state;
         return newState;
@@ -791,10 +838,10 @@ class mediumBlueAI extends baseAI {
         // Changing State based on brain
         this.player = player;
         this.rect = rect;
-        this.state = this.AIBrain();
+        this.state = this.AIBrain(); console.log(this.state);
     
         // Normal Shoot When Spare Time
-        if (this.state != "run" && this.state != "turretShoot") this.normalShoot(enemyBulletList);
+        if (this.state != "run" && this.state != "turretShoot" && this.state != "dashShot") this.normalShoot(enemyBulletList);
 
         // AI Actions based on state
         if (this.state == "closeIn") {
@@ -821,6 +868,12 @@ class mediumBlueAI extends baseAI {
 
                 // Update the enemy position based on the movement vector
                 return [movementVector.y, movementVector.x];
+        } else if (this.state == "dashShot") {
+            // Calculate the movement vector
+            const movementVector = this.dashShot(enemyBulletList);
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
         }
         return [0, 0]
     }
