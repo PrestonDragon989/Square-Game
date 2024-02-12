@@ -652,7 +652,6 @@ class basicBlueAI extends baseAI {
         } else {
             newState = "closeIn";
         }
-        console.log(newState);
         return newState;
     }
 

@@ -84,7 +84,7 @@
 
     "basicBlueEnemy": {
         "image": "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png",
-        "HP": {"min": 65, "max": 85},
+        "HP": {"min": 55, "max": 75},
         "rect": {
             "x": 0,
             "y": 0,
