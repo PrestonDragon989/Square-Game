@@ -684,11 +684,154 @@ class basicBlueAI extends baseAI {
     }
 }
 
+class mediumBlueAI extends baseAI {
+    constructor(rect, HP, speed, contactDamage, bulletDamage, canvas) {
+        // Call the constructor of the superclass
+        super();
+        this.player = null;
+        this.canvas = canvas;
+
+        // Basic Info
+        this.rect = rect;
+        this.speed = speed;
+        this.HP = HP;
+        this.contactDamage = contactDamage;
+        this.bulletDamage = bulletDamage;
+
+        // State Information
+        this.state = "closeIn";
+
+        // close In Data
+        this.closeInDistance = this.utils.randint(250, 400)
+        this.runAwaySpeed = this.utils.randFloat(1.2, 1.4);
+
+        // Bullet Times
+        this.lastBasicShootTime = Date.now();
+        this.basicShootWaitTime = 1000;
+
+        // Turret Shoot Times
+        this.turretOneShootTime = Date.now();
+        this.turretTwoShootTime = Date.now();
+
+        this.turretOneWaitTime = this.utils.randint(50, 150);
+        this.turretTwoWaitTime = this.utils.randint(50, 150);
+
+        this.turretShootTime = Date.now();
+        this.turretShootDuration = null;
+
+        // Bullet Image
+        this.bulletImage = new Image();
+        this.bulletImage.src = "images/entities/enemies/basicBlueEnemies/basic-blue-enemy.png";
+    }
+
+    normalShoot(bulletList) {
+        // Determing Shoot
+        const timeElapsed = Date.now() - this.lastBasicShootTime;
+        if (timeElapsed > this.basicShootWaitTime) {
+            this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(13, 15), this.utils.randint(9, 12), this.bulletDamage + this.utils.randint(2, 6), bulletList, this.bulletImage, this.rect, 1);
+            this.lastBasicShootTime = Date.now();
+            this.BasicshootWaitTime = this.utils.randint(1500, 2500);
+        }
+    }
+
+    turretShoot(bulletList) {
+        const timeElapsed = Date.now() - this.turretShootTime;
+        const turretOneElapsed = Date.now() - this.turretOneShootTime;
+        const turretTwoElapsed = Date.now() - this.turretTwoShootTime;
+        if (this.turretShootDuration == null) {
+            this.turretShootDuration = this.utils.randint(3000, 3500);
+            return {x: 0, y: 0};
+        }
+        if (timeElapsed < 2000) {
+
+        } else if (timeElapsed < this.turretShootDuration) {
+            if (turretOneElapsed > this.turretOneWaitTime) {
+                this.turretOneShootTime = Date.now()
+                this.turretOneWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x - 20, y: this.rect.y - 20, height: this.rect.height, width: this.rect.width}, 1);
+                console.log("First Turret Shot");
+            }
+            if (turretTwoElapsed > this.turretTwoWaitTime) {
+                this.turretTwoShootTime = Date.now();
+                this.turretTwoWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x + 20, y: this.rect.y + 20, height: this.rect.height, width: this.rect.width}, 1);
+                console.log("Second Turret Shot");
+            }
+        } else if (timeElapsed > this.turretShootDuration) {
+            this.turretShootDuration = null;
+            this.basicShootWaitTime = Date.now();
+            this.state = "closeIn";
+        }
+        return {x: 0, y: 0};
+    }
+
+    AIBrain() {
+        let newState;
+
+        // Distance to Player
+        let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)]);
+
+        if (this.state !== "turretShoot") {
+            if (distanceToPlayer <= this.closeInDistance * 0.6) {
+                newState = "run";
+            } else if (distanceToPlayer <= this.closeInDistance) {
+                newState = "steady";
+            } else {
+                newState = "closeIn";
+            }
+            if (this.utils.randint(1, 10) == 1) {
+                newState = "turretShoot";
+                this.turretShootTime = Date.now();
+            }
+        } else newState = this.state;
+        return newState;
+    }
+
+    AIAction(player, rect, enemyBulletList) {
+        // Changing State based on brain
+        this.player = player;
+        this.rect = rect;
+        this.state = this.AIBrain();
+    
+        // Normal Shoot When Spare Time
+        if (this.state != "run" && this.state != "turretShoot") this.normalShoot(enemyBulletList);
+
+        // AI Actions based on state
+        if (this.state == "closeIn") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove(this.speed);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state == "run") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove(this.speed * -1);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.x, movementVector.y];
+        } else if (this.state == "steady") {
+            // Calculate the movement vector
+            const movementVector = this.basicMove((this.speed * 0.8) * this.runAwaySpeed);
+    
+            // Update the enemy position based on the movement vector
+            return [movementVector.y, movementVector.x];
+        } else if (this.state == "turretShoot") {
+                // Calculate the movement vector
+                const movementVector = this.turretShoot(enemyBulletList);
+
+                // Update the enemy position based on the movement vector
+                return [movementVector.y, movementVector.x];
+        }
+        return [0, 0]
+    }
+}
+
 
 export { 
     baseAI, 
     basicRedAI,
     mediumRedAI,
     complexRedAI,
-    basicBlueAI
+    basicBlueAI,
+    mediumBlueAI
 };
