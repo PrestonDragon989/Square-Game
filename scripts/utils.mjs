@@ -1,6 +1,6 @@
 // Vector for quick calculation
 import Vector2 from "./vector.mjs";
-import { mediumBlueAI, basicBlueAI, basicRedAI, complexRedAI, mediumRedAI } from "./AI.mjs";
+import { mediumBlueAI, basicBlueAI, basicRedAI, complexRedAI, mediumRedAI, complexBlueAI } from "./AI.mjs";
 
 // AI
 
@@ -102,6 +102,7 @@ class Utils {
         else if (AI == "complexRedAI") return new complexRedAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
         else if (AI == "basicBlueAI") return new basicBlueAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
         else if (AI == "mediumBlueAI") return new mediumBlueAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
+        else if (AI == "complexBlueAI") return new complexBlueAI(rect, HP, speed, contactDamage, bulletDamage, player, canvas);
     }
 
     spawnEnemy(enemyClass, type = "basic") {
