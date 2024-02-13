@@ -71,13 +71,13 @@ class Utils {
         let rateIncrease;
 
         if (enemyList.length === 0) rateIncrease = 2000;
-        else if (enemyList.length === 1) rateIncrease = 1800;
-        else if (enemyList.length === 2) rateIncrease = 1500;
-        else if (enemyList.length === 4) rateIncrease = 1000;
-        else if (enemyList.length === 5) rateIncrease = 1200;
+        else if (enemyList.length === 1) rateIncrease = 2000;
+        else if (enemyList.length === 2) rateIncrease = 1000;
+        else if (enemyList.length === 4) rateIncrease = 800;
+        else if (enemyList.length === 5) rateIncrease = 600;
         else if (enemyList.length === 8) rateIncrease = 500;
         else if (enemyList.length === 9) rateIncrease = 400;
-        else if (enemyList.length === 10) rateIncrease = 350;
+        else if (enemyList.length === 10) rateIncrease = 300;
         else if (enemyList.length === 11) rateIncrease = 200;
         else if (enemyList.length === 12) rateIncrease = 100;
         else rateIncrease = 0;

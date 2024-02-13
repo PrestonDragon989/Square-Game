@@ -271,11 +271,11 @@ class Game {
         const complexEnemyTimeElapsed = Date.now() - this.lastEnemyTimestamp.complexEnemy;
 
         // Spawn Rates
-        if (this.utils.randint(1, 600 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicEnemyTimeElapsed >= 2500) {
+        if (this.utils.randint(1, 1000 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicEnemyTimeElapsed >= 2500) {
             this.utils.spawnEnemy(this.enemy, "basic");
             this.lastEnemyTimestamp.basicEnemy = Date.now();
         }
-        if (this.utils.randint(1, 1500 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.4)) === 1 && mediumEnemyTimeElapsed >= 6000) {
+        if (this.utils.randint(1, 2000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.4)) === 1 && mediumEnemyTimeElapsed >= 6000) {
             this.utils.spawnEnemy(this.enemy, "medium");
             this.lastEnemyTimestamp.mediumEnemy = Date.now();
         }
