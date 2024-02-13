@@ -1,9 +1,6 @@
 // Imports
-import { Player } from "./entities.mjs";
-import { Enemy } from "./entities.mjs";
 import Utils from "./utils.mjs";
 import Vector2 from "./vector.mjs";
-import { Collision } from "./collision.mjs";
 
 class baseAI {
     constructor(player, enemy, utils, collision) {
@@ -901,22 +898,44 @@ class complexBlueAI extends baseAI {
         this.lastBasicShootTime = Date.now();
         this.basicShootWaitTime = 1000;
 
-        // Turret Shoot Times
-        this.turretOneShootTime = Date.now();
-        this.turretTwoShootTime = Date.now();
+        // Quick Turret Shoot Times
+        this.quickTurretOneShootTime = Date.now();
+        this.quickTurretTwoShootTime = Date.now();
 
-        this.turretOneWaitTime = this.utils.randint(50, 150);
-        this.turretTwoWaitTime = this.utils.randint(50, 150);
+        this.quickTurretOneWaitTime = this.utils.randint(50, 150);
+        this.quickTurretTwoWaitTime = this.utils.randint(50, 150);
 
-        this.turretShootTime = Date.now();
-        this.turretShootDuration = null;
+        this.quickTurretShootTime = Date.now();
+        this.quickTurretShootDuration = null;
+
+        // Long Turet Shoot Times
+        this.longTurretOneShootTime = Date.now();
+        this.longTurretTwoShootTime = Date.now();
+        this.longTurretThreeShootTime = Date.now();
+        this.longTurretFourShootTime = Date.now();
+        this.longTurretFiveShootTime = Date.now();
+
+        this.longTurretOneWaitTime = this.utils.randint(50, 150);
+        this.longTurretTwoWaitTime = this.utils.randint(50, 150);
+        this.longTurretThreeWaitTime = this.utils.randint(50, 150);
+        this.longTurretFourWaitTime = this.utils.randint(50, 150);
+        this.longTurretFiveWaitTime = this.utils.randint(50, 150);
+
+        this.longTurretShootTime = Date.now();
+        this.longTurretShootDuration = null;
 
         // Dash Shot Data
         this.dashAttackTime = Date.now();
-        this.dashAttackWaitTime = this.utils.randint(2000, 2500);
+        this.dashAttackWaitTime = this.utils.randint(1000, 1500);
         
-        this.dashShootTime = Date.now();
-        this.dashShootWaitTime = this.utils.randint(75, 150); 
+        this.dashShootOneTime = Date.now();
+        this.dashShootOneWaitTime = this.utils.randint(75, 150); 
+
+        this.dashShootTwoTime = Date.now();
+        this.dashShootTwoWaitTime = this.utils.randint(75, 150);
+
+        this.dashShootThreeTime = Date.now();
+        this.dashShootThreeWaitTime = this.utils.randint(75, 150);
         
         this.dashAttackMark = null;
 
@@ -936,9 +955,9 @@ class complexBlueAI extends baseAI {
     }
 
     quickTurretShoot(bulletList) {
-        const timeElapsed = Date.now() - this.turretShootTime;
-        const turretOneElapsed = Date.now() - this.turretOneShootTime;
-        const turretTwoElapsed = Date.now() - this.turretTwoShootTime;
+        const timeElapsed = Date.now() - this.quickTurretShootTime;
+        const turretOneElapsed = Date.now() - this.quickTurretOneShootTime;
+        const turretTwoElapsed = Date.now() - this.quickTurretTwoShootTime;
         if (this.quickTurretShootDuration == null) {
             this.quickTurretShootDuration = this.utils.randint(1750, 2000);
             return {x: 0, y: 0};
@@ -946,14 +965,14 @@ class complexBlueAI extends baseAI {
         if (timeElapsed < 1000) {
 
         } else if (timeElapsed < this.quickTurretShootDuration) {
-            if (turretOneElapsed > this.turretOneWaitTime) {
-                this.turretOneShootTime = Date.now()
-                this.turretOneWaitTime = this.utils.randint(25, 75);
+            if (turretOneElapsed > this.quickTurretOneWaitTime) {
+                this.quickTurretOneShootTime = Date.now()
+                this.quickTurretOneWaitTime = this.utils.randint(25, 75);
                 this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x - 25, y: this.rect.y - 25, height: this.rect.height, width: this.rect.width}, 1);
             }
-            if (turretTwoElapsed > this.turretTwoWaitTime) {
-                this.turretTwoShootTime = Date.now();
-                this.turretTwoWaitTime = this.utils.randint(25, 75);
+            if (turretTwoElapsed > this.quickTurretTwoWaitTime) {
+                this.quickTurretTwoShootTime = Date.now();
+                this.quickTurretTwoWaitTime = this.utils.randint(25, 75);
                 this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x + 25, y: this.rect.y + 25, height: this.rect.height, width: this.rect.width}, 1);
             }
         } else if (timeElapsed > this.quickTurretShootDuration) {
@@ -965,28 +984,43 @@ class complexBlueAI extends baseAI {
     }
 
     longTurretShoot(bulletList) {
-        const timeElapsed = Date.now() - this.turretShootTime;
-        const turretOneElapsed = Date.now() - this.turretOneShootTime;
-        const turretTwoElapsed = Date.now() - this.turretTwoShootTime;
-        if (this.turretShootDuration == null) {
-            this.turretShootDuration = this.utils.randint(1750, 2000);
+        const timeElapsed = Date.now() - this.longTurretShootTime;
+        const turretOneElapsed = Date.now() - this.longTurretOneShootTime;
+        const turretTwoElapsed = Date.now() - this.longTurretTwoShootTime;
+        if (this.longTurretShootDuration == null) {
+            this.longTurretShootDuration = this.utils.randint(3000, 3500);
             return {x: 0, y: 0};
         }
-        if (timeElapsed < 1000) {
+        if (timeElapsed < 2000) {
 
-        } else if (timeElapsed < this.turretShootDuration) {
-            if (turretOneElapsed > this.turretOneWaitTime) {
-                this.turretOneShootTime = Date.now()
-                this.turretOneWaitTime = this.utils.randint(25, 75);
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x - 25, y: this.rect.y - 25, height: this.rect.height, width: this.rect.width}, 1);
+        } else if (timeElapsed < this.longTurretShootDuration) {
+            if (turretOneElapsed > this.longTurretOneWaitTime) {
+                this.longTurretOneShootTime = Date.now()
+                this.longTurretOneWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(21, 27), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x - 25, y: this.rect.y - 25, height: this.rect.height, width: this.rect.width}, 1);
             }
-            if (turretTwoElapsed > this.turretTwoWaitTime) {
-                this.turretTwoShootTime = Date.now();
-                this.turretTwoWaitTime = this.utils.randint(25, 75);
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x + 25, y: this.rect.y + 25, height: this.rect.height, width: this.rect.width}, 1);
+            if (turretTwoElapsed > this.longTurretTwoWaitTime) {
+                this.longTurretTwoShootTime = Date.now();
+                this.longTurretTwoWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(21, 27), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x + 25, y: this.rect.y + 25, height: this.rect.height, width: this.rect.width}, 1);
             }
-        } else if (timeElapsed > this.turretShootDuration) {
-            this.turretShootDuration = null;
+            if (turretTwoElapsed > this.longTurretTwoWaitTime) {
+                this.longTurretThreeShootTime = Date.now();
+                this.longTurretThreeWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(21, 27), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x + 25, y: this.rect.y - 25, height: this.rect.height, width: this.rect.width}, 1);
+            }
+            if (turretTwoElapsed > this.longTurretTwoWaitTime) {
+                this.longTurretFourShootTime = Date.now();
+                this.longTurretFourWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(21, 27), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x - 25, y: this.rect.y + 25, height: this.rect.height, width: this.rect.width}, 1);
+            }
+            if (turretTwoElapsed > this.longTurretTwoWaitTime) {
+                this.longTurretFiveShootTime = Date.now();
+                this.longTurretFiveWaitTime = this.utils.randint(25, 75);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(21, 27), this.bulletDamage + this.utils.randint(-15, -20), bulletList, this.bulletImage, {x: this.rect.x - 25, y: this.rect.y + 25, height: this.rect.height, width: this.rect.width}, 1);
+            }
+        } else if (timeElapsed > this.longTurretShootDuration) {
+            this.longTurretShootDuration = null;
             this.basicShootWaitTime = Date.now();
             this.state = "closeIn";
         }
@@ -995,7 +1029,9 @@ class complexBlueAI extends baseAI {
 
     dashShot(bulletList) {
         const dashAttackTimeElapsed = Date.now() - this.dashAttackTime;
-        const dashShootTimeElapsed = Date.now() - this.dashShootTime;
+        const dashOneShootTimeElapsed = Date.now() - this.dashShootOneTime;
+        const dashShootTwoTimeElapsed = Date.now() - this.dashShootTwoTime;
+        const dashShootThreeTimeElapsed = Date.now() - this.dashShootThreeTime;
 
         // Checking to see if the enemy needs to wait
         if (dashAttackTimeElapsed < this.dashAttackWaitTime) return {x: 0, y: 0};
@@ -1017,12 +1053,22 @@ class complexBlueAI extends baseAI {
             this.state = "closeIn"
             return {x: 0, y: 0};
         } else if (distanceToMark >= 76) {
-            if (dashShootTimeElapsed > this.dashShootWaitTime) {
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(14, 16), this.utils.randint(14, 25), this.bulletDamage + this.utils.randint(-2, 3), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
-                this.dashShootWaitTime = this.utils.randint(125, 175);
-                this.dashShootTime = Date.now();
+            if (dashOneShootTimeElapsed > this.dashShootOneWaitTime) {
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(14, 16), this.utils.randint(14, 25), this.bulletDamage + this.utils.randint(-2, 5), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
+                this.dashShootOneWaitTime = this.utils.randint(125, 175);
+                this.dashShootOneTime = Date.now();
             }
-            return this.specificMove(this.speed * 1.8, this.dashAttackMark)
+            if (dashShootTwoTimeElapsed > this.dashShootTwoWaitTime) {
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(14, 16), this.utils.randint(14, 25), this.bulletDamage + this.utils.randint(-2, 5), bulletList, this.bulletImage, {x: this.rect.x + 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
+                this.dashShootTwoWaitTime = this.utils.randint(125, 175);
+                this.dashShootTwoTime = Date.now();
+            }
+            if (dashShootThreeTimeElapsed > this.dashShootThreeWaitTime) {
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(14, 16), this.utils.randint(14, 25), this.bulletDamage + this.utils.randint(-2, 5), bulletList, this.bulletImage, {x: this.rect.x + 7, y: this.rect.y + 7, height: this.rect.height, width: this.rect.width}, 1);
+                this.dashShootThreeWaitTime = this.utils.randint(125, 175);
+                this.dashShootThreeTime = Date.now();
+            }
+            return this.specificMove(this.speed * 2, this.dashAttackMark)
         } else { return {x: 0, y: 0} }
     }
 
@@ -1032,7 +1078,7 @@ class complexBlueAI extends baseAI {
         // Distance to Player
         let distanceToPlayer = this.utils.getDistance([this.rect.x + (this.rect.width / 2), this.rect.y + (this.rect.height / 2)], [this.player.x + (this.player.width / 2), this.player.y + (this.player.height / 2)]);
 
-        if (this.state !== "quickTurretShoot" && this.state !== "dashShot") {
+        if (this.state !== "quickTurretShoot" && this.state !== "dashShot" && this.state !== "longTurretShoot") {
             if (distanceToPlayer <= this.closeInDistance * 0.6) {
                 newState = "run";
             } else if (distanceToPlayer <= this.closeInDistance) {
@@ -1040,14 +1086,19 @@ class complexBlueAI extends baseAI {
             } else {
                 newState = "closeIn";
             }
+
             if (this.utils.randint(1, 500) == 1) {
                 newState = "quickTurretShoot";
-                this.turretShootTime = Date.now();
+                this.quickTurretShootTime = Date.now();
             }
             if (this.utils.randint(1, 600) == 1) {
                 newState = "dashShot";
                 this.dashShootTime = Date.now();
                 this.dashAttackTime = Date.now();
+            }
+            if (this.utils.randint(1, 800) == 1) {
+                newState = "longTurretShoot";
+                this.longTurretShootTime = Date.now();
             }
         } else newState = this.state;
         return newState;
@@ -1060,7 +1111,7 @@ class complexBlueAI extends baseAI {
         this.state = this.AIBrain(); console.log(this.state);
     
         // Normal Shoot When Spare Time
-        if (this.state != "run" && this.state != "quickTurretShoot" && this.state != "dashShot") this.normalShoot(enemyBulletList);
+        if (this.state != "quickTurretShoot" && this.state != "dashShot" && this.state != "longTurretShoot") this.normalShoot(enemyBulletList);
 
         // AI Actions based on state
         if (this.state == "closeIn") {
@@ -1087,6 +1138,12 @@ class complexBlueAI extends baseAI {
 
                 // Update the enemy position based on the movement vector
                 return [movementVector.y, movementVector.x];
+        } else if (this.state == "longTurretShoot") {
+            // Calculate the movement vector
+            const movementVector = this.longTurretShoot(enemyBulletList);
+
+            // Update the enemy position based on the movement vector
+            return [movementVector.y, movementVector.x];
         } else if (this.state == "dashShot") {
             // Calculate the movement vector
             const movementVector = this.dashShot(enemyBulletList);
