@@ -213,6 +213,14 @@ class Utils {
         }
     }
 
+    goThroughQue() {
+        if (this.textboxQue.length > 0) {
+            this.displayText(this.textboxQue[0][0], this.textboxQue[0][1]);
+            // Removing First Item in the list
+            this.textboxQue.splice(this.textboxQue[0]);
+        }
+    }
+
     displayText(text, speaker = null) {
         this.lastTextboxClick = Date.now();
         this.textboxClicked = false;

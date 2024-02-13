@@ -748,7 +748,7 @@ class mediumBlueAI extends baseAI {
         const turretOneElapsed = Date.now() - this.turretOneShootTime;
         const turretTwoElapsed = Date.now() - this.turretTwoShootTime;
         if (this.turretShootDuration == null) {
-            this.turretShootDuration = this.utils.randint(2500, 3500);
+            this.turretShootDuration = this.utils.randint(2250, 2750);
             return {x: 0, y: 0};
         }
         if (timeElapsed < 1750) {
@@ -756,13 +756,13 @@ class mediumBlueAI extends baseAI {
         } else if (timeElapsed < this.turretShootDuration) {
             if (turretOneElapsed > this.turretOneWaitTime) {
                 this.turretOneShootTime = Date.now()
-                this.turretOneWaitTime = this.utils.randint(25, 75);
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
+                this.turretOneWaitTime = this.utils.randint(50, 125);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -10), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
             }
             if (turretTwoElapsed > this.turretTwoWaitTime) {
                 this.turretTwoShootTime = Date.now();
-                this.turretTwoWaitTime = this.utils.randint(25, 75);
-                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -8), bulletList, this.bulletImage, {x: this.rect.x + 15, y: this.rect.y + 15, height: this.rect.height, width: this.rect.width}, 1);
+                this.turretTwoWaitTime = this.utils.randint(50, 125);
+                this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(18, 19), this.utils.randint(19, 20), this.bulletDamage + this.utils.randint(-5, -10), bulletList, this.bulletImage, {x: this.rect.x + 15, y: this.rect.y + 15, height: this.rect.height, width: this.rect.width}, 1);
             }
         } else if (timeElapsed > this.turretShootDuration) {
             this.turretShootDuration = null;
@@ -800,7 +800,7 @@ class mediumBlueAI extends baseAI {
         } else if (distanceToMark >= 76) {
             if (dashShootTimeElapsed > this.dashShootWaitTime) {
                 this.basicShoot(this.player.x + this.player.width / 2, this.player.y + this.player.height / 2, this.utils.randint(14, 16), this.utils.randint(14, 25), this.bulletDamage + this.utils.randint(-2, 3), bulletList, this.bulletImage, {x: this.rect.x - 15, y: this.rect.y - 15, height: this.rect.height, width: this.rect.width}, 1);
-                this.dashShootWaitTime = this.utils.randint(75, 150);
+                this.dashShootWaitTime = this.utils.randint(125, 175);
                 this.dashShootTime = Date.now();
             }
             return this.specificMove(this.speed * 1.8, this.dashAttackMark)

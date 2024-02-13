@@ -77,12 +77,17 @@ class Game {
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
                 case "q":
-                    if (this.autoGen == false) this.autoGen = true;
-                    else if (this.autoGen == true) this.autoGen = false;
-                    console.log("autoGen: " + this.autoGen);
+                    if (this.autoGen == false) {
+                        this.autoGen = true;
+                        this.utils.displayTextQue("AutoGen is now Active!", null);
+                    }
+                    else if (this.autoGen == true) {
+                        this.autoGen = false;
+                        this.utils.displayTextQue("AutoGen is now Inactive!", null);
+                    }
                     break;
                 case "t":
-                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["mediumBlueEnemy"], [true, 3, 4], "mediumBlueAI");
+                    this.enemy.spawnEnemy([null, null], 150, this.enemy.basicEnemyData["complexBlueEnemy"], [true, 3, 4], "complexBlueAI");
                     break;
                 //WASD Movement Keys
                 case "a":
@@ -271,15 +276,15 @@ class Game {
         const complexEnemyTimeElapsed = Date.now() - this.lastEnemyTimestamp.complexEnemy;
 
         // Spawn Rates
-        if (this.utils.randint(1, 1000 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 600)) === 1 && basicEnemyTimeElapsed >= 2500) {
+        if (this.utils.randint(1, 1000 - this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1000)) === 1 && basicEnemyTimeElapsed >= 2500) {
             this.utils.spawnEnemy(this.enemy, "basic");
             this.lastEnemyTimestamp.basicEnemy = Date.now();
         }
-        if (this.utils.randint(1, 2000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.4)) === 1 && mediumEnemyTimeElapsed >= 6000) {
+        if (this.utils.randint(1, 2000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 2000) * 0.4)) === 1 && mediumEnemyTimeElapsed >= 6000) {
             this.utils.spawnEnemy(this.enemy, "medium");
             this.lastEnemyTimestamp.mediumEnemy = Date.now();
         }
-        if (this.utils.randint(1, 4000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 1500) * 0.05)) === 1 && complexEnemyTimeElapsed >= 20000) {
+        if (this.utils.randint(1, 4000 - (this.utils.spawnRateIncrease(this.enemy.basicEnemies, 4000) * 0.05)) === 1 && complexEnemyTimeElapsed >= 20000) {
             this.utils.spawnEnemy(this.enemy, "complex");
             this.lastEnemyTimestamp.complexEnemy = Date.now();
         }
@@ -296,6 +301,7 @@ class Game {
             this.utils.updateTextbox();
             return;
         };
+        this.utils.goThroughQue();
         
         //Dev Mode Features
         if (this.devKeys.alt && this.devKeys[1] && this.devKeys[2] && this.devKeys[3] && this.devKeys[4]) {
@@ -346,7 +352,7 @@ class Game {
 
         // Checking Player Death
         if (this.player.checkDeath() && this.player.playerDeath === false) {
-            this.utils.displayText("Player has died.");
+            this.utils.displayTextQue("Player has died.");
             this.player.playerDeath = true;
         }
     }

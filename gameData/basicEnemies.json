@@ -97,7 +97,7 @@
     },
     "mediumBlueEnemy": {
         "image": "images/entities/enemies/basicBlueEnemies/medium-blue-enemy.png",
-        "HP": {"min": 300, "max": 350},
+        "HP": {"min": 225, "max": 275},
         "rect": {
             "x": 0,
             "y": 0,
@@ -107,5 +107,18 @@
         "contactDamage": {"min": 15, "max": 19},
         "bulletDamage": {"min": 16, "max": 25},
         "speed": {"min": 3.5, "max": 4.5}
+    },
+    "complexBlueEnemy": {
+        "image": "images/entities/enemies/basicBlueEnemies/medium-blue-enemy.png",
+        "HP": {"min": 350, "max": 400},
+        "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100
+        },
+        "contactDamage": {"min": 22, "max": 27},
+        "bulletDamage": {"min": 24, "max": 29},
+        "speed": {"min": 4.5, "max": 5}
     }
 }
